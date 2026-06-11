@@ -1,0 +1,754 @@
+## ??
+FRAME | mainIframeID | https://10.150.4.13:8443/das/home
+{'tag': 'SPAN', 'text': '\u6d41\u5a92\u4f53\u670d\u52a1', 'cls': 'tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': 'NVR', 'cls': 'tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': 'NVR-2', 'cls': 'tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': 'NVR-3', 'cls': 'tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u901a\u4fe1\u7ba1\u7406\u673a', 'cls': 'tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5168\u533a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u73af\u5883\u5149\u4f20\u611f\u5668.\u5149\u5f3a\u5ea6', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u73af\u5883\u5149\u4f20\u611f\u5668.\u5149\u5f3a\u5ea6', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u73af\u5883\u5149\u4f20\u611f\u5668.\u5149\u7ebf\u611f\u5e94', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u73af\u5883\u5149\u4f20\u611f\u5668.\u5149\u7ebf\u611f\u5e94', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u73af\u5883\u5149\u4f20\u611f\u5668.\u5149\u7167\u4eae', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u73af\u5883\u5149\u4f20\u611f\u5668.\u5149\u7167\u4eae', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u5c4b\u9876\u5317\u4fa7_\u6e29\u6e7f\u5ea6\u4f20\u611f\u5668.\u5c4b\u9876\u5317\u4fa7\u6e29\u6e7f\u5ea6\u4f20\u611f\u5668', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u63a7\u5236\u5ba4_\u5c4b\u9876\u5317\u4fa7_\u6e29\u6e7f\u5ea6\u4f20\u611f\u5668.\u5c4b\u9876\u5317\u4fa7\u6e29\u6e7f\u5ea6\u4f20\u611f\u5668', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfA', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfA', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfB', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfB', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u897f\u5357\u89d2\\n\u9f99\u95e8\u67f1\u9876\u90e8', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u897f\u5357\u89d2\\n\u9f99\u95e8\u67f1\u9876\u90e8', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u9f99\u95e8\u67f1\u9876\u90e8', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u897f\u5357\u89d2\\n\u9f99\u95e8\u67f1\u4e2d\u90e8', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u897f\u5357\u89d2\\n\u9f99\u95e8\u67f1\u4e2d\u90e8', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u9f99\u95e8\u67f1\u4e2d\u90e8', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u5e95\u90e8', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u5e95\u90e8', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c55\u793a\u67dc\u5e95\u90e8', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u5e95\u90e8\u53f3\u4fa7', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u5e95\u90e8\u53f3\u4fa7', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c55\u793a\u67dc\u5e95\u90e8\u53f3\u4fa7', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u9876\u90e8\u53f3\u4fa7', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u9876\u90e8\u53f3\u4fa7', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c55\u793a\u67dc\u9876\u90e8\u53f3\u4fa7', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u9876\u90e8\u4e2d\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u9876\u90e8\u4e2d\u95f4', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c55\u793a\u67dc\u9876\u90e8\u4e2d\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u9876\u90e8\u5de6\u4fa7', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u9876\u90e8\u5de6\u4fa7', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c55\u793a\u67dc\u9876\u90e8\u5de6\u4fa7', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u897f\u5357\u89d2\\n\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u8fdb\u7ebf\u533a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1001D_\u9694\u79bb\u5f00\u5173.\u5f00\u5173\u975e\u8fdc\u52a8\u5408', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1001D_\u9694\u79bb\u5f00\u5173.\u5f00\u5173\u975e\u8fdc\u52a8\u5408', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u6d4b\u8bd5', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u6d4b\u8bd5', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u7535\u538b\u8868\u8bc6\u522b1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u7535\u538b\u8868\u8bc6\u522b1', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u5f00\u5173\u975e\u8fdc\u52a8\u5408', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u5f00\u5173\u975e\u8fdc\u52a8\u5408', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u7f51\u5f00\u5173', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u7f51\u5f00\u5173', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u7f51\u5f00\u5173\u5206\u5408\u8bc6\u522b1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u7f51\u5f00\u5173\u5206\u5408\u8bc6\u522b1', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.1\u53f7\u95f8\u5f00\u5173\u706f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.1\u53f7\u95f8\u5f00\u5173\u706f', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.2\u53f7\u95f8\u5f00\u5173\u706f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.2\u53f7\u95f8\u5f00\u5173\u706f', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.\u5206\u5408\u6307\u793a\u724c\u8bc6\u522b\uff08\u7b80\u5355\uff09', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.\u5206\u5408\u6307\u793a\u724c\u8bc6\u522b\uff08\u7b80\u5355\uff09', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.\u6570\u7801\u7ba1\u8bc6\u522b1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.\u6570\u7801\u7ba1\u8bc6\u522b1', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.\u6570\u7801\u7ba1\u8bc6\u522b2', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.\u6570\u7801\u7ba1\u8bc6\u522b2', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.\u6570\u7801\u7ba1\u8bc6\u522b3', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1002GK_\u9694\u79bb\u5f00\u5173.\u6570\u7801\u7ba1\u8bc6\u522b3', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1011GK_\u9694\u79bb\u5f00\u5173.\u7535\u6d41\u6570\u7801\u7ba1\u8bc6\u522b1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1011GK_\u9694\u79bb\u5f00\u5173.\u7535\u6d41\u6570\u7801\u7ba1\u8bc6\u522b1', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1012GK_\u9694\u79bb\u5f00\u5173.\u8ba1\u6570\u5668', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1012GK_\u9694\u79bb\u5f00\u5173.\u8ba1\u6570\u5668', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1012GK_\u9694\u79bb\u5f00\u5173.\u7f51\u5f00\u5173\u5f02\u7269\u8bc6\u522b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1012GK_\u9694\u79bb\u5f00\u5173.\u7f51\u5f00\u5173\u5f02\u7269\u8bc6\u522b', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1013GK_\u9694\u79bb\u5f00\u5173.\u63a5\u5730\u5f00\u5173', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1013GK_\u9694\u79bb\u5f00\u5173.\u63a5\u5730\u5f00\u5173', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1013GK_\u9694\u79bb\u5f00\u5173.\u5f00\u51731', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1013GK_\u9694\u79bb\u5f00\u5173.\u5f00\u51731', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1013GK_\u9694\u79bb\u5f00\u5173.\u5f00\u51732', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1013GK_\u9694\u79bb\u5f00\u5173.\u5f00\u51732', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1013GK_\u9694\u79bb\u5f00\u5173.\u538b\u677f\u8bc6\u522b1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1013GK_\u9694\u79bb\u5f00\u5173.\u538b\u677f\u8bc6\u522b1', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1021GK_\u9694\u79bb\u5f00\u5173.\u538b\u677f\u4f4d\u7f6e', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1021GK_\u9694\u79bb\u5f00\u5173.\u538b\u677f\u4f4d\u7f6e', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u6863\u4e3a\u5f00\u5173\u8bc6\u522b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1001GK_\u9694\u79bb\u5f00\u5173.\u6863\u4e3a\u5f00\u5173\u8bc6\u522b', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1011DGK_\u9694\u79bb\u5f00\u5173.\u9694\u79bb\u5f00\u5173\u5f02\u7269', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1011DGK_\u9694\u79bb\u5f00\u5173.\u9694\u79bb\u5f00\u5173\u5f02\u7269', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '101LHB_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '101LHB_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '101LHC_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '101LHC_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '101TA_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '101TA_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '102LHA_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '102LHA_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '102LHB_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '102LHB_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1LH_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1LH_\u7535\u6d41\u4e92\u611f\u5668.\u7535\u6d41', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u4e3b\u53d8\u533a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DLB_\u81ea\u7528\u53d8\u538b\u5668.\u6f0f\u6cb9\u6f0f\u6db2\u8bc6\u522b2', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': 'DLB_\u81ea\u7528\u53d8\u538b\u5668.\u6f0f\u6cb9\u6f0f\u6db2\u8bc6\u522b2', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-\u56de\u6d41\u6bcd\u6392', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-\u56de\u6d41\u6bcd\u6392', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-a\u76f8\u51fa\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-a\u76f8\u51fa\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-a\u76f8\u51fa\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-a\u76f8\u51fa\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-A\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-A\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-A\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-A\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-b\u76f8\u51fa\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-b\u76f8\u51fa\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-b\u76f8\u51fa\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-b\u76f8\u51fa\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-B\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-B\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-B\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-B\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-C\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-C\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-C\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1B_\u7275\u5f15\u53d8\u538b\u5668.1B-C\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-\u56de\u6d41\u6bcd\u6392', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-\u56de\u6d41\u6bcd\u6392', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-a\u76f8\u51fa\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-a\u76f8\u51fa\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-a\u76f8\u51fa\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-a\u76f8\u51fa\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-A\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-A\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-A\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-A\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-b\u76f8\u51fa\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-b\u76f8\u51fa\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-b\u76f8\u51fa\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-b\u76f8\u51fa\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-B\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-B\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-B\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-B\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-C\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-C\u76f8\u8fdb\u7ebf\u8010\u5f20\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-C\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2B_\u7275\u5f15\u53d8\u538b\u5668.2B-C\u76f8\u8fdb\u7ebf\u7ebf\u5939', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u4e3b\u53d8\u533a_1B\u5357\u4fa7\u7535\u7f06\u6c9f_\u6c34\u6d78.\u7535\u7f06\u6c9f\u6c34\u6d78\u68c0\u6d4b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u4e3b\u53d8\u533a_1B\u5357\u4fa7\u7535\u7f06\u6c9f_\u6c34\u6d78.\u7535\u7f06\u6c9f\u6c34\u6d78\u68c0\u6d4b', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u4e3b\u53d8\u533a_1B\u897f\u4fa7_\u94c1\u82af\u63a5\u5730\u76d1\u6d4b\u88c5\u7f6e.\u897f\u4fa7\u94c1\u82af\u63a5\u5730\u76d1\u6d4b\u88c5\u7f6e', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u4e3b\u53d8\u533a_1B\u897f\u4fa7_\u94c1\u82af\u63a5\u5730\u76d1\u6d4b\u88c5\u7f6e.\u897f\u4fa7\u94c1\u82af\u63a5\u5730\u76d1\u6d4b\u88c5\u7f6e', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5\u6cb9\u4f4d', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5\u6cb9\u4f4d', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u7535\u6c60\u72b6\u6001\u76d1\u6d4b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u7535\u6c60\u72b6\u6001\u76d1\u6d4b', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u706b\u7130\u70df\u96fe\u8bc6\u522b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u706b\u7130\u70df\u96fe\u8bc6\u522b', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u7130\u706b\u8bc6\u522b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u7130\u706b\u8bc6\u522b', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u4ea4\u6d41\u914d\u7535\u67dc.SF6-1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u4ea4\u6d41\u914d\u7535\u67dc.SF6-1', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '10KV\u63a7\u5236\u67dc.\u9e1f\u5de2\u8bc6\u522b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '10KV\u63a7\u5236\u67dc.\u9e1f\u5de2\u8bc6\u522b', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1\u53f7\u4e3b\u53d8\u4fdd\u62a4\u6d4b\u63a7\u67dc.\u4e3b\u53d8-\u6e29\u63a7-\u7ea2\u6307\u9488', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1\u53f7\u4e3b\u53d8\u4fdd\u62a4\u6d4b\u63a7\u67dc.\u4e3b\u53d8-\u6e29\u63a7-\u7ea2\u6307\u9488', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2#\u7535\u6c60\u67dc.\u6cb9\u6795\u6cb9\u4f4d\u6570\u5b57\u8bc6\u522b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2#\u7535\u6c60\u67dc.\u6cb9\u6795\u6cb9\u4f4d\u6570\u5b57\u8bc6\u522b', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u68c0\u4fee\u5ba4\u8d70\u5eca_\u4e1c\u5899_\u63a7\u5236\u5668\u56de\u8def3\u63a7\u5236\u5ba4\u5357\u4fa7\u7167\u660e.\u7167\u660e\u5f00\u5173', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u68c0\u4fee\u5ba4\u8d70\u5eca_\u4e1c\u5899_\u63a7\u5236\u5668\u56de\u8def3\u63a7\u5236\u5ba4\u5357\u4fa7\u7167\u660e.\u7167\u660e\u5f00\u5173', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u68c0\u4fee\u5ba4\u8d70\u5eca_\u897f\u5899_\u63a7\u5236\u5668\u56de\u8def1\u8fdb\u7ebf\u533a\u7167\u660e.\u706b\u7130\u8bc6\u522b1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u68c0\u4fee\u5ba4\u8d70\u5eca_\u897f\u5899_\u63a7\u5236\u5668\u56de\u8def1\u8fdb\u7ebf\u533a\u7167\u660e.\u706b\u7130\u8bc6\u522b1', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u4e1c\u5317\u5899\u89d2_\u7a7a\u8c03.\u7a7a\u8c03\u6d4b\u8bd5', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u63a7\u5236\u5ba4_\u4e1c\u5317\u5899\u89d2_\u7a7a\u8c03.\u7a7a\u8c03\u6d4b\u8bd5', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5317\u5899\u89d2_\u7a7a\u8c03.\u5ba4\u5185\u5f02\u7269\u8bc6\u522b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u63a7\u5236\u5ba4_\u897f\u5317\u5899\u89d2_\u7a7a\u8c03.\u5ba4\u5185\u5f02\u7269\u8bc6\u522b', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u4e1c\u5899_\u6e29\u6e7f\u5ea6\u4f20\u611f\u5668.\u4e1c\u5899\u6e29\u6e7f\u5ea6\u76d1\u6d4b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u63a7\u5236\u5ba4_\u4e1c\u5899_\u6e29\u6e7f\u5ea6\u4f20\u611f\u5668.\u4e1c\u5899\u6e29\u6e7f\u5ea6\u76d1\u6d4b', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u5c4b\u9876\u4e1c_\u70df\u611f.\u706b\u7130\u70df\u96fe\u8bc6\u522b1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u63a7\u5236\u5ba4_\u5c4b\u9876\u4e1c_\u70df\u611f.\u706b\u7130\u70df\u96fe\u8bc6\u522b1', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u5c4b\u9876\u897f_\u6e29\u611f.\u6e29\u5ea6', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u63a7\u5236\u5ba4_\u5c4b\u9876\u897f_\u6e29\u611f.\u6e29\u5ea6', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u9988\u7ebf\u533a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2122GK_\u9694\u79bb\u5f00\u5173.\u9e1f\u5de2\u8bc6\u522b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '2122GK_\u9694\u79bb\u5f00\u5173.\u9e1f\u5de2\u8bc6\u522b', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5468\u754c\u56f4\u5899', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5468\u754c\u56f4\u5899_\u4e1c\u5357\u5927\u95e8_\u95e8\u7981.\u4eba\u5458\u4fb5\u5165\u68c0\u6d4b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u5468\u754c\u56f4\u5899_\u4e1c\u5357\u5927\u95e8_\u95e8\u7981.\u4eba\u5458\u4fb5\u5165\u68c0\u6d4b', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5468\u754c\u56f4\u5899_\u4e1c\u5357\u5927\u95e8_\u95e8\u7981.\u4fb5\u5165\u6d4b\u8bd5', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u5468\u754c\u56f4\u5899_\u4e1c\u5357\u5927\u95e8_\u95e8\u7981.\u4fb5\u5165\u6d4b\u8bd5', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5468\u754c\u56f4\u5899_\u4e1c\u5899_\u6fc0\u5149\u5bf9\u5c04.\u6fc0\u5149\u68c0\u6d4b\u5165\u4fb51', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u5468\u754c\u56f4\u5899_\u4e1c\u5899_\u6fc0\u5149\u5bf9\u5c04.\u6fc0\u5149\u68c0\u6d4b\u5165\u4fb51', 'cls': 'clear-pointer tx_green', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '27.5kV\u9ad8\u538b\u5ba4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '10BL_\u907f\u96f7\u5668.\u907f\u96f7\u5668_3', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '10BL_\u907f\u96f7\u5668.\u907f\u96f7\u5668_3', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1ZB_\u6240\u7528\u53d8\u538b\u5668.\u6f0f\u6cb9\u6f0f\u6db2\u8bc6\u522b1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1ZB_\u6240\u7528\u53d8\u538b\u5668.\u6f0f\u6cb9\u6f0f\u6db2\u8bc6\u522b1', 'cls': 'clear-pointer tx_red_high', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1ZB_\u6240\u7528\u53d8\u538b\u5668.\u6cb9\u4f4d\u523b\u5ea6\u8bc6\u522b', 'cls': '', 'onclick': None, 'href': None}
+
+## ????
+FRAME | mainIframeID | https://10.150.4.13:8443/amcs/video/preview
+{'tag': 'DIV', 'text': '\u6444\u50cf\u673a\u5217\u8868', 'cls': 'tabs-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6444\u50cf\u673a\u5217\u8868', 'cls': 'tabs-wrap', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u6444\u50cf\u673a\u5217\u8868', 'cls': 'tabs-selected tabs-first tabs-last', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u6444\u50cf\u673a\u5217\u8868', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u6444\u50cf\u673a\u5217\u8868', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfA', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfA', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfA', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfB', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfB', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u6d77\u5eb7\u70ed\u6210\u50cfB', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u9f99\u95e8\u67f1\u9876\u90e8_\u534a\u7403\u673a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u9f99\u95e8\u67f1\u9876\u90e8_\u534a\u7403\u673a', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u9f99\u95e8\u67f1\u9876\u90e8_\u534a\u7403\u673a', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u9f99\u95e8\u67f1\u4e2d\u90e8_\u7403\u673a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u9f99\u95e8\u67f1\u4e2d\u90e8_\u7403\u673a', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u9f99\u95e8\u67f1\u4e2d\u90e8_\u7403\u673a', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u5e95\u90e8_\u95e8\u7981\u4e00\u4f53\u673a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u5e95\u90e8_\u95e8\u7981\u4e00\u4f53\u673a', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u5e95\u90e8_\u95e8\u7981\u4e00\u4f53\u673a', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u5e95\u90e8\u53f3\u4fa7_\u67aa\u673a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u5e95\u90e8\u53f3\u4fa7_\u67aa\u673a', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u5e95\u90e8\u53f3\u4fa7_\u67aa\u673a', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u9876\u90e8\u53f3\u4fa7_\u7403\u673a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u9876\u90e8\u53f3\u4fa7_\u7403\u673a', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u9876\u90e8\u53f3\u4fa7_\u7403\u673a', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u9876\u90e8\u4e2d\u95f4_\u67aa\u673a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u9876\u90e8\u4e2d\u95f4_\u67aa\u673a', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u9876\u90e8\u4e2d\u95f4_\u67aa\u673a', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u9876\u90e8\u5de6\u4fa7_\u7403\u673a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u9876\u90e8\u5de6\u4fa7_\u7403\u673a', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u9876\u90e8\u5de6\u4fa7_\u7403\u673a', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4_\u70ed\u6210\u50cf\u7403\u673aA', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4_\u70ed\u6210\u50cf\u7403\u673aA', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4_\u70ed\u6210\u50cf\u7403\u673aA', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4_\u70ed\u6210\u50cf\u7403\u673aB', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4_\u70ed\u6210\u50cf\u7403\u673aB', 'cls': 'tree-node', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63a7\u5236\u5ba4_\u897f\u5357\u89d2_\u5c55\u793a\u67dc\u4e2d\u90e8\u4e2d\u95f4_\u70ed\u6210\u50cf\u7403\u673aB', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9884\u7f6e\u4f4d\\n\u624b\u52a8\u63a7\u5236', 'cls': 'panel layout-panel layout-panel-south panel-htop', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9884\u7f6e\u4f4d\\n\u624b\u52a8\u63a7\u5236', 'cls': 'panel-body layout-body panel-noscroll', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9884\u7f6e\u4f4d\\n\u624b\u52a8\u63a7\u5236', 'cls': 'easyui-tabs tabs-container easyui-fluid', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9884\u7f6e\u4f4d\\n\u624b\u52a8\u63a7\u5236', 'cls': 'tabs-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9884\u7f6e\u4f4d\\n\u624b\u52a8\u63a7\u5236', 'cls': 'tabs-wrap', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u9884\u7f6e\u4f4d', 'cls': 'tabs-selected tabs-first', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u9884\u7f6e\u4f4d', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u9884\u7f6e\u4f4d', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u624b\u52a8\u63a7\u5236', 'cls': 'tabs-last', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u624b\u52a8\u63a7\u5236', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u624b\u52a8\u63a7\u5236', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89c6\u9891\u8f6e\u64ad\uff1a', 'cls': 'panel layout-panel layout-panel-center panel-htop', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89c6\u9891\u8f6e\u64ad\uff1a', 'cls': 'panel-body panel-body-noheader layout-body', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89c6\u9891\u8f6e\u64ad\uff1a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89c6\u9891\u8f6e\u64ad\uff1a', 'cls': 'v_south o_bg_gray', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89c6\u9891\u8f6e\u64ad\uff1a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u89c6\u9891\u8f6e\u64ad\uff1a', 'cls': '', 'onclick': None, 'href': None}
+
+## ????
+FRAME | mainIframeID | https://10.150.4.13:8443/amcs/gis3d/panorama_equip
+{'tag': 'DIV', 'text': '\u5168\u533a\\n\u8fdb\u7ebf\u533a\\n\u4e3b\u53d8\u533a\\n\u63a7\u5236\u5ba4\\n\u9988\u7ebf\u533a\\n\\xa0\\n\\xa0\\n\u623f\u5c4b\u900f\u89c6', 'cls': 'trans_win_3', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5168\u533a\\n\u8fdb\u7ebf\u533a\\n\u4e3b\u53d8\u533a\\n\u63a7\u5236\u5ba4\\n\u9988\u7ebf\u533a\\n\\xa0\\n\\xa0\\n\u623f\u5c4b\u900f\u89c6', 'cls': 'st_suspen', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5168\u533a\\n\u8fdb\u7ebf\u533a\\n\u4e3b\u53d8\u533a\\n\u63a7\u5236\u5ba4\\n\u9988\u7ebf\u533a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u5168\u533a', 'cls': 'tabs-first tabs-selected', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u5168\u533a', 'cls': 'tabs-inner', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u8fdb\u7ebf\u533a', 'cls': 'tabs-inner', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u8fdb\u7ebf\u533a', 'cls': 'tabs-inner', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u4e3b\u53d8\u533a', 'cls': 'tabs-inner', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u4e3b\u53d8\u533a', 'cls': 'tabs-inner', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u63a7\u5236\u5ba4', 'cls': 'tabs-inner', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u63a7\u5236\u5ba4', 'cls': 'tabs-inner', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u9988\u7ebf\u533a', 'cls': 'tabs-inner', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u9988\u7ebf\u533a', 'cls': 'tabs-inner', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u623f\u5c4b\u900f\u89c6', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'Jun 11 2026 00:00:00 UTC', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'Jun 11 2026 00:00:00 UTC', 'cls': 'cesium-viewer', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'Jun 11 2026 00:00:00 UTC', 'cls': 'cesium-viewer-timelineContainer', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'Jun 11 2026 00:00:00 UTC', 'cls': 'cesium-timeline-main', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'Jun 11 2026 00:00:00 UTC', 'cls': 'cesium-timeline-bar', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': 'Jun 11 2026 00:00:00 UTC', 'cls': 'cesium-timeline-ticLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u52a8\u73af\u5b89\u9632\u62a5\u8b66', 'cls': 'panel-header accordion-header accordion-header-selected', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u52a8\u73af\u5b89\u9632\u62a5\u8b66', 'cls': 'panel-title panel-with-icon', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u95e8\u7981\\t\u7ea2\u5916\\t\u6fc0\u5149\u5bf9\u5c04\\n\\t\\t\\n\u73bb\u7483\u7834\u788e\\t\u706b\u707e\u62a5\u8b66\\t\u52a8\u529b\u7167\u660e', 'cls': 'panel-body accordion-body', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5f53\u65e5\u5de1\u68c0\u4efb\u52a1\\n\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'panel panel-htop', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5f53\u65e5\u5de1\u68c0\u4efb\u52a1', 'cls': 'panel-header accordion-header accordion-header-selected', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5f53\u65e5\u5de1\u68c0\u4efb\u52a1', 'cls': 'panel-title panel-with-icon', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'panel-noscroll panel-body accordion-body', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'panel datagrid panel-htop easyui-fluid', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-wrap panel-body panel-body-noheader panel-body-noborder', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-view', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-view2', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-header-inner', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1', 'cls': 'datagrid-cell datagrid-cell-c1-cardName', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5de1\u68c0\u4efb\u52a1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6267\u884c\u65f6\u95f4', 'cls': 'datagrid-cell datagrid-cell-c1-beginTime', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u6267\u884c\u65f6\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-cell datagrid-cell-c1-executeState', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u6267\u884c\u72b6\u6001', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u62a5\u8b66\u4fe1\u606f', 'cls': 'panel-header accordion-header accordion-header-selected', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u62a5\u8b66\u4fe1\u606f', 'cls': 'panel-title panel-with-icon', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '3', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '4', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '5', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '6', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '7', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '8', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '9', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u62a5\u8b66\u65f6\u95f4\\n\\t\\n\u7ea7\u522b\\n\\t\\n\u76d1\u63a7\u70b9\\n\\t\\n\u62a5\u8b66\u7c7b\u578b', 'cls': 'datagrid-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u62a5\u8b66\u65f6\u95f4\\n\\t\\n\u7ea7\u522b\\n\\t\\n\u76d1\u63a7\u70b9\\n\\t\\n\u62a5\u8b66\u7c7b\u578b', 'cls': 'datagrid-header-inner', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u62a5\u8b66\u65f6\u95f4', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u62a5\u8b66\u65f6\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u7ea7\u522b', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u7ea7\u522b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u76d1\u63a7\u70b9', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u76d1\u63a7\u70b9', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u62a5\u8b66\u7c7b\u578b', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u62a5\u8b66\u7c7b\u578b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '06-07 11:05:27', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'II\u7ea7', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': '', 'onclick': "openAlarmDetail( 'A59E1C0ECCC747EC8A0A4B1EB4D3060E')", 'href': '#'}
+{'tag': 'DIV', 'text': '\u9065\u6d4b\u8d8a\u9650', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '06-07 11:05:27', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'II\u7ea7', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': '', 'onclick': "openAlarmDetail( '7AF7E406AA5340D8B6962CACAEC43456')", 'href': '#'}
+{'tag': 'DIV', 'text': '\u9065\u6d4b\u8d8a\u9650', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '06-07 11:05:27', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'II\u7ea7', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': '', 'onclick': "openAlarmDetail( '6C272B011313444F91F6562CE60D18F5')", 'href': '#'}
+{'tag': 'DIV', 'text': '\u9065\u6d4b\u8d8a\u9650', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '06-07 11:00:38', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'II\u7ea7', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': '', 'onclick': "openAlarmDetail( '60E3C9004BA24762AF950F08B0A596B2')", 'href': '#'}
+{'tag': 'DIV', 'text': '\u9065\u6d4b\u8d8a\u9650', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '06-07 11:00:38', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'II\u7ea7', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': '', 'onclick': "openAlarmDetail( '2CD49687FA8845B19F911030C230BD2B')", 'href': '#'}
+{'tag': 'DIV', 'text': '\u9065\u6d4b\u8d8a\u9650', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '06-07 11:00:38', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'II\u7ea7', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': '', 'onclick': "openAlarmDetail( '2B7723CEC3C549BA9797EC07D1F81425')", 'href': '#'}
+{'tag': 'DIV', 'text': '\u9065\u6d4b\u8d8a\u9650', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '05-31 11:05:26', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'II\u7ea7', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': '', 'onclick': "openAlarmDetail( '3B447ECBDAE94918AD16E2013C6DF8CE')", 'href': '#'}
+{'tag': 'DIV', 'text': '\u9065\u6d4b\u8d8a\u9650', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '05-31 11:05:26', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'II\u7ea7', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': '', 'onclick': "openAlarmDetail( '7792D311878C4F70BBE12D6BFC9578FE')", 'href': '#'}
+{'tag': 'DIV', 'text': '\u9065\u6d4b\u8d8a\u9650', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '05-31 11:05:26', 'cls': 'datagrid-cell datagrid-cell-c2-alarmDt', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'II\u7ea7', 'cls': 'datagrid-cell datagrid-cell-c2-alarmLevel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '1#\u7535\u6c60\u67dc.\u6d4b\u8bd5.\u6e29\u5ea6', 'cls': '', 'onclick': "openAlarmDetail( '07DC6B2658E94A04A14CA372A2AE3AD9')", 'href': '#'}
+{'tag': 'DIV', 'text': '\u9065\u6d4b\u8d8a\u9650', 'cls': 'datagrid-cell datagrid-cell-c2-alarmType', 'onclick': None, 'href': None}
+
+## ????
+FRAME | mainIframeID | https://10.150.4.13:8443/amcs/patrol/plan
+{'tag': 'A', 'text': '\u5de1\u68c0\u5361\u7247', 'cls': 'easyui-linkbutton bg_blue l-btn l-btn-small', 'onclick': 'openStartDialog();', 'href': None}
+{'tag': 'SPAN', 'text': '\u5de1\u68c0\u5361\u7247', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5de1\u68c0\u5361\u7247', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89c6\u9891\u76d1\u63a7', 'cls': 'gis_fbwin trans_win', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89c6\u9891\u76d1\u63a7', 'cls': 'bwin_title', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8fd1\u4e00\u5929\u5de1\u68c0\u4efb\u52a1\\n\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8fd1\u4e00\u5929\u5de1\u68c0\u4efb\u52a1\\n\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'gis_fbwin trans_win', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8fd1\u4e00\u5929\u5de1\u68c0\u4efb\u52a1', 'cls': 'bwin_title', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'panel-noscroll', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'panel datagrid panel-htop easyui-fluid', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-wrap panel-body panel-body-noheader panel-body-noborder', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-view', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-view2', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1\\n\\t\\n\u6267\u884c\u65f6\u95f4\\n\\t\\n\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-header-inner', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5de1\u68c0\u4efb\u52a1', 'cls': 'datagrid-cell datagrid-cell-c4-cardName', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5de1\u68c0\u4efb\u52a1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6267\u884c\u65f6\u95f4', 'cls': 'datagrid-cell datagrid-cell-c4-beginTime', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u6267\u884c\u65f6\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6267\u884c\u72b6\u6001', 'cls': 'datagrid-cell datagrid-cell-c4-executeState', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u6267\u884c\u72b6\u6001', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u4efb\u52a1\u8be6\u60c5\\n\u8bbe\u5907\u540d\u79f0\\n\\t\\n\u70b9\u4f4d\u540d\u79f0\\n\\t\\n\u72b6\u6001', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u4efb\u52a1\u8be6\u60c5\\n\u8bbe\u5907\u540d\u79f0\\n\\t\\n\u70b9\u4f4d\u540d\u79f0\\n\\t\\n\u72b6\u6001', 'cls': 'gis_fbwin trans_win', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u4efb\u52a1\u8be6\u60c5', 'cls': 'bwin_title', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8bbe\u5907\u540d\u79f0\\n\\t\\n\u70b9\u4f4d\u540d\u79f0\\n\\t\\n\u72b6\u6001', 'cls': 'panel-noscroll', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8bbe\u5907\u540d\u79f0\\n\\t\\n\u70b9\u4f4d\u540d\u79f0\\n\\t\\n\u72b6\u6001', 'cls': 'panel datagrid panel-htop easyui-fluid', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8bbe\u5907\u540d\u79f0\\n\\t\\n\u70b9\u4f4d\u540d\u79f0\\n\\t\\n\u72b6\u6001', 'cls': 'datagrid-wrap panel-body panel-body-noheader panel-body-noborder', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8bbe\u5907\u540d\u79f0\\n\\t\\n\u70b9\u4f4d\u540d\u79f0\\n\\t\\n\u72b6\u6001', 'cls': 'datagrid-view', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8bbe\u5907\u540d\u79f0\\n\\t\\n\u70b9\u4f4d\u540d\u79f0\\n\\t\\n\u72b6\u6001', 'cls': 'datagrid-view2', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8bbe\u5907\u540d\u79f0\\n\\t\\n\u70b9\u4f4d\u540d\u79f0\\n\\t\\n\u72b6\u6001', 'cls': 'datagrid-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8bbe\u5907\u540d\u79f0\\n\\t\\n\u70b9\u4f4d\u540d\u79f0\\n\\t\\n\u72b6\u6001', 'cls': 'datagrid-header-inner', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8bbe\u5907\u540d\u79f0', 'cls': 'datagrid-cell datagrid-cell-c3-equipName', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u8bbe\u5907\u540d\u79f0', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u70b9\u4f4d\u540d\u79f0', 'cls': 'datagrid-cell datagrid-cell-c3-presetName', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u70b9\u4f4d\u540d\u79f0', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u72b6\u6001', 'cls': 'datagrid-cell datagrid-cell-c3-status', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u72b6\u6001', 'cls': '', 'onclick': None, 'href': None}
+
+## ????
+FRAME | mainIframeID | https://10.150.4.13:8443/amcs/monitorLink/index
+{'tag': 'DIV', 'text': '\u89e6\u53d1\u65f6\u95f4 \\n \u81f3 \\n \\n \\n \\n \u67e5\u8be2\\n\\xa0\\n \u91cd\u7f6e', 'cls': 'panel layout-panel layout-panel-north panel-htop', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89e6\u53d1\u65f6\u95f4 \\n \u81f3 \\n \\n \\n \\n \u67e5\u8be2\\n\\xa0\\n \u91cd\u7f6e', 'cls': 'panel-body panel-body-noheader layout-body', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89e6\u53d1\u65f6\u95f4 \\n \u81f3 \\n \\n \\n \\n \u67e5\u8be2\\n\\xa0\\n \u91cd\u7f6e', 'cls': 'float_r', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u67e5\u8be2', 'cls': 'easyui-linkbutton bg_blue l-btn l-btn-small', 'onclick': None, 'href': 'javascript:search();'}
+{'tag': 'SPAN', 'text': '\u67e5\u8be2', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u67e5\u8be2', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u91cd\u7f6e', 'cls': 'easyui-linkbutton bg_orange l-btn l-btn-small', 'onclick': None, 'href': 'javascript:clean();'}
+{'tag': 'SPAN', 'text': '\u91cd\u7f6e', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u91cd\u7f6e', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u64cd\u4f5c\\n\\t\\n\u89e6\u53d1\u65f6\u95f4\\n\\t\\n\u8054\u52a8\u65f6\u95f4', 'cls': 'datagrid-view1', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u64cd\u4f5c\\n\\t\\n\u89e6\u53d1\u65f6\u95f4\\n\\t\\n\u8054\u52a8\u65f6\u95f4', 'cls': 'datagrid-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u64cd\u4f5c\\n\\t\\n\u89e6\u53d1\u65f6\u95f4\\n\\t\\n\u8054\u52a8\u65f6\u95f4', 'cls': 'datagrid-header-inner', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u64cd\u4f5c', 'cls': 'datagrid-cell datagrid-cell-c2-id', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u64cd\u4f5c', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89e6\u53d1\u65f6\u95f4', 'cls': 'datagrid-cell datagrid-cell-c2-operationDt', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u89e6\u53d1\u65f6\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8054\u52a8\u65f6\u95f4', 'cls': 'datagrid-cell datagrid-cell-c2-linkDt', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u8054\u52a8\u65f6\u95f4', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8bbe\u5907\u5927\u7c7b', 'cls': 'datagrid-cell datagrid-cell-c2-securityequiptype', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u8bbe\u5907\u5927\u7c7b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89e6\u53d1\u8bbe\u5907\u76d1\u63a7\u70b9', 'cls': 'datagrid-cell datagrid-cell-c2-equipName', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u89e6\u53d1\u8bbe\u5907\u76d1\u63a7\u70b9', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89e6\u53d1\u4fe1\u53f7', 'cls': 'datagrid-cell datagrid-cell-c2-triggerSignal', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u89e6\u53d1\u4fe1\u53f7', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8054\u52a8\u7c7b\u578b', 'cls': 'datagrid-cell datagrid-cell-c2-linktype', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u8054\u52a8\u7c7b\u578b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8054\u52a8\u8d44\u6e90', 'cls': 'datagrid-cell datagrid-cell-c2-linkage', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u8054\u52a8\u8d44\u6e90', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u72b6\u6001', 'cls': 'datagrid-cell datagrid-cell-c2-status', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u72b6\u6001', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u63cf\u8ff0', 'cls': 'datagrid-cell datagrid-cell-c2-description', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u63cf\u8ff0', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u7b2c', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u51710\u9875', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u663e\u793a0\u52300,\u51710\u8bb0\u5f55', 'cls': 'pagination-info', 'onclick': None, 'href': None}
+
+## ????
+FRAME | mainIframeID | https://10.150.4.13:8443/rdac/
+{'tag': 'DIV', 'text': '\u7ad9\u70b9\u5217\u8868', 'cls': 'panel-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u7ad9\u70b9\u5217\u8868', 'cls': 'panel-title', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1\\n\\n\\n2', 'cls': 'datagrid-view1', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1\\n\\n\\n2', 'cls': 'datagrid-body', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1\\n\\n\\n2', 'cls': 'datagrid-body-inner', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u72b6\u6001\\n\\t\\n\u7ad9\u70b9\u540d\u79f0\\n\\t\\n\u534f\u8bae\\n\\t\\n\u64cd\u4f5c', 'cls': 'datagrid-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u72b6\u6001\\n\\t\\n\u7ad9\u70b9\u540d\u79f0\\n\\t\\n\u534f\u8bae\\n\\t\\n\u64cd\u4f5c', 'cls': 'datagrid-header-inner', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u72b6\u6001', 'cls': 'datagrid-cell datagrid-cell-c1-status', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u72b6\u6001', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u7ad9\u70b9\u540d\u79f0', 'cls': 'datagrid-cell datagrid-cell-c1-subName', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u7ad9\u70b9\u540d\u79f0', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u534f\u8bae', 'cls': 'datagrid-cell datagrid-cell-c1-protocolName', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u534f\u8bae', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u64cd\u4f5c', 'cls': 'datagrid-cell datagrid-cell-c1-op', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u64cd\u4f5c', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240', 'cls': 'datagrid-cell datagrid-cell-c1-subName', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '104', 'cls': 'datagrid-cell datagrid-cell-c1-protocolName', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240_write', 'cls': 'datagrid-cell datagrid-cell-c1-subName', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '104', 'cls': 'datagrid-cell datagrid-cell-c1-protocolName', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u65b0\u589e\\n\\xa0\\n \u5220\u9664\\n\\xa0\\n \u91cd\u7f6e\\n\\xa0\\n \u590d\u5236', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u65b0\u589e', 'cls': 'easyui-linkbutton b-btn-red bg_red l-btn l-btn-small', 'onclick': 'appendItems()', 'href': 'javascript:void(0)'}
+{'tag': 'SPAN', 'text': '\u65b0\u589e', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u65b0\u589e', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u5220\u9664', 'cls': 'easyui-linkbutton b-btn-grey bg_grey l-btn l-btn-small', 'onclick': 'removeItems()', 'href': 'javascript:void(0)'}
+{'tag': 'SPAN', 'text': '\u5220\u9664', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5220\u9664', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u91cd\u7f6e', 'cls': 'easyui-linkbutton b-btn-green bg_green l-btn l-btn-small', 'onclick': 'rejectItems()', 'href': 'javascript:void(0)'}
+{'tag': 'SPAN', 'text': '\u91cd\u7f6e', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u91cd\u7f6e', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u590d\u5236', 'cls': 'easyui-linkbutton b-btn-blue bg_blue l-btn l-btn-small', 'onclick': 'copyItems()', 'href': 'javascript:void(0)'}
+{'tag': 'SPAN', 'text': '\u590d\u5236', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u590d\u5236', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9065\u4fe1\\n\\xa0\u9065\u6d4b\\n\\xa0\u9065\u63a7\\n\\xa0\u9065\u8c03\\n\\xa0\u5c40\u653e', 'cls': 'tabs-wrap2', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u9065\u4fe1', 'cls': 'tabs-selected tabs-first', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u9065\u4fe1', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u9065\u4fe1', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u9065\u4fe1', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u9065\u6d4b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u9065\u6d4b', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u9065\u6d4b', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u9065\u6d4b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u9065\u63a7', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u9065\u63a7', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u9065\u63a7', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u9065\u63a7', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u9065\u8c03', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u9065\u8c03', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u9065\u8c03', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u9065\u8c03', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u5c40\u653e', 'cls': 'tabs-last', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u5c40\u653e', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u5c40\u653e', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c40\u653e', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5c5e\u6027\\n\\t\\n\u70b9\u5730\u5740', 'cls': 'datagrid-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5c5e\u6027\\n\\t\\n\u70b9\u5730\u5740', 'cls': 'datagrid-header-inner', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5c5e\u6027', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c5e\u6027', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u70b9\u5730\u5740', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u70b9\u5730\u5740', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '1', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u901a\u4fe1\u7ba1\u7406\u673a.\u901a\u4fe1\u72b6\u6001', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'SCS_000_0000_00001', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '2', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__2#\u7535\u6c60\u67dc.\u6c38\u52a8\u673a', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_00001', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '3', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__1#\u7535\u6c60\u67dc.\u7130\u706b\u8bc6\u522b', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40000', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '4', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u63a7\u5236\u5ba4_\u4e1c\u5899_\u6e29\u6e7f\u5ea6\u4f20\u611f\u5668.\u4e1c\u5899\u6e29\u6e7f\u5ea6\u76d1\u6d4b', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40028', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '5', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40029', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '6', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40030', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '7', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__1001GK_\u9694\u79bb\u5f00\u5173.\u6863\u4e3a\u5f00\u5173\u8bc6\u522b', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40031', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '8', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__1011DGK_\u9694\u79bb\u5f00\u5173.\u9694\u79bb\u5f00\u5173\u5f02\u7269', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40032', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '9', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u5468\u754c\u56f4\u5899_\u4e1c\u5357\u5927\u95e8_\u95e8\u7981.\u4fb5\u5165\u6d4b\u8bd5', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40033', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '10', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__1001D_\u9694\u79bb\u5f00\u5173.\u5f00\u5173\u975e\u8fdc\u52a8\u5408', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40035', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '11', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u5468\u754c\u56f4\u5899_\u4e1c\u5899_\u6fc0\u5149\u5bf9\u5c04.\u6fc0\u5149\u68c0\u6d4b\u5165\u4fb51', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40040', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '12', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u9ad8\u538b\u5ba4_\u4e1c\u95e8\u5317\u4fa7_\u70df\u611f.\u70df\u96fe\u62a5\u8b66', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40041', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '13', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u63a7\u5236\u5ba4_\u5c4b\u9876\u4e1c_\u70df\u611f.\u706b\u7130\u70df\u96fe\u8bc6\u522b1', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40044', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '14', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40046', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '15', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u73af\u5883\u5149\u4f20\u611f\u5668.\u5149\u7ebf\u611f\u5e94', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40049', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '16', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40053', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '17', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40054', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '18', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40055', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '19', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40056', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '20', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40057', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '21', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u540e\u95e82.\u72b6\u6001', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40058', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '22', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u8fdb\u7ebf\u533a\u6c14\u4f53\u706d\u706b\u88c5\u7f6e.\u706d\u706b\u88c5\u9970', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40060', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '23', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__10KV\u63a7\u5236\u67dc.\u9e1f\u5de2\u8bc6\u522b', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40070', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '24', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__\u5468\u754c\u56f4\u5899_\u5357\u5899_\u6fc0\u5149\u5bf9\u5c04.\u5357\u5899\u6fc0\u5149', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40089', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '25', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__1013GK_\u9694\u79bb\u5f00\u5173. \u5de6\u7403\u673a_\u6307\u793a\u706f1', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40155', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '26', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u9752\u82b1\u7275\u5f15\u53d8\u7535\u6240__1B_\u7275\u5f15\u53d8\u538b\u5668.\u6c14\u4f53\u6d53\u5ea6\u62a5\u8b66', 'cls': 'datagrid-cell datagrid-cell-c2-name', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_40188', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '27', 'cls': 'datagrid-cell-rownumber', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'DIB_000_0000_50000', 'cls': 'datagrid-cell datagrid-cell-c2-reference', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u7c7b\u578b', 'cls': 'datagrid-cell datagrid-cell-c2-type', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u7c7b\u578b', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'true\u4e2d\u6587\u542b\u4e49', 'cls': 'datagrid-cell datagrid-cell-c2-trueLabel', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': 'true\u4e2d\u6587\u542b\u4e49', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'false\u4e2d\u6587\u542b\u4e49', 'cls': 'datagrid-cell datagrid-cell-c2-falseLabel', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': 'false\u4e2d\u6587\u542b\u4e49', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f\u5426\u7f13\u5b58', 'cls': 'datagrid-cell datagrid-cell-c2-cache', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f\u5426\u7f13\u5b58', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f\u5426\u5b58\u50a8', 'cls': 'datagrid-cell datagrid-cell-c2-store', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f\u5426\u5b58\u50a8', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5f3a\u5236\u5b58\u50a8\u5468\u671f(\u5355\u4f4d\uff1a\u79d2)', 'cls': 'datagrid-cell datagrid-cell-c2-period', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5f3a\u5236\u5b58\u50a8\u5468\u671f(\u5355\u4f4d\uff1a\u79d2)', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6269\u5c55\u5b57\u6bb5', 'cls': 'datagrid-cell datagrid-cell-c2-extend', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u6269\u5c55\u5b57\u6bb5', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u52a8\u73af', 'cls': 'datagrid-cell datagrid-cell-c2-type', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-cache', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-store', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '600', 'cls': 'datagrid-cell datagrid-cell-c2-period', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5728\u7ebf\u76d1\u6d4b', 'cls': 'datagrid-cell datagrid-cell-c2-type', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6b63\u5e38', 'cls': 'datagrid-cell datagrid-cell-c2-trueLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5f02\u5e38', 'cls': 'datagrid-cell datagrid-cell-c2-falseLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-cache', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-store', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '600', 'cls': 'datagrid-cell datagrid-cell-c2-period', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u52a8\u73af', 'cls': 'datagrid-cell datagrid-cell-c2-type', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u62a5\u8b66', 'cls': 'datagrid-cell datagrid-cell-c2-trueLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6b63\u5e38', 'cls': 'datagrid-cell datagrid-cell-c2-falseLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-cache', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5426', 'cls': 'datagrid-cell datagrid-cell-c2-store', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5426', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '600', 'cls': 'datagrid-cell datagrid-cell-c2-period', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u52a8\u73af', 'cls': 'datagrid-cell datagrid-cell-c2-type', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5f02\u5e38', 'cls': 'datagrid-cell datagrid-cell-c2-trueLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6b63\u5e38', 'cls': 'datagrid-cell datagrid-cell-c2-falseLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-cache', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-store', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '600', 'cls': 'datagrid-cell datagrid-cell-c2-period', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u52a8\u73af', 'cls': 'datagrid-cell datagrid-cell-c2-type', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5f02\u5e38', 'cls': 'datagrid-cell datagrid-cell-c2-trueLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6b63\u5e38', 'cls': 'datagrid-cell datagrid-cell-c2-falseLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-cache', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-store', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '600', 'cls': 'datagrid-cell datagrid-cell-c2-period', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u52a8\u73af', 'cls': 'datagrid-cell datagrid-cell-c2-type', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5f02\u5e38', 'cls': 'datagrid-cell datagrid-cell-c2-trueLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6b63\u5e38', 'cls': 'datagrid-cell datagrid-cell-c2-falseLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-cache', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-store', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '600', 'cls': 'datagrid-cell datagrid-cell-c2-period', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'PSCADA', 'cls': 'datagrid-cell datagrid-cell-c2-type', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u89e3\u9664', 'cls': 'datagrid-cell datagrid-cell-c2-trueLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6295\u5165', 'cls': 'datagrid-cell datagrid-cell-c2-falseLabel', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-cache', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u662f', 'cls': 'datagrid-cell datagrid-cell-c2-store', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': '', 'onclick': None, 'href': None}
+
+## ????
+FRAME | mainIframeID | https://10.150.4.13:8443/amcs/gis2d/mapCfg
+{'tag': 'DIV', 'text': '\u70b9\u51fb\u9009\u4e2d\u56fe\u7b26\u540e\u53ef\u62d6\u52a8\u8c03\u6574\u4f4d\u7f6e\\n+\\n\u2212', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u70b9\u51fb\u9009\u4e2d\u56fe\u7b26\u540e\u53ef\u62d6\u52a8\u8c03\u6574\u4f4d\u7f6e\\n+\\n\u2212', 'cls': 'ol-viewport', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u70b9\u51fb\u9009\u4e2d\u56fe\u7b26\u540e\u53ef\u62d6\u52a8\u8c03\u6574\u4f4d\u7f6e\\n+\\n\u2212', 'cls': 'ol-overlaycontainer-stopevent', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u70b9\u51fb\u9009\u4e2d\u56fe\u7b26\u540e\u53ef\u62d6\u52a8\u8c03\u6574\u4f4d\u7f6e', 'cls': 'ol-overlay-container', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u70b9\u51fb\u9009\u4e2d\u56fe\u7b26\u540e\u53ef\u62d6\u52a8\u8c03\u6574\u4f4d\u7f6e', 'cls': 'ol-popup', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u70b9\u51fb\u9009\u4e2d\u56fe\u7b26\u540e\u53ef\u62d6\u52a8\u8c03\u6574\u4f4d\u7f6e', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '+\\n\u2212', 'cls': 'ol-zoom ol-unselectable ol-control', 'onclick': None, 'href': None}
+{'tag': 'BUTTON', 'text': '+', 'cls': 'ol-zoom-in', 'onclick': None, 'href': None}
+{'tag': 'BUTTON', 'text': '\u2212', 'cls': 'ol-zoom-out', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u4e8c\u7ef4\u5730\u56fe\\n\u4e09\u7ef4\u5730\u56fe\\n\u4e3b\u63a5\u7ebf\u56fe\\n\u7f51\u7edc\u62d3\u6251\u56fe', 'cls': 'tabs-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u4e8c\u7ef4\u5730\u56fe\\n\u4e09\u7ef4\u5730\u56fe\\n\u4e3b\u63a5\u7ebf\u56fe\\n\u7f51\u7edc\u62d3\u6251\u56fe', 'cls': 'tabs-wrap', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u4e8c\u7ef4\u5730\u56fe', 'cls': 'tabs-selected tabs-first', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u4e8c\u7ef4\u5730\u56fe', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u4e8c\u7ef4\u5730\u56fe', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u4e09\u7ef4\u5730\u56fe', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u4e09\u7ef4\u5730\u56fe', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u4e09\u7ef4\u5730\u56fe', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u4e3b\u63a5\u7ebf\u56fe', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u4e3b\u63a5\u7ebf\u56fe', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u4e3b\u63a5\u7ebf\u56fe', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u7f51\u7edc\u62d3\u6251\u56fe', 'cls': 'tabs-last', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u7f51\u7edc\u62d3\u6251\u56fe', 'cls': 'tabs-inner', 'onclick': None, 'href': 'javascript:;'}
+{'tag': 'SPAN', 'text': '\u7f51\u7edc\u62d3\u6251\u56fe', 'cls': 'tabs-title', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("00");', 'href': None}
+{'tag': 'A', 'text': '\u67e5\u770b', 'cls': 'tx_blue', 'onclick': '_d2MapController.toMapView("00");', 'href': None}
+{'tag': 'A', 'text': '\u6e05\u9664', 'cls': 'tx_red', 'onclick': '_d2MapController.removeViewParam("00");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("01");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("02");', 'href': None}
+{'tag': 'A', 'text': '\u67e5\u770b', 'cls': 'tx_blue', 'onclick': '_d2MapController.toMapView("02");', 'href': None}
+{'tag': 'A', 'text': '\u6e05\u9664', 'cls': 'tx_red', 'onclick': '_d2MapController.removeViewParam("02");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("03");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("04");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("05");', 'href': None}
+{'tag': 'A', 'text': '\u67e5\u770b', 'cls': 'tx_blue', 'onclick': '_d2MapController.toMapView("05");', 'href': None}
+{'tag': 'A', 'text': '\u6e05\u9664', 'cls': 'tx_red', 'onclick': '_d2MapController.removeViewParam("05");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("06");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("07");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("08");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("09");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("10");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("11");', 'href': None}
+{'tag': 'A', 'text': '\u67e5\u770b', 'cls': 'tx_blue', 'onclick': '_d2MapController.toMapView("11");', 'href': None}
+{'tag': 'A', 'text': '\u6e05\u9664', 'cls': 'tx_red', 'onclick': '_d2MapController.removeViewParam("11");', 'href': None}
+{'tag': 'A', 'text': '\u5b9a\u4f4d', 'cls': 'tx_red', 'onclick': '_d2MapController.setViewParam("12");', 'href': None}
+{'tag': 'DIV', 'text': '\u4fdd\u5b58', 'cls': 'panel-footer panel-footer-noborder', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u4fdd\u5b58', 'cls': 'easyui-linkbutton bg_orange l-btn l-btn-small', 'onclick': '_d2MapController.save();', 'href': None}
+{'tag': 'SPAN', 'text': '\u4fdd\u5b58', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u4fdd\u5b58', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+
+## ????
+FRAME | mainIframeID | https://10.150.4.13:8443/menu
+{'tag': 'DIV', 'text': '\u83dc\u5355\u7ba1\u7406', 'cls': 'panel-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u83dc\u5355\u7ba1\u7406', 'cls': 'panel-title panel-with-icon', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5c55\u5f00\\n\\xa0\\n \u6dfb\u52a0\\n\\xa0\\n \u7f16\u8f91\\n\\xa0\\n \u5220\u9664', 'cls': 'panel layout-panel layout-panel-north panel-htop', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5c55\u5f00\\n\\xa0\\n \u6dfb\u52a0\\n\\xa0\\n \u7f16\u8f91\\n\\xa0\\n \u5220\u9664', 'cls': 'panel-body panel-body-noheader layout-body', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u5c55\u5f00', 'cls': 'easyui-linkbutton bg_blue1 l-btn l-btn-small', 'onclick': None, 'href': 'javascript:void(0)'}
+{'tag': 'SPAN', 'text': '\u5c55\u5f00', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5c55\u5f00', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u6dfb\u52a0', 'cls': 'easyui-linkbutton bg_red l-btn l-btn-small', 'onclick': None, 'href': 'javascript:void(0)'}
+{'tag': 'SPAN', 'text': '\u6dfb\u52a0', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u6dfb\u52a0', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u7f16\u8f91', 'cls': 'easyui-linkbutton bg_green l-btn l-btn-small', 'onclick': None, 'href': 'javascript:void(0)'}
+{'tag': 'SPAN', 'text': '\u7f16\u8f91', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u7f16\u8f91', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u5220\u9664', 'cls': 'easyui-linkbutton bg_blue2 l-btn l-btn-small', 'onclick': None, 'href': 'javascript:void(0)'}
+{'tag': 'SPAN', 'text': '\u5220\u9664', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5220\u9664', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u7275\u5f15\u53d8\u7535\u6240\u8f85\u52a9\u76d1\u63a7\u88ab\u63a7\u7ad9\u7cfb\u7edf', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u7275\u5f15\u53d8\u7535\u6240\u8f85\u52a9\u76d1\u63a7\u88ab\u63a7\u7ad9\u7cfb\u7edf', 'cls': 'tree-node droppable tree-root-first', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u7275\u5f15\u53d8\u7535\u6240\u8f85\u52a9\u76d1\u63a7\u88ab\u63a7\u7ad9\u7cfb\u7edf', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u8ba1\u5212\u4efb\u52a1\u7ba1\u7406\u7cfb\u7edf', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u8ba1\u5212\u4efb\u52a1\u7ba1\u7406\u7cfb\u7edf', 'cls': 'tree-node droppable', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u8ba1\u5212\u4efb\u52a1\u7ba1\u7406\u7cfb\u7edf', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u5e73\u53f0\u7ba1\u7406', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u5e73\u53f0\u7ba1\u7406', 'cls': 'tree-node droppable', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5e73\u53f0\u7ba1\u7406', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u57fa\u7840\u4fe1\u606f', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u57fa\u7840\u4fe1\u606f', 'cls': 'tree-node droppable', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u57fa\u7840\u4fe1\u606f', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': '\u4eba\u529b\u8d44\u6e90\u7ba1\u7406\u7cfb\u7edf', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u4eba\u529b\u8d44\u6e90\u7ba1\u7406\u7cfb\u7edf', 'cls': 'tree-node droppable', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u4eba\u529b\u8d44\u6e90\u7ba1\u7406\u7cfb\u7edf', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'LI', 'text': 'GIS\u57fa\u7840\u5e73\u53f0', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': 'GIS\u57fa\u7840\u5e73\u53f0', 'cls': 'tree-node droppable tree-node-last', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': 'GIS\u57fa\u7840\u5e73\u53f0', 'cls': 'tree-title', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u65b0\u589e\u83dc\u5355', 'cls': 'panel-header', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u65b0\u589e\u83dc\u5355', 'cls': 'panel-title panel-with-icon', 'onclick': None, 'href': None}
+{'tag': 'A', 'text': '\u4fdd\u5b58', 'cls': 'easyui-linkbutton bg_green l-btn l-btn-small', 'onclick': None, 'href': 'javascript:save();'}
+{'tag': 'SPAN', 'text': '\u4fdd\u5b58', 'cls': 'l-btn-left l-btn-icon-left', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u4fdd\u5b58', 'cls': 'l-btn-text', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u7cfb\u7edf', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u4e3b\u8981', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'DIV', 'text': '\u6b21\u8981', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u6b22\u8fce\u9875\u9762\uff1a', 'cls': '', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f\\n\u5426', 'cls': 'switchbutton', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f\\n\u5426', 'cls': 'switchbutton-inner', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': 'switchbutton-on', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5426', 'cls': 'switchbutton-off', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f\\n\u5426', 'cls': 'switchbutton', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f\\n\u5426', 'cls': 'switchbutton-inner', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u662f', 'cls': 'switchbutton-on', 'onclick': None, 'href': None}
+{'tag': 'SPAN', 'text': '\u5426', 'cls': 'switchbutton-off', 'onclick': None, 'href': None}

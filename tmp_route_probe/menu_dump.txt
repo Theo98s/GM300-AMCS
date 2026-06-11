@@ -1,0 +1,55 @@
+A | nav_sel | 首页
+SPAN |  | 首页
+A |  | 视频监控
+SPAN |  | 视频监控
+A |  | 实时监控
+SPAN |  | 实时监控
+A |  | 巡检管理
+SPAN |  | 巡检管理
+A |  | 历史记录
+SPAN |  | 历史记录
+A |  | 基础数据
+SPAN |  | 基础数据
+A |  | 系统配置
+SPAN |  | 系统配置
+A |  | 系统管理
+SPAN |  | 系统管理
+TD | cams_logo | 牵引变电所辅助监控被控站系统 - 青花牵引变电所
+DIV |  | 牵引变电所辅助监控被控站系统 - 青花牵引变电所
+TD |  | 2026-06-11 星期四 14:16:54
+DIV |  | 2026-06-11 星期四 14:16:54
+TD | i_layout_r | 实时报警
+ 
+
+全屏浏览
+ 
+ 退出系统
+TABLE |  | 实时报警
+ 
+
+全屏浏览
+ 
+ 退出系统
+TBODY |  | 实时报警
+ 
+
+全屏浏览
+ 
+ 退出系统
+TR |  | 实时报警
+TD | overflow | 实时报警
+A | easyui-linkbutton l-btn l-btn-small flashing bg_red | 实时报警
+SPAN | l-btn-left l-btn-icon-left | 实时报警
+SPAN | l-btn-text | 实时报警
+TR |  | 全屏浏览
+ 
+ 退出系统
+TD | overflow | 全屏浏览
+ 
+ 退出系统
+A | easyui-linkbutton l-btn l-btn-small | 全屏浏览
+SPAN | l-btn-left l-btn-icon-left | 全屏浏览
+SPAN | l-btn-text | 全屏浏览
+A | easyui-linkbutton l-btn l-btn-small | 退出系统
+SPAN | l-btn-left l-btn-icon-left | 退出系统
+SPAN | l-btn-text | 退出系统

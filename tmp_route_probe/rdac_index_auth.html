@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>点表配置</title>
+    
+    <script type="text/javascript">
+		var ctx="";
+		var resPath="/res";
+		var csrftoken = "79fe1864-9e65-40b9-839d-74c340358a85";
+		var projectVersion="V1.4.13.0-20260306-3";
+
+		//初始化表单隐藏域
+		 function appendToken(){ 
+           updateForms(); 
+           //updateTags(); 
+        } 
+     
+        function updateForms() { 
+           // 得到页面中所有的 form 元素
+           var forms = document.getElementsByTagName('form'); 
+           for(i=0; i<forms.length; i++) { 
+               // var url = forms[i].action; 
+         
+               // 如果这个 form 的 action 值为空，则不附加 csrftoken 
+               // if(url == null || url == "" ) continue; 
+         
+               // 动态生成 input 元素，加入到 form 之后
+               var e = document.createElement("input"); 
+               e.name = "CSRFToken"; 
+               e.value = csrftoken; 
+               e.type="hidden"; 
+               forms[i].appendChild(e); 
+            } 
+        } 
+     
+        function updateTags() { 
+           var all = document.getElementsByTagName('a'); 
+           var len = all.length; 
+         
+           // 遍历所有 a 元素
+           for(var i=0; i<len; i++) { 
+               var e = all[i]; 
+               updateTag(e, 'href', csrftoken); 
+           } 
+        } 
+         
+        function updateTag(element, attr, token) { 
+           var location = element.getAttribute(attr); 
+           if(location != null && location != '' ) { 
+               var fragmentIndex = location.indexOf('#'); 
+               var fragment = null; 
+               if(fragmentIndex != -1){ 
+         
+                   //url 中含有只相当页的锚标记
+                   fragment = location.substring(fragmentIndex); 
+                   location = location.substring(0,fragmentIndex); 
+               } 
+                
+               var index = location.indexOf('?'); 
+         
+               if(index != -1) { 
+                   //url 中已含有其他参数
+                   location = location + '&CSRFToken=' + csrftoken; 
+               } else { 
+                   //url 中没有其他参数
+                   location = location + '?CSRFToken=' + csrftoken; 
+               } 
+               if(fragment != null){ 
+                   location += fragment; 
+               } 
+                
+               element.setAttribute(attr, location); 
+           } 
+        }
+
+	</script>
+
+    <!--皮肤样式-->
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/base.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/easyui.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/main.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/module.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/m-style/m_iconfont.css?v=V1.4.13.0-20260306-3">
+	
+    <script type="text/javascript" src="/res/easyui/jquery.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/jquery.easyui.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/locale/easyui-lang-zh_CN.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- jBox -->
+    <link rel="stylesheet" type="text/css"  href="/res/easyui/jbox/jBox.css?v=V1.4.13.0-20260306-3" />
+    <script type="text/javascript" src="/res/easyui/jbox/jBox.min.js?v=V1.4.13.0-20260306-3"> </script>
+    <script type="text/javascript" src="/res/easyui/plugins/in_basis.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/formatDate.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.form.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.serializejson.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- common -->
+    <script type="text/javascript" src="/res/js/common.js?v=V1.4.13.0-20260306-3"></script>
+   
+  
+    
+</head>
+<body class="easyui-layout" fit=true>
+    <style>
+    .icon-sousuochaxun {
+	    display: inline-block;
+	    font-size: 20px;
+	    line-height: 32px;
+	}
+    </style>
+ 	<div id="westRegion" data-options="region:'west',split:true,title:'站点列表'" style="width:360px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'north'" style="height:40px;padding-top: 10px;padding-left: 5px;">
+		    	<a href="javascript:void(0)" title="新增" class="easyui-linkbutton b-btn-red bg_red" data-options="iconCls:'iconfont icon-tianjia1'" onclick="appendSub()"></a>
+				<a href="javascript:void(0)" title="复制" class="easyui-linkbutton b-btn-blue bg_blue" data-options="iconCls:'iconfont icon-chuangkou'" onclick="copySub()"></a>
+				<a href="javascript:void(0)" title="删除" class="easyui-linkbutton b-btn-grey bg_grey" data-options="iconCls:'iconfont icon-shanchu'" onclick="removeSub()"></a>
+				<a href="javascript:void(0)" title="导入" class="easyui-linkbutton b-btn-green bg_green" data-options="iconCls:'iconfont icon-zhankaicaidan'" onclick="importSubs()"></a>
+				<a href="javascript:void(0)" title="导出" class="easyui-linkbutton b-btn-green bg_green" data-options="iconCls:'iconfont icon-shouqicaidan'" onclick="exportSub()"></a>
+				<a href="javascript:void(0)" title="下载模板" class="easyui-linkbutton b-btn-orange bg_orange" data-options="iconCls:'iconfont icon-icondownload'" onclick="downlaodTemp()"></a>
+				<a href="javascript:void(0)" title="站点映射" class="easyui-linkbutton b-btn-blue bg_blue" data-options="iconCls:'iconfont icon-guanlianfujian'" onclick="mapStation()"></a>
+				<a href="javascript:void(0)" title="映射后站点点表下载" class="easyui-linkbutton b-btn-orange bg_orange" data-options="iconCls:'iconfont icon-xiafazhenggaidan'" onclick="exportMapStation()"></a>
+            </div>
+            <div data-options="region:'center'">
+		 		<table id="subDatagrid"></table>
+            </div>
+ 		</div>
+ 	</div>
+    <div data-options="region:'center'" style="padding:5px;">
+    	<div id="rtuItems"></div>
+    </div>
+    <div id="subToolbar">
+		<input id="searchSub" class="easyui-textbox" data-options="prompt:'请输入站点名称...',width: 320, icons:[{iconCls:'iconfont icon-sousuochaxun', handler: searchSub}]" >
+    </div>
+    <script type="text/javascript" src="/res/easyui/jquery.edatagrid.js"></script>
+    <script type="text/javascript" src="/js/easyui/datagrid-scrollview.js"></script>
+    <script type="text/javascript" src="/js/rdac/common.js"></script>
+    <script type="text/javascript">
+     	var subDatagrid = '#subDatagrid';
+     	var rtuItemsPanel = "#rtuItems";
+     	var searchSubTextbox = "#searchSub";
+
+     	let REGISTERED = 'REGISTERED';
+     	let UNREGISTERED = 'UNREGISTERED';
+     	$.extend($.fn.textbox.methods, {
+			addClearBtn: function(jq, iconCls){
+				return jq.each(function(){
+					var t = $(this);
+					var opts = t.textbox('options');
+					opts.icons = opts.icons || [];
+					opts.icons.unshift({
+						iconCls: iconCls,
+						handler: function(e){
+							$(e.data.target).textbox('clear').textbox('textbox').focus();
+							$(this).css('visibility','hidden');
+							searchSub();
+						}
+					});
+					t.textbox();
+					if (!t.textbox('getText')){
+						t.textbox('getIcon',0).css('visibility','hidden');
+					}
+					t.textbox('textbox').bind('keyup', function(){
+						var icon = t.textbox('getIcon',0);
+						if ($(this).val()){
+							icon.css('visibility','visible');
+						} else {
+							icon.css('visibility','hidden');
+						}
+					});
+				});
+			}
+		});
+     	$(function(){
+     		initStation();
+    		initSearchSub();
+    	});
+     	function exportSub(){
+     		window.location.href = ctx + "/rdac/export";
+     	}
+     	function importSubs(){
+     		$('<div></div>').dialog({
+				id : 'ui_import_station_dialog',
+				title: "导入",
+	            width: 640,
+	            height: 138,
+	            href: ctx + "/rdac/import",
+	            cache: false,
+	            modal: true,
+	            onClose: function() {
+	            	initStation();// 关闭弹窗时，刷新列表
+	            	$('#ui_import_station_dialog').dialog('destroy');
+	            }
+	        });
+     	}
+     	function downlaodTemp(){
+     		window.location.href = ctx + "/rdac/download";
+     	}
+		function initSearchSub(){
+			$(searchSubTextbox).textbox().textbox('addClearBtn', 'iconfont icon-guanbi3');
+			$(searchSubTextbox).textbox('textbox').bind('keydown', function(e){
+				if (e.keyCode == 13){	// 当按下回车键时接受输入的值。
+					searchSub();
+				}
+			});
+		}
+    	function searchSub(){
+    		var subKeyword = $(searchSubTextbox).textbox('getValue');
+    		var data = {rows: [], total: 0};
+    		if(subKeyword){
+    			data.rows = stations.filter((ele)=>ele.subName.indexOf(subKeyword)>-1);
+    		}else{
+    			data.rows = stations;
+    		}
+    		$(subDatagrid).edatagrid('clearSelections');
+    		$(subDatagrid).edatagrid('loadData', data);
+    	}
+    	var stations = [];
+    	function initStation(){
+    		load();
+			ajaxJson(ctx + "/rdac/subList", {}, function(result) {
+				disLoad();
+				stations = result;
+				initSubDatagrid();
+			});
+    	}
+
+		function appendSub(){
+			var  unsave = $(subDatagrid).edatagrid('getRowIndex', undefined);
+			if(unsave>-1){
+				MsgError("第"+ (unsave+1) + "尚未保存，请先保存后再新增");
+				return;
+			}
+			$(subDatagrid).edatagrid('appendRow', {'protocolName': '104'});
+			var appendRowIndex = $(subDatagrid).edatagrid('getRows').length - 1;
+			$(subDatagrid).datagrid('scrollTo', appendRowIndex);
+			startEdit();
+		}
+		function copySub(){
+			var select = $(subDatagrid).edatagrid('getSelected');
+			if(select && select.subName){
+				$('<div></div>').dialog({
+					id : 'ui_copy_station_dialog',
+					title: "复制" + select.subName + "的所有点位",
+		            width: 360,
+		            height: 138,
+		            href: ctx + "/rdac/copy",
+		            cache: false,
+		            modal: true,
+		            queryParams:{
+		            	subName: select.subName,
+		            	protocol: select.protocolName
+		            },
+		            onBeforeClose: function(){
+		            	if(copyStatus){
+			            	// 将确定新增的数据append到列表最后一行并滚动到最后一行
+			            	var newName = $('#newStation').textbox('getValue').trim();
+			            	if(newName){
+				            	$(subDatagrid).edatagrid('appendRow', {'subName': newName, 'protocolName': select.protocolName});
+				            	var appendRowIndex = $(subDatagrid).edatagrid('getRows').length - 1;
+				    			$(subDatagrid).datagrid('scrollTo', appendRowIndex);
+			            	}
+		            	}
+		            },
+		            onClose: function() {
+		            	$('#ui_copy_station_dialog').dialog('destroy');
+		            }
+		        });
+			}else{
+				MsgError("当前站点未保存,不允许复制");
+				return;
+			}
+		}
+
+		function removeSub(){
+			var select = $(subDatagrid).edatagrid('getSelected');
+			var msg;
+			if(select.subName){
+				msg = '您确认想要删除站点“'+ select.subName +'”吗？';
+			}else{
+				msg = '当前站点未保存，您确认想要删除吗？';
+			}
+			$.messager.confirm('确认',msg, function(r){
+			    if (r){
+			    	if(select.subName){
+				    	load();
+						ajaxJson(ctx + "/rdac/remove", {'stationName': select.subName, 'protocol': select.protocolName}, function(result) {
+							disLoad();
+							if(result.status==0){
+						    	$(subDatagrid).edatagrid('deleteRow', $(subDatagrid).edatagrid('getRowIndex', select));
+						    	Msg.info('ok',"删除成功");
+						    	var rows = $(subDatagrid).edatagrid('getRows');
+						    	if(rows.length==0){
+						    		$(rtuItemsPanel).panel('clear');
+						    	}
+							}else{
+								MsgError("删除失败")
+							}
+						});
+			    	}else{
+			    		$(subDatagrid).edatagrid('deleteRow', $(subDatagrid).edatagrid('getRowIndex', select));
+			    	}
+			    }
+			});
+		}
+    	var selectStatus = false;
+    	var confirmStatus = false;
+    	function initSubDatagrid(){
+    		$(subDatagrid).edatagrid({
+    			idField: 'subName',
+    			rownumbers: true,
+    			fitColumns: true,
+    			fit: true,
+    			toolbar: "#subToolbar",
+    			singleSelect: true,
+    			data: stations,
+    			columns:[[
+                    {field: 'status',title:'状态', width:30,align:'center', formatter: statusFormatter},
+    				{field: 'subName',title:'站点名称', width:100,editor: subNameEditor},
+    				{field: 'protocolName',title:'协议', width:50, editor: protocolNameEditor},
+    				{field: 'op',title:'操作', width:60,fixed: true,align:'center', formatter: operateFormatter},
+    			]],
+    			onLoadSuccess: function(data){
+    				selectStatus = true;
+    				$(this).edatagrid('selectRow', 0);
+    			},
+    			onDblClickRow: function(index, row){
+    				startEdit(index);
+    			},
+    			onSelect: function(index, row){
+    				rtuItemList(row.subName, row.protocolName);
+    				confirmStatus = false;
+    			},
+    			onBeforeSelect: function(index, row){
+    				var select = $(this).edatagrid('getSelected');
+    				if(select == row){// 选中同一行，直接返回，无须重新加载
+    					return false;
+    				}
+    				if(selectStatus){// 初次加载选中事件
+    					selectStatus = false;
+    					return;
+    				}
+    				// 结束行编辑并读取子页面的数据，对页面嵌入较大
+    				var telesignalChanges = endEditAndGetChanges(telesignal);
+    				var telemetryChanges = endEditAndGetChanges(telemetry);
+    				var remoteControlChanges = endEditAndGetChanges(remoteControl);
+    				var remoteAdjustChanges = endEditAndGetChanges(remoteAdjust);
+    				if((telesignalChanges.length>0 || telemetryChanges.length>0 || remoteControlChanges.length>0 || remoteAdjustChanges.length>0) && !confirmStatus){
+    					$.messager.confirm('确认','当前站点的属性列表未保存，您确认想要切换站点吗？',function(r){
+    					    if (r){
+    					    	confirmStatus = true;
+    					    	$(subDatagrid).edatagrid('selectRow',index);//选中行之后要重置确认状态
+    					    }
+    					});
+    					return false;
+    				}
+    			},
+    			onDblClickCell: function(index, field, value){
+    				$(this).edatagrid('endEdit',index);
+    			},
+    		});
+    	}
+
+    	function rtuItemList(subName, protocol){
+    		if(!subName){
+    			return;
+    		}
+    		$(rtuItemsPanel).panel({
+    			fit: true,
+    			href: ctx + "/rdac/items?subName=" + subName + "&protocol=" + protocol
+    		});
+    	}
+    	function operateFormatter(value,row,index){
+    		var html = '<a href="javascript:void(0);" class="tx_orange" title="编辑" id="row'+row.subName+'edit" onClick="startEdit(\''+row.subName+'\')"><i class="iconfont icon-bianjixiugai icon-size-20"></i></a>';
+    		html += '<a href="javascript:void(0);" style="display:none" title="选择" id="row'+row.subName+'ok" class="tx_green" onClick="endEdit(\''+row.subName+'\')"><i class="iconfont icon-xuanze icon-size-20"></i></a>';
+            if(row.status && row.status == UNREGISTERED){
+                html += '&nbsp<a href="javascript:void(0);" class="tx_blue01" title="注册" id="row'+row.subName+'register" onClick="register(\''+row.subName+'\')"><i class="iconfont icon-shuaxin icon-size-20"></i></a>';
+            }
+    		return html;
+    	}
+
+        function statusFormatter(value,row,index){
+            var html = '';
+            if(row.status && row.status == REGISTERED){
+                html += '<i class="iconfont iconfont icon-xuanzhong icon-size-20" style="color: limegreen"></i>';
+            }else{
+                html += '<i class="iconfont iconfont icon-guanbi2 icon-size-20" style="color: red"></i>';
+            }
+
+            return html;
+        }
+    	function startEdit(subName){
+    		var index = $(subDatagrid).edatagrid('getRowIndex', subName);
+    		$(subDatagrid).edatagrid('beginEdit', index);
+    		var rowok = document.getElementById("row" + subName + "ok");
+    		var rowedit = document.getElementById("row" + subName + "edit");
+    		rowok.style.display="inline-block";
+    		rowedit.style.display="none";
+    	}
+    	function endEdit(subName){
+    		if(subName === 'undefined'){
+    			subName = undefined;
+    		}
+    		var index = $(subDatagrid).edatagrid('getRowIndex', subName);
+    		if($(subDatagrid).edatagrid('validateRow', index)){
+	    		var subTextbox = $(subDatagrid).edatagrid('getEditor',{'index': index, field: 'subName'});
+	    		var proCombobox = $(subDatagrid).edatagrid('getEditor',{'index': index, field: 'protocolName'});
+	    		var stationName = subTextbox.oldHtml;
+	    		var newName = $(subTextbox.target).textbox('getValue');
+	    		var protocol = $(proCombobox.target).combobox('getValue');
+	    		if(stationName === newName && protocol === proCombobox.oldHtml){// 数据未发生变化，无须后台保存，刷新行即可
+	    			$(subDatagrid).edatagrid('refreshRow',index);
+	    			return;
+	    		}
+	    		var rows = $(subDatagrid).edatagrid('getRows');
+	    		var fil = rows.filter(row=>row.subName===newName && row.protocolName===protocol);
+	    		if(fil &&fil.length>0){
+	    			MsgError('站点已存在，请重新输入');
+	    			return;
+	    		}
+        		load();
+        		ajaxJsonAsync(ctx + "/rdac/saveOrUpdate", {'stationName': stationName, 'newName': newName, 'protocol': protocol}, function(result) {
+    				disLoad();
+    				if(result.status!=0){
+    					MsgError(result.message? result.message:'操作失败');
+    					return;
+    				}
+    				if(rows.length==1){// 第一次新增成功，选中状态设置设置为true
+    					selectStatus = true;
+    				}
+		    		$(subDatagrid).edatagrid('endEdit',index);
+		    		$(subDatagrid).edatagrid('refreshRow',index);
+		    		var select = $(subDatagrid).edatagrid('getSelected');
+		    		if(!select){
+			    		$(subDatagrid).edatagrid('selectRow',index);
+		    		}
+		    		Msg.info('success', '操作成功');
+    			});
+
+    		}else{
+    			MsgError("第" + (index+1) + "行参数验证不通过，请检查参数内容");
+    		}
+    	}
+    	var protocolNameEditor = {
+   			type: 'combobox',
+   			options: {
+   				valueField:'protocolName',
+   				textField:'protocolName',
+   				limitToList: true,
+   				required:true,
+   				editable: false,
+   				panelHeight: 70,
+   				url: ctx + "/rdac/protocolList",
+   			}
+    	}
+    	var subNameEditor = {
+    		type: 'textbox',
+    		options: {
+    			required: true,
+    		}
+    	}
+
+        function register(subName){
+
+            var index = $(subDatagrid).edatagrid('getRowIndex', subName);
+                $(subDatagrid).edatagrid('selectRow',index);
+            if($(subDatagrid).edatagrid('validateRow', index)){
+                load();
+                var row = $(subDatagrid).edatagrid('getSelected');
+                ajaxJsonAsync(ctx + "/rdac/register", {'stationName': row.subName, 'protocol': row.protocolName}, function(result) {
+                    disLoad();
+                    if(result.status!=0){
+                        MsgError(result.message? result.message:'注册失败');
+                        return;
+                    }
+                    var rows = $(subDatagrid).edatagrid('getRows');
+                    if(rows.length==1){// 第一次新增成功，选中状态设置设置为true
+                        selectStatus = true;
+                    }
+                    initStation();
+                    Msg.info('success', '操作成功');
+                });
+
+            }else{
+                MsgError("第" + (index+1) + "行参数验证不通过，请检查参数内容");
+            }
+        }
+    	function mapStation(){
+    		$('<div></div>').dialog({
+				id : 'ui_map_station_dialog',
+				title: "站点映射",
+	            width: 480,
+	            height: 640,
+	            href: ctx + "/rdac/map",
+	            cache: false,
+	            modal: true,
+	            onBeforeClose: function(){
+	            	// 刷新列表
+	            	initStation();
+	            },
+	            onClose: function() {
+	            	$('#ui_map_station_dialog').dialog('destroy');
+	            }
+	        });
+    	}
+    	function exportMapStation(){
+    		window.location.href = ctx + "/rdac/exportMap";
+    	}
+    </script>
+</body>
+</html>

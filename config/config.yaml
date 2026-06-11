@@ -7,6 +7,28 @@ auth:
   login_page_url: /amcs/login
   login_submit_url: /sso/ajaxcheck
 
+home:
+  init_menu_url: /home/initMenu
+  dict_list_url_prefix: /home/listDictNoRoot
+
+menu:
+  user_menu_tree_url: /menu/getUserMenuTree
+
+plugin:
+  find_plugin_url: /plugin/findPlugin
+
+patrol:
+  patrol_card_list_url: /amcs/patrol/card/list
+  patrol_plan_list_url: /amcs/patrol/plan/findPatrolPlanVoList
+
+history:
+  monitor_link_history_url: /amcs/monitorLink/findHistoryPage
+
+rdac:
+  station_list_url: /rdac/subList
+  station_items_page_url: /rdac/items
+  station_item_list_url: /rdac/itemList
+
 system:
   sys_logo_url: /amcs/getSysLogo
   alarm_count_url: /amcs/realTimeAlarm/alarmCount

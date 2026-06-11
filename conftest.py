@@ -15,12 +15,23 @@ import pytest
 import yaml
 
 from api.auth_api import AuthApi
+from api.history_api import HistoryApi
+from api.home_api import HomeApi
+from api.menu_api import MenuApi
+from api.patrol_api import PatrolApi
+from api.plugin_api import PluginApi
+from api.rdac_api import RdacApi
 from api.system_api import SystemApi
 from common.request_util import RequestUtil
 
 
 CASE_INDEX_PREFIX = {
     "test_auth_login.py": "AUTH-LOGIN",
+    "test_home_api.py": "HOME",
+    "test_history_api.py": "HISTORY",
+    "test_patrol_api.py": "PATROL",
+    "test_rdac_api.py": "RDAC",
+    "test_menu_plugin_api.py": "MENU-PLUGIN",
     "test_system_smoke.py": "SYSTEM-SMOKE",
 }
 
@@ -108,3 +119,39 @@ def auth_api(request_util, config):
 def system_api(request_util, config):
     """提供系统类接口客户端。"""
     return SystemApi(request_util, config)
+
+
+@pytest.fixture
+def home_api(request_util, config):
+    """提供首页与字典接口客户端。"""
+    return HomeApi(request_util, config)
+
+
+@pytest.fixture
+def menu_api(request_util, config):
+    """提供菜单接口客户端。"""
+    return MenuApi(request_util, config)
+
+
+@pytest.fixture
+def plugin_api(request_util, config):
+    """提供插件接口客户端。"""
+    return PluginApi(request_util, config)
+
+
+@pytest.fixture
+def patrol_api(request_util, config):
+    """提供巡检管理接口客户端。"""
+    return PatrolApi(request_util, config)
+
+
+@pytest.fixture
+def history_api(request_util, config):
+    """提供历史记录接口客户端。"""
+    return HistoryApi(request_util, config)
+
+
+@pytest.fixture
+def rdac_api(request_util, config):
+    """提供 RDAC 接口客户端。"""
+    return RdacApi(request_util, config)

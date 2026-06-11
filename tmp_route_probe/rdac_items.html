@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>站点属性列表主页面</title>
+	
+    <script type="text/javascript">
+		var ctx="";
+		var resPath="/res";
+		var csrftoken = "d013239f-d8f8-4f6c-92e4-73b064ff49d0";
+		var projectVersion="V1.4.13.0-20260306-3";
+
+		//初始化表单隐藏域
+		 function appendToken(){ 
+           updateForms(); 
+           //updateTags(); 
+        } 
+     
+        function updateForms() { 
+           // 得到页面中所有的 form 元素
+           var forms = document.getElementsByTagName('form'); 
+           for(i=0; i<forms.length; i++) { 
+               // var url = forms[i].action; 
+         
+               // 如果这个 form 的 action 值为空，则不附加 csrftoken 
+               // if(url == null || url == "" ) continue; 
+         
+               // 动态生成 input 元素，加入到 form 之后
+               var e = document.createElement("input"); 
+               e.name = "CSRFToken"; 
+               e.value = csrftoken; 
+               e.type="hidden"; 
+               forms[i].appendChild(e); 
+            } 
+        } 
+     
+        function updateTags() { 
+           var all = document.getElementsByTagName('a'); 
+           var len = all.length; 
+         
+           // 遍历所有 a 元素
+           for(var i=0; i<len; i++) { 
+               var e = all[i]; 
+               updateTag(e, 'href', csrftoken); 
+           } 
+        } 
+         
+        function updateTag(element, attr, token) { 
+           var location = element.getAttribute(attr); 
+           if(location != null && location != '' ) { 
+               var fragmentIndex = location.indexOf('#'); 
+               var fragment = null; 
+               if(fragmentIndex != -1){ 
+         
+                   //url 中含有只相当页的锚标记
+                   fragment = location.substring(fragmentIndex); 
+                   location = location.substring(0,fragmentIndex); 
+               } 
+                
+               var index = location.indexOf('?'); 
+         
+               if(index != -1) { 
+                   //url 中已含有其他参数
+                   location = location + '&CSRFToken=' + csrftoken; 
+               } else { 
+                   //url 中没有其他参数
+                   location = location + '?CSRFToken=' + csrftoken; 
+               } 
+               if(fragment != null){ 
+                   location += fragment; 
+               } 
+                
+               element.setAttribute(attr, location); 
+           } 
+        }
+
+	</script>
+
+    <!--皮肤样式-->
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/base.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/easyui.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/main.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/module.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/m-style/m_iconfont.css?v=V1.4.13.0-20260306-3">
+	
+    <script type="text/javascript" src="/res/easyui/jquery.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/jquery.easyui.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/locale/easyui-lang-zh_CN.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- jBox -->
+    <link rel="stylesheet" type="text/css"  href="/res/easyui/jbox/jBox.css?v=V1.4.13.0-20260306-3" />
+    <script type="text/javascript" src="/res/easyui/jbox/jBox.min.js?v=V1.4.13.0-20260306-3"> </script>
+    <script type="text/javascript" src="/res/easyui/plugins/in_basis.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/formatDate.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.form.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.serializejson.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- common -->
+    <script type="text/javascript" src="/res/js/common.js?v=V1.4.13.0-20260306-3"></script>
+   
+  
+</head>
+
+<body>
+	<style type="text/css">
+		#itemsTabs .tabs-wrap {
+			display: none;
+		}
+
+		.tabs-wrap2 {
+			position: absolute;
+			z-index: 10;
+			width: 100%;
+			/* background: #fff;*/
+		}
+	</style>
+	<div class="easyui-layout" data-options="fit: true">
+		<div data-options="region:'north'" style="height:81px;">
+			<div style="float: left;padding: 5px;">
+				<a href="javascript:void(0)" class="easyui-linkbutton b-btn-red bg_red"
+					data-options="iconCls:'iconfont icon-tianjia1'" onclick="appendItems()">新增</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton b-btn-grey bg_grey"
+					data-options="iconCls:'iconfont icon-shanchu'" onclick="removeItems()">删除</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton b-btn-green bg_green"
+					data-options="iconCls:'iconfont icon-fanhui1'" onclick="rejectItems()">重置</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton b-btn-blue bg_blue"
+					data-options="iconCls:'iconfont icon-chuangkou'" onclick="copyItems()">复制</a>
+			</div>
+			<span style="color: red;line-height: 40px;"><i class='iconfont icon-zhuyi1 tx_red'
+					style="font-size: 16px !important;margin-left: 20px; text-align: center; "></i>&nbsp;左侧操作按钮均为页面操作，未真正入库，需点击“保存”按钮完成入库</span>
+			<div style="float: right;">
+				<input id="nameOrRefTextbox">
+			</div>
+			<div class="tabs-wrap2" style="margin-left: 0px;margin-right: 0px;">
+				<ul class="tabs" style="height: 39px;" id="tabBox">
+					<li class="tabs-selected tabs-first">
+						<a href="javascript:;" class="tabs-inner" style="height: 38px; line-height: 38px;">
+							<span class="tabs-title">
+							<span><i class="iconfont icon-peizhiguanli icon-size-16 tx_red"></i>&nbsp;遥信</span></span><span
+								class="tabs-icon"></span></a></li>
+					<li><a href="javascript:;" class="tabs-inner" style="height: 38px; line-height: 38px;"><span
+								class="tabs-title"><span><i
+										class="iconfont icon-wendu1 icon-size-16 tx_green"></i>&nbsp;遥测</span></span><span
+								class="tabs-icon"></span></a></li>
+					<li><a href="javascript:;" class="tabs-inner" style="height: 38px; line-height: 38px;"><span
+								class="tabs-title"><span><i class="iconfont icon-wxbgongju icon-size-16 tx_orange"
+										style="transform: rotateX(270deg);"></i>&nbsp;遥控</span></span><span
+								class="tabs-icon"></span></a></li>
+					<li ><a href="javascript:;" class="tabs-inner"
+							style="height: 38px; line-height: 38px;"><span class="tabs-title"><span><i
+										class="iconfont icon-luxian icon-size-16 tx_blue01"></i>&nbsp;遥调</span></span><span
+								class="tabs-icon"></span></a></li>
+					<li class="tabs-last"><a href="javascript:;" class="tabs-inner"
+							style="height: 38px; line-height: 38px;"><span class="tabs-title"><span><i
+										class="iconfont icon-zhiliudianyuanzhuangzhi icon-size-16 tx_blue01"></i>&nbsp;局放</span></span><span
+								class="tabs-icon"></span></a></li>
+				</ul>
+			</div>
+		</div>
+		<div data-options="region:'center'">
+			<div id="itemsTabs" class="easyui-tabs" data-options="tabHeight:40,fit:true">
+				<table id="telesignalDatagrid"></table>
+				<table id="telemetryDatagrid"></table>
+				<table id="remoteControlDatagrid"></table>
+				<table id="remoteAdjustDatagrid"></table>
+				<table id="partialDischargeDatagrid"></table>
+			</div>
+		</div>
+		<div data-options="region:'south'"
+			style="height: 36px; line-height: 32px;padding-top: 3px;text-align: center;border-top: solid gainsboro 1px;">
+			<a href="javascript:void(0)" class="easyui-linkbutton b-btn-orange bg_orange"
+				data-options="iconCls:'iconfont icon-zhengque'" onclick="saveItems()">保存</a>
+		</div>
+		<script type="text/javascript">
+			var subName = '???????';
+			var protocol = '104';
+			var telesignal = '#telesignalDatagrid';
+			var telemetry = '#telemetryDatagrid';
+			var remoteControl = '#remoteControlDatagrid';
+			var remoteAdjust = '#remoteAdjustDatagrid';
+			var partialDischarge = "#partialDischargeDatagrid"
+			var nameOrRef = "#nameOrRefTextbox";
+			var itemsTabs = '#itemsTabs';
+			var adjustItems = [];
+			var controlItems = [];
+			var metryItems = [];
+			var signalItems = [];
+			var pdItems = [];
+			let station_status_name="通信管理机.通信状态";
+
+
+			$(function () {
+				initItems();
+
+				initSearchTextbox();
+				$('#tabBox li').click(function () {
+					let index = $(this).index();
+					$('#tabBox li').removeClass('tabs-selected').eq(index).addClass('tabs-selected');
+					$('#itemsTabs >div').hide().eq(index).show();
+				})
+
+			});
+			function changeTab(index) {
+				$('#tabBox li').removeClass('tabs-selected').eq(index).addClass('tabs-selected');
+				$('#itemsTabs >div').hide().eq(index).show();
+			}
+			function getTabIndex(){
+				return $('#tabBox .tabs-selected').index();
+			}
+			function initItems() {
+				load();
+				ajaxJson(ctx + "/rdac/itemList", { subName: subName, protocol: protocol }, function (result) {
+					disLoad();
+					var data = result.data;
+					adjustItems = data.remoteAdjustItems;
+					controlItems = data.remoteControlItems;
+					metryItems = data.telemetryItems;
+					signalItems = data.telesignalItems;
+					pdItems = data.partialDischargeItems;
+					initTelesignal();
+					initTelemetry();
+					initRemoteControl();
+					initRemoteAdjust();
+					initPartialDischarge();
+				});
+			}
+			function initSearchTextbox() {
+				$(nameOrRef).textbox({
+					prompt: '请输入属性或点地址...',
+					width: 320,
+					icons: [
+						{
+							iconCls: 'iconfont icon-guanbi3',
+							handler: function (e) {
+								$(e.data.target).textbox('clear').textbox('textbox').focus();
+								$(this).css('visibility', 'hidden');
+								searchNameOrRef();
+							}
+						},
+						{
+							iconCls: 'iconfont icon-sousuochaxun',
+							handler: searchNameOrRef
+						},
+					]
+				});
+				$(nameOrRef).textbox('textbox').bind('keydown', function (e) {
+					if (e.keyCode == 13) {	// 当按下回车键时接受输入的值。
+						$(nameOrRef).textbox('setValue', $(this).val());
+						searchNameOrRef();
+					}
+				});
+				$(nameOrRef).textbox('textbox').bind('keyup', function () {
+					var icon = $(nameOrRef).textbox('getIcon', 0);
+					var text = $(this).val();
+					if (text) {
+						icon.css('visibility', 'visible');
+					} else {
+						icon.css('visibility', 'hidden');
+					}
+				});
+				$(nameOrRef).textbox('getIcon', 0).css('visibility', 'hidden');
+			}
+			function searchNameOrRef() {
+				var nameOrRefKeyword = $(nameOrRef).textbox('getValue');
+				var signalFilters = { rows: [], total: 0 };
+				var metryFilters = { rows: [], total: 0 };
+				var controlFilters = { rows: [], total: 0 };
+				var adjustFilters = { rows: [], total: 0 };
+				var pdFilters = { rows: [], total: 0 };
+				if (nameOrRefKeyword) {
+					signalFilters.rows = signalItems.filter((ele) => { return ele.name.indexOf(nameOrRefKeyword) > -1 || ele.reference.indexOf(nameOrRefKeyword) > -1 });
+					metryFilters.rows = metryItems.filter((ele) => { return ele.name.indexOf(nameOrRefKeyword) > -1 || ele.reference.indexOf(nameOrRefKeyword) > -1 });
+					controlFilters.rows = controlItems.filter((ele) => { return ele.name.indexOf(nameOrRefKeyword) > -1 || ele.reference.indexOf(nameOrRefKeyword) > -1 });
+					adjustFilters.rows = adjustItems.filter((ele) => { return ele.name.indexOf(nameOrRefKeyword) > -1 || ele.reference.indexOf(nameOrRefKeyword) > -1 });
+					pdFilters.rows = pdItems.filter((ele) => { return ele.name.indexOf(nameOrRefKeyword) > -1 || ele.reference.indexOf(nameOrRefKeyword) > -1 });
+				} else {
+					signalFilters.rows = signalItems;
+					metryFilters.rows = metryItems;
+					controlFilters.rows = controlItems;
+					adjustFilters.rows = adjustItems;
+					pdFilters.rows = pdItems;
+				}
+				signalFilters.total = signalFilters.rows.length;
+				metryFilters.total = metryFilters.rows.length;
+				controlFilters.total = controlFilters.rows.length;
+				adjustFilters.total = adjustFilters.rows.length;
+				pdFilters.total = pdFilters.rows.length;
+				$(telesignal).edatagrid('loadData', signalFilters);
+				$(telemetry).edatagrid('loadData', metryFilters);
+				$(remoteControl).edatagrid('loadData', controlFilters);
+				$(remoteAdjust).edatagrid('loadData', adjustFilters);
+				$(partialDischarge).edatagrid('loadData', pdFilters);
+			}
+			function saveItems() {
+				// 1、先校验行编辑是否验证通过并结束行编辑
+				if (!validateRow(telesignal)) {
+					changeTab(0);
+					return;
+				}
+				if (!validateRow(telemetry)) {
+					changeTab(1);
+					return;
+				}
+				if (!validateRow(remoteControl)) {
+					changeTab(2);
+					return;
+				}
+				if (!validateRow(remoteAdjust)) {
+					changeTab(3);
+					return;
+				}
+				if (!validateRow(partialDischarge)) {
+					changeTab(4);
+					return;
+				}
+				// 3、校验点地址是否存在相同
+				if (!checkItems(signalItems)) {
+					changeTab(0);
+					return;
+				}
+				if (!checkItems(metryItems)) {
+					changeTab(1);
+					return;
+				}
+				if (!checkItems(controlItems)) {
+					changeTab(2);
+					return;
+				}
+				if (!checkItems(adjustItems)) {
+					changeTab(3);
+					return;
+				}
+				if (!checkItems(pdItems)) {
+					changeTab(4);
+					return;
+				}
+				/**
+				 * 通信状态无需保存
+				 */
+				let tempSignalItems = spliceStationStatus(signalItems);
+				// 4、更新站点列表数据
+				load();
+				ajaxJson(ctx + "/rdac/itemsUpdate", { subName: subName, protocol: protocol, telesignalItems: tempSignalItems, telemetryItems: metryItems, remoteAdjustItems: adjustItems, remoteControlItems: controlItems, partialDischargeItems: pdItems }, function (result) {
+					disLoad();
+					if (result.status == 0) {
+						// 5、保存成功之后接受变更,不需要刷新页面
+						$(telesignal).edatagrid('acceptChanges');
+						$(telemetry).edatagrid('acceptChanges');
+						$(remoteAdjust).edatagrid('acceptChanges');
+						$(remoteControl).edatagrid('acceptChanges');
+						$(partialDischarge).edatagrid('acceptChanges');
+						Msg.info("保存成功");
+					} else {
+						MsgError(result.message);
+					}
+				});
+			}
+
+			/**
+			 * 剔除通信状态
+			 * @param items
+			 * @returns {*[]}
+			 */
+			function spliceStationStatus(items){
+				let temp = [].concat(items);
+				let index = -1;
+				for (var i = 0; i < temp.length; i++) {
+					let item = temp[i];
+					if(item.name.indexOf(station_status_name) >= 0){
+						index = i;
+						break;
+					}
+				}
+				if(index >= 0 && index < temp.length){
+					temp.splice(index,1);
+				}
+				return temp;
+
+			}
+			function checkItems(items) {
+				for (var i = 0; i < items.length; i++) {
+					for (var j = i + 1; j < items.length; j++) {
+						if (items[i].name === items[j].name || items[i].reference === items[j].reference) {
+							MsgError("第" + (i + 1) + "行与第" + (j + 1) + "行的属性或点地址相同")
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+
+			function copyItems() {
+				var datagridId = getTabIndexAndDatagrid();
+				var checkedRows = $(datagridId).edatagrid('getChecked');
+				if (checkedRows.length == 0) {
+					MsgError('请勾选需要复制的记录!');
+					return;
+				}
+				var rows = $(datagridId).edatagrid('getData').firstRows;
+				var arr = rows.map(row => {
+					var ref = row.reference;
+					var str = ref.substring(13, 18);
+					return Number(str);
+				});
+				var max = Math.max.apply(null, arr);
+				$.messager.confirm('确认', '您确认要复制已勾选的记录吗？', function (r) {
+					if (r) {
+						if (!validateRow(datagridId)) {
+							return;
+						}
+						var rowsIndex = rows.length - 1;
+						// 数组对象深复制
+						var checkedRowsData = JSON.parse(JSON.stringify(checkedRows));
+						$(datagridId).edatagrid('uncheckAll');
+						for (var i = 0; i < checkedRowsData.length; i++) {
+							// 重置点地址，点地址不允许重复
+							var ref = checkedRowsData[i].reference;
+							var prefix = ref.substring(0, 13);
+							var suffix = ref.substring(18, ref.length);
+							var reference = "00000" + String(max + i + 1);
+							checkedRowsData[i].reference = prefix + reference.substring(reference.length-5) + suffix;
+							// 新增一行并选中复选框
+							$(datagridId).edatagrid('appendRow', checkedRowsData[i]);
+							$(datagridId).edatagrid('checkRow', (rowsIndex + i + 1));
+						}
+						//滚动到复制数据的第一行
+						$(datagridId).edatagrid('scrollTo', rowsIndex+1);
+					}
+				});
+			}
+			function validateRow(datagridId) {
+				var rowIndex = $(datagridId).edatagrid('getRowIndex', undefined);
+				var editIndex = $(datagridId).edatagrid('getRowIndex', $(datagridId).edatagrid('getSelected'));
+				return validRowIndex(datagridId, editIndex) && validRowIndex(datagridId, rowIndex);
+			}
+			function endEditAndGetChanges(datagridId) {
+				var rowIndex = $(datagridId).edatagrid('getRowIndex', undefined);
+				var editIndex = $(datagridId).edatagrid('getRowIndex', $(datagridId).edatagrid('getSelected'));
+				if (rowIndex != -1) {
+					$(datagridId).edatagrid('endEdit', rowIndex);
+				}
+				if (editIndex != -1) {
+					$(datagridId).edatagrid('endEdit', editIndex);
+				}
+				return $(datagridId).edatagrid('getChanges');
+			}
+			function validRowIndex(datagridId, rowIndex) {
+				if (rowIndex == -1) {
+					return true;
+				}
+				if ($(datagridId).edatagrid('validateRow', rowIndex)) {
+					$(datagridId).edatagrid('endEdit', rowIndex);
+					$(datagridId).edatagrid('refreshRow', rowIndex);
+				} else {
+					$(datagridId).edatagrid('selectRow', rowIndex);
+					$(datagridId).edatagrid('scrollTo', rowIndex);
+					MsgError("第" + (rowIndex + 1) + "行输入参数有误，请先验证!");
+					return false;
+				}
+				return true;
+			}
+			function appendItems() {
+				var datagridId = getTabIndexAndDatagrid();
+				if (validateRow(datagridId)) {
+					var row = { 'ck': false, cache: '1', store: '1', period: 600, select: '1', type:'DEE'};
+					if(datagridId == partialDischarge){
+						row.type = 'PSE';
+					}
+					$(datagridId).edatagrid('appendRow', row);
+					var appendRowIndex = $(datagridId).edatagrid('getData').firstRows.length - 1;
+					$(datagridId).datagrid('scrollTo', appendRowIndex);
+					$(datagridId).datagrid('selectRow', appendRowIndex).datagrid('beginEdit', appendRowIndex);
+				}
+			}
+			function rejectItems() {
+				$.messager.confirm('确认', '您确认要重置当前页面的数据吗？', function (r) {
+					if (r) {
+						var datagridId = getTabIndexAndDatagrid();
+						$(datagridId).edatagrid('rejectChanges');
+						$(datagridId).edatagrid('scrollTo', 0);
+						Msg.success('操作成功');
+					}
+				});
+			}
+			function removeItems() {
+				var datagridId = getTabIndexAndDatagrid();
+				var checkedRows = $(datagridId).edatagrid('getChecked');
+				if (checkedRows.length == 0) {
+					MsgError('请勾选需要删除的记录!');
+					return;
+				}
+				$.messager.confirm('确认', '您确认要删除已勾选的记录吗？', function (r) {
+					if (r) {
+						delItems(datagridId);
+						$(datagridId).edatagrid('clearChecked');
+					}
+				});
+			}
+			function delItems(id) {
+				var checkedRows = $(id).edatagrid('getChecked');
+				if (checkedRows.length > 0) {
+					var rowIndex = $(id).edatagrid('getRowIndex', checkedRows[0]);
+					$(id).edatagrid('deleteRow', rowIndex);
+					delItems(id);
+				} else {
+					Msg.success('操作成功')
+				}
+			}
+			function getTabIndexAndDatagrid() {
+				var tabIndex = getTabIndex();
+				var tabId = '';
+				switch (tabIndex) {
+					case 0:// 遥信
+						tabId = telesignal;
+						break;
+					case 1:// 遥测
+						tabId = telemetry;
+						break;
+					case 2:// 遥控
+						tabId = remoteControl;
+						break;
+					case 3:// 遥调
+						tabId = remoteAdjust;
+						break;
+					case 4:// 局放
+						tabId = partialDischarge;
+						break;
+				}
+				return tabId;
+			}
+			$.extend($.fn.validatebox.defaults.rules, {
+				nameFormat: {
+					validator: function (value) {
+						var sea = value.split('\__');
+						var sub = sea[0];
+						if ((sea && sea.length < 2) || !sub) {
+							return false;
+						}
+						var ea = sea[1].split('\.');
+						if (ea && ea.length < 2) {
+							return false;
+						}
+						var equip = ea[0];
+						var attr = ea[1];
+						if (!equip || !attr) {
+							return false;
+						}
+						return true;
+					},
+					message: '格式不正确，标准格式：站名__设备名.属性'
+				},
+				refFormat: {
+					validator: function (value) {
+						if (value.indexOf("\.") > -1) {
+							value = value.substring(0, value.indexOf("\."))
+						}
+						var ref = value.split('\_');
+						if (ref && ref.length < 4) {
+							return false;
+						}
+						var aab = ref[0];
+						var ccc = ref[1];
+						var eeee = ref[2];
+						var fffff = ref[3];
+						if (aab && aab.length == 3 && ccc && ccc.length == 3 && eeee && eeee.length == 4 && fffff && fffff.length == 5) {
+							return true;
+						}
+						return false;
+					},
+					message: '格式不正确，标准格式：标志符(AAB)_命令码(CCC)_自定义码(EEEE)_地址(FFFFF)'
+				}
+			});
+			var nameEditor = { type: 'textbox', options: { required: true, validType: 'nameFormat' } };
+			var refEditor = { type: 'textbox', options: { required: true, validType: 'refFormat' } };
+			var textRequireEditor = { type: 'textbox', options: { required: true } };
+			var textEditor = { type: 'textbox' };
+			var comboEditor = { type: 'combobox', options: { valueField: 'value', textField: 'text', editable: false, panelHeight: 70, limitToList: true, required: true, data: [{ value: '1', text: '是' }, { value: '0', text: '否' }] } };
+			var typeEditor = { type: 'combobox', options: { valueField: 'value', textField: 'text', editable: false, panelHeight: 110, limitToList: true, data: [{ value: 'DEE', text: '动环' }, { value: 'PSC', text: 'PSCADA' }, { value: 'PSE', text: '在线监测' }]}};
+			var pdTypeEditor = { type: 'combobox', options: { valueField: 'value', textField: 'text', editable: false, panelHeight: 35, limitToList: true, data: [{value: 'PSE', text: '在线监测' }]}};
+			var numberEditor = { type: 'numberbox', options: { required: true, min: 0 }}
+			var precisionEditor = { type: 'numberbox', options: { precision: 3 }}
+			var editIndex = undefined;
+			function initTelesignal() {
+				$(telesignal).edatagrid({
+					idField: 'reference',
+					rownumbers: true,
+					fitColumns: true,
+					fit: true,
+					data: signalItems,
+					view: scrollview,
+					pageSize:50,
+					singleSelect: true,
+					checkOnSelect: false,
+					selectOnCheck: false,
+					frozenColumns: [[
+						{ field: 'ck', checkbox: true },
+						{ field: 'name', title: '属性', width: 350, editor: nameEditor },
+						{ field: 'reference', title: '点地址', width: 200, editor: refEditor },
+					]],
+					columns: [[
+						{ field: 'type', title: '类型', width: 100, fixed: true, editor: typeEditor, formatter: typeFormatter },
+						{ field: 'trueLabel', title: 'true中文含义', width: 100, fixed: true, editor: textEditor },
+						{ field: 'falseLabel', title: 'false中文含义', width: 100, fixed: true, editor: textEditor },
+						{ field: 'cache', title: '是否缓存', width: 70, fixed: true, formatter: booleanFormatter, editor: comboEditor },
+						{ field: 'store', title: '是否存储', width: 70, fixed: true, formatter: booleanFormatter, editor: comboEditor },
+						{ field: 'period', title: '强制存储周期(单位：秒)', align: 'center', width: 90, fixed: true, editor: { type: 'numberbox', options: { required: true, min: 0, value: 600, max: 3600 } } },
+						{ field: 'extend', title: '扩展字段', width: 100, editor: textEditor }
+					]],
+					onClickCell: onClickCell,
+					onBeginEdit:onBeginEdit,
+					// onLoadSuccess:onLoadSuccess,
+					onCheck: function (rowIndex, rowData) {
+						if (rowData.name.indexOf(station_status_name)>=0)  {
+							// 取消该行的选择
+							$(this).edatagrid('uncheckRow', rowIndex);
+						}
+					},
+					onCheckAll:function(rows){
+							for(i in rows){
+								let rowData =  rows[i];
+								if (rowData.name.indexOf(station_status_name) >=0)  {
+									// 取消该行的选择
+									let rowIndex = $(this).edatagrid('getRowIndex', rowData);
+									$(this).edatagrid('uncheckRow', rowIndex);
+								}
+							}
+					}
+				});
+			}
+
+			function initTelemetry() {
+				$(telemetry).edatagrid({
+					idField: 'reference',
+					rownumbers: true,
+					fitColumns: true,
+					fit: true,
+					data: metryItems,
+					view: scrollview,
+					pageSize:50,
+					singleSelect: true,
+					checkOnSelect: false,
+					selectOnCheck: false,
+					frozenColumns: [[
+						{ field: 'ck', checkbox: true },
+						{ field: 'name', title: '属性', width: 350, editor: nameEditor },
+						{ field: 'reference', title: '点地址', width: 200, editor: refEditor },
+					]],
+					columns: [[
+						{ field: 'type', title: '类型', width: 100, fixed: true, editor: typeEditor, formatter: typeFormatter },
+						{ field: 'ratio', title: '变比系数', width: 70, fixed: true, editor: precisionEditor },
+						{ field: 'offset', title: '偏移量', width: 70, fixed: true, editor: precisionEditor },
+						{ field: 'precision', title: '小数精度', width: 70, fixed: true, editor: { type: 'numberbox', options: { min: 0, max: 10 } } },
+						{ field: 'unit', title: '单位', width: 70, fixed: true, editor: textEditor },
+						{ field: 'cache', title: '是否缓存', width: 70, fixed: true, formatter: booleanFormatter, editor: comboEditor },
+						{ field: 'store', title: '是否存储', width: 70, fixed: true, formatter: booleanFormatter, editor: comboEditor },
+						{ field: 'variation', title: '变化存储(变化差)', align: 'center', width: 70, fixed: true, editor: precisionEditor },
+						{ field: 'rate', title: '变化存储(变化率)', width: 70, align: 'center', fixed: true, formatter: rateFormatter, editor: { type: 'numberbox', options: { min: 0, precision: 1 } } },
+						{ field: 'period', title: '强制存储周期(单位：秒)', width: 90, align: 'center', fixed: true, editor: { type: 'numberbox', options: { required: true, min: 0, max: 3600 } } },
+						{ field: 'extend', title: '扩展字段', width: 50, editor: textEditor }
+					]],
+					onClickCell: onClickCell
+				});
+			}
+			function initRemoteControl() {
+				$(remoteControl).edatagrid({
+					idField: 'reference',
+					rownumbers: true,
+					fitColumns: true,
+					fit: true,
+					data: controlItems,
+					view: scrollview,
+					pageSize:50,
+					singleSelect: true,
+					checkOnSelect: false,
+					selectOnCheck: false,
+					frozenColumns: [[
+						{ field: 'ck', checkbox: true },
+						{ field: 'name', title: '属性', width: 350, editor: nameEditor },
+						{ field: 'reference', title: '点地址', width: 200, editor: refEditor },
+					]],
+					columns: [[
+						{ field: 'trueLabel', title: 'true中文含义', width: 100, fixed: true, editor: textEditor },
+						{ field: 'falseLabel', title: 'false中文含义', width: 100, fixed: true, editor: textEditor },
+						{ field: 'select', title: '是否先选择再执行', width: 120, fixed: true, formatter: booleanFormatter, editor: comboEditor },
+						{ field: 'extend', title: '扩展字段', width: 100, editor: textEditor }
+					]],
+					onClickCell: onClickCell
+				});
+			}
+			function initRemoteAdjust() {
+				$(remoteAdjust).edatagrid({
+					idField: 'reference',
+					rownumbers: true,
+					fitColumns: true,
+					fit: true,
+					data: adjustItems,
+					view: scrollview,
+					pageSize:50,
+					singleSelect: true,
+					checkOnSelect: false,
+					selectOnCheck: false,
+					frozenColumns: [[
+						{ field: 'ck', checkbox: true },
+						{ field: 'name', title: '属性', width: 350, editor: nameEditor },
+						{ field: 'reference', title: '点地址', width: 200, editor: refEditor },
+					]],
+					columns: [[
+						{ field: 'max', title: '上限值', width: 100, fixed: true, editor: textEditor },
+						{ field: 'min', title: '下限值', width: 100, fixed: true, editor: textEditor },
+						{ field: 'unit', title: '单位', width: 100, fixed: true, editor: textEditor },
+						{ field: 'extend', title: '扩展字段', width: 100, editor: textEditor }
+					]],
+					onClickCell: onClickCell
+				});
+			}
+			function initPartialDischarge(){
+				$(partialDischargeDatagrid).edatagrid({
+					idField: 'reference',
+					rownumbers: true,
+					fitColumns: true,
+					fit: true,
+					data: pdItems,
+					view: scrollview,
+					pageSize:50,
+					singleSelect: true,
+					checkOnSelect: false,
+					selectOnCheck: false,
+					frozenColumns: [[
+						{ field: 'ck', checkbox: true },
+						{ field: 'name', title: '属性', width: 350, editor: nameEditor },
+						{ field: 'reference', title: '点地址', width: 200, editor: refEditor },
+					]],
+					columns: [[
+						{ field: 'type', title: '类型', width: 100, fixed: true, editor: pdTypeEditor, formatter: typeFormatter },
+						{ field: 'extend', title: '扩展字段', width: 100, editor: textRequireEditor }
+					]],
+					onClickCell: onClickCell
+				});
+			}
+
+			function onBeginEdit(index, row){
+				if (row.name.indexOf(station_status_name) >= 0) {
+					// $(this).edatagrid('disableEditing');
+					$(this).edatagrid('cancelEdit',index);
+				}
+			}
+			function onClickCell(index, field, value) {
+
+				let editors = $(this).edatagrid('getEditors', index);
+
+				var select = $(this).edatagrid('getSelected');
+				if (select) {
+					var rowIndex = $(this).edatagrid('getRowIndex', select);
+					if (rowIndex != index) {
+						if ($(this).edatagrid('validateRow', rowIndex)) {
+							$(this).edatagrid('endEdit', rowIndex);
+							$(this).edatagrid('refreshRow', rowIndex);
+						} else {
+							$(this).edatagrid('selectRow', rowIndex);
+						}
+					}
+				}
+			}
+			function booleanFormatter(value, row, index) {
+				var html;
+				if (value == 1) {
+					html = '<span style="color:green">是</span>';
+				} else {
+					html = '<span style="color:red">否</span>';
+				}
+				return html;
+			}
+			function typeFormatter(value, row, index) {
+				var html;
+				if (value === 'DEE') {
+					html = '动环';
+				}
+				if (value === 'PSC') {
+					html = 'PSCADA'
+				}
+				if (value === 'PSE') {
+					html = '在线监测';
+				}
+				return html;
+			}
+			function rateFormatter(value, row, index) {
+				var html = '';
+				if (value) {
+					html += value + '<span style="color:green">%</span>';
+				}
+				return html;
+			}
+
+		</script>
+	</div>
+</body>
+</html>

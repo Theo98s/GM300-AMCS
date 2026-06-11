@@ -1,0 +1,14 @@
+## ?? | clicked=False | url=https://10.150.4.13:8443/portal
+
+## ???? | clicked=False | url=https://10.150.4.13:8443/portal
+
+## ???? | clicked=False | url=https://10.150.4.13:8443/portal
+GET 200 https://10.150.4.13:8443/amcs/info/amcsHealth
+
+## ???? | clicked=False | url=https://10.150.4.13:8443/portal
+GET 200 https://10.150.4.13:8443/amcs/info/amcsHealth
+
+## ???? | clicked=False | url=https://10.150.4.13:8443/portal
+GET 200 https://10.150.4.13:8443/amcs/info/amcsHealth
+
+## ???? | clicked=False | url=https://10.150.4.13:8443/portal
