@@ -1,0 +1,14 @@
+env: test
+base_url: https://10.150.4.13:8443
+timeout: 15
+verify_ssl: false
+
+auth:
+  login_page_url: /amcs/login
+  login_submit_url: /sso/ajaxcheck
+
+system:
+  sys_logo_url: /amcs/getSysLogo
+  alarm_count_url: /amcs/realTimeAlarm/alarmCount
+  timestamp_url: /amcs/getTimestamp
+  health_url: /amcs/info/amcsHealth
