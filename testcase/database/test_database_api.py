@@ -87,6 +87,17 @@ class TestDatabaseApi:
             temp_file.write(response.content)
             return temp_file.name
 
+    @staticmethod
+    def _export_excel_to_tempfile(database_api, template_name: str, download_name: str) -> str:
+        """先导出系统现有数据，再把导出文件保存到临时文件供回灌导入。"""
+        response = database_api.export_excel(template_name, download_name)
+        assert response.status_code == 200
+        assert len(response.content) > 0
+        suffix = Path(template_name).suffix or ".xls"
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as temp_file:
+            temp_file.write(response.content)
+            return temp_file.name
+
     @allure.title("监控点新增接口可保存新记录")
     def test_monitor_add(self, auth_api, database_api, test_user):
         """校验监控点新增接口可成功保存，并能在列表中查到新数据。"""
@@ -156,13 +167,13 @@ class TestDatabaseApi:
 
     @allure.title("监控点模板导入接口返回结构化结果")
     def test_monitor_import(self, auth_api, database_api, test_user):
-        """上传系统模板，校验监控点导入接口能返回结构化业务结果。"""
+        """先导出监控点数据，再回灌导入校验接口闭环可用。"""
         self._login(auth_api, test_user)
 
-        temp_path = self._download_template_to_tempfile(
+        temp_path = self._export_excel_to_tempfile(
             database_api,
-            template_name="monitorTemplate.xls",
-            download_name="monitor-template",
+            template_name="monitorImport.xls",
+            download_name="监控点",
         )
         try:
             response = database_api.import_excel("monitorImport.xls", temp_path)
@@ -170,9 +181,10 @@ class TestDatabaseApi:
 
             body = response.json()
             assert body["status"] == 0
-            assert "导入" in body["message"]
+            assert body["message"] == "导入完成！"
             assert isinstance(body["data"], list)
             assert len(body["data"]) > 0
+            assert "成功新增" in body["data"][0]
         finally:
             Path(temp_path).unlink(missing_ok=True)
 
@@ -232,13 +244,13 @@ class TestDatabaseApi:
 
     @allure.title("报警配置模板导入接口返回结构化结果")
     def test_alarm_config_import(self, auth_api, database_api, test_user):
-        """上传报警配置模板，校验报警导入接口能返回明确业务结果。"""
+        """先导出报警配置数据，再回灌导入校验接口闭环可用。"""
         self._login(auth_api, test_user)
 
-        temp_path = self._download_template_to_tempfile(
+        temp_path = self._export_excel_to_tempfile(
             database_api,
-            template_name="alarmTemplate.xls",
-            download_name="alarm-template",
+            template_name="alarmImport.xls",
+            download_name="报警配置",
         )
         try:
             response = database_api.import_excel("alarmImport.xls", temp_path)
@@ -246,9 +258,10 @@ class TestDatabaseApi:
 
             body = response.json()
             assert body["status"] == 0
-            assert "导入" in body["message"]
+            assert body["message"] == "导入完成！"
             assert isinstance(body["data"], list)
             assert len(body["data"]) > 0
+            assert "成功新增" in body["data"][0]
         finally:
             Path(temp_path).unlink(missing_ok=True)
 
@@ -326,13 +339,13 @@ class TestDatabaseApi:
 
     @allure.title("联动配置模板导入接口返回结构化结果")
     def test_linkage_config_import(self, auth_api, database_api, test_user):
-        """上传联动配置模板，校验联动导入接口能返回明确结果。"""
+        """先导出联动配置数据，再回灌导入并校验返回结果结构。"""
         self._login(auth_api, test_user)
 
-        temp_path = self._download_template_to_tempfile(
+        temp_path = self._export_excel_to_tempfile(
             database_api,
-            template_name="linkageTemplate.xls",
-            download_name="linkage-template",
+            template_name="linkageImport.xls",
+            download_name="联动配置",
         )
         try:
             response = database_api.import_excel("linkageImport.xls", temp_path)
@@ -340,9 +353,12 @@ class TestDatabaseApi:
 
             body = response.json()
             assert body["status"] == 0
-            assert "导入" in body["message"]
+            assert body["message"] == "导入完成！"
             assert isinstance(body["data"], list)
             assert len(body["data"]) > 0
+            # 现网导出的联动配置里存在部分无法反查到预置位/摄像机的数据，
+            # 因此这里校验“回灌可执行且有成功行”，同时允许接口返回部分失败明细。
+            assert "成功保存" in body["data"][0]
         finally:
             Path(temp_path).unlink(missing_ok=True)
 
