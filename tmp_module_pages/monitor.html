@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>监控点</title>
+    
+    <script type="text/javascript">
+		var ctx="";
+		var resPath="/res";
+		var csrftoken = "ef0f1187-b577-4e75-9f31-cc95ad2d0c47";
+		var projectVersion="V1.4.13.0-20260306-3";
+
+		//初始化表单隐藏域
+		 function appendToken(){ 
+           updateForms(); 
+           //updateTags(); 
+        } 
+     
+        function updateForms() { 
+           // 得到页面中所有的 form 元素
+           var forms = document.getElementsByTagName('form'); 
+           for(i=0; i<forms.length; i++) { 
+               // var url = forms[i].action; 
+         
+               // 如果这个 form 的 action 值为空，则不附加 csrftoken 
+               // if(url == null || url == "" ) continue; 
+         
+               // 动态生成 input 元素，加入到 form 之后
+               var e = document.createElement("input"); 
+               e.name = "CSRFToken"; 
+               e.value = csrftoken; 
+               e.type="hidden"; 
+               forms[i].appendChild(e); 
+            } 
+        } 
+     
+        function updateTags() { 
+           var all = document.getElementsByTagName('a'); 
+           var len = all.length; 
+         
+           // 遍历所有 a 元素
+           for(var i=0; i<len; i++) { 
+               var e = all[i]; 
+               updateTag(e, 'href', csrftoken); 
+           } 
+        } 
+         
+        function updateTag(element, attr, token) { 
+           var location = element.getAttribute(attr); 
+           if(location != null && location != '' ) { 
+               var fragmentIndex = location.indexOf('#'); 
+               var fragment = null; 
+               if(fragmentIndex != -1){ 
+         
+                   //url 中含有只相当页的锚标记
+                   fragment = location.substring(fragmentIndex); 
+                   location = location.substring(0,fragmentIndex); 
+               } 
+                
+               var index = location.indexOf('?'); 
+         
+               if(index != -1) { 
+                   //url 中已含有其他参数
+                   location = location + '&CSRFToken=' + csrftoken; 
+               } else { 
+                   //url 中没有其他参数
+                   location = location + '?CSRFToken=' + csrftoken; 
+               } 
+               if(fragment != null){ 
+                   location += fragment; 
+               } 
+                
+               element.setAttribute(attr, location); 
+           } 
+        }
+
+	</script>
+
+    <!--皮肤样式-->
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/base.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/easyui.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/main.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/module.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/m-style/m_iconfont.css?v=V1.4.13.0-20260306-3">
+	
+    <script type="text/javascript" src="/res/easyui/jquery.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/jquery.easyui.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/locale/easyui-lang-zh_CN.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- jBox -->
+    <link rel="stylesheet" type="text/css"  href="/res/easyui/jbox/jBox.css?v=V1.4.13.0-20260306-3" />
+    <script type="text/javascript" src="/res/easyui/jbox/jBox.min.js?v=V1.4.13.0-20260306-3"> </script>
+    <script type="text/javascript" src="/res/easyui/plugins/in_basis.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/formatDate.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.form.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.serializejson.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- common -->
+    <script type="text/javascript" src="/res/js/common.js?v=V1.4.13.0-20260306-3"></script>
+   
+  
+</head>
+<body>
+<div class="easyui-layout pr_spjk" data-options="border:false,fit:true">
+    <div data-options="region:'center'" style="padding-left:7px">
+        <div id="tb" class="datagrid-toolbar" style=" height:auto;">
+            <a id="addButId" class="easyui-linkbutton bg_red"
+               data-options="iconCls:'iconfont icon-tianjia1'">新增</a>
+            <a id="deleteButId" class="easyui-linkbutton b-btn-blue2"
+               data-options="iconCls:'iconfont icon-shanchu'">删除</a>
+            <a id="importButId" class="easyui-linkbutton bg_green"
+               data-options="iconCls:'iconfont icon-zhankaicaidan'">导入导出</a>
+            <div class="float_r">
+                <input type="text" style="width:140px" class="easyui-combobox" id="alarmClass" editable="false"
+                       prompt="数据类型..." addClear/>
+                <input type="text" style="width:120px" class="easyui-combobox" id="securityequiptype" editable="false"
+                    data-options="url:'/home/listDictNoRoot/cams_alarm_sourcetype',method:'get',valueField: 'code',textField: 'name'"
+                       prompt="设备大类..." addClear/>
+                <input type="text" style="width:120px" class="easyui-textbox" id="equipName" prompt="设备名称..."
+                       addClear/>
+                <input type="text" style="width:120px" class="easyui-textbox" id="alarmDatatype" prompt="属性..." addClear />
+                <input type="text" style="width:120px" class="easyui-textbox" id="pointAddress" prompt="点位地址..." addClear />
+                <a id="searchButId" class="easyui-linkbutton bg_orange"
+                   data-options="iconCls:'iconfont icon-sousuochaxun'">查询</a>
+                <a id="cleanButId" class="easyui-linkbutton bg_blue" data-options="iconCls:'iconfont icon-eraser'">重置</a>
+            </div>
+
+        </div>
+        <table id="dg" class="easyui-datagrid" data-options="idField:'id',pageSize:10,rownumbers:true,singleSelect:false,pagination:true,
+						 fit:true,nowrap:false,toolbar:'#tb',checkOnSelect:true">
+        </table>
+    </div>
+</div>
+
+<div id="remindMsg_dialog" class="easyui-dialog" title="提示" hidden="true"
+     data-options="resizable:true,modal:true,closed:true,width:'600px',height:'400px'">
+    <div id="remindMsg" class="easyui-textarea" style="overflow-y:scroll;padding:20px;">
+    </div>
+</div>
+
+<script src="/js/common.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/dic_common.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/monitor/monitor.js?v=V1.4.13.0-20260306-3"></script>
+</body>
+</html>

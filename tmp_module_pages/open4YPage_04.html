@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>监控点</title>
+    
+    <script type="text/javascript">
+		var ctx="";
+		var resPath="/res";
+		var csrftoken = "e7c53633-5d0e-466f-a0fb-dc3e05cfa3b7";
+		var projectVersion="V1.4.13.0-20260306-3";
+
+		//初始化表单隐藏域
+		 function appendToken(){ 
+           updateForms(); 
+           //updateTags(); 
+        } 
+     
+        function updateForms() { 
+           // 得到页面中所有的 form 元素
+           var forms = document.getElementsByTagName('form'); 
+           for(i=0; i<forms.length; i++) { 
+               // var url = forms[i].action; 
+         
+               // 如果这个 form 的 action 值为空，则不附加 csrftoken 
+               // if(url == null || url == "" ) continue; 
+         
+               // 动态生成 input 元素，加入到 form 之后
+               var e = document.createElement("input"); 
+               e.name = "CSRFToken"; 
+               e.value = csrftoken; 
+               e.type="hidden"; 
+               forms[i].appendChild(e); 
+            } 
+        } 
+     
+        function updateTags() { 
+           var all = document.getElementsByTagName('a'); 
+           var len = all.length; 
+         
+           // 遍历所有 a 元素
+           for(var i=0; i<len; i++) { 
+               var e = all[i]; 
+               updateTag(e, 'href', csrftoken); 
+           } 
+        } 
+         
+        function updateTag(element, attr, token) { 
+           var location = element.getAttribute(attr); 
+           if(location != null && location != '' ) { 
+               var fragmentIndex = location.indexOf('#'); 
+               var fragment = null; 
+               if(fragmentIndex != -1){ 
+         
+                   //url 中含有只相当页的锚标记
+                   fragment = location.substring(fragmentIndex); 
+                   location = location.substring(0,fragmentIndex); 
+               } 
+                
+               var index = location.indexOf('?'); 
+         
+               if(index != -1) { 
+                   //url 中已含有其他参数
+                   location = location + '&CSRFToken=' + csrftoken; 
+               } else { 
+                   //url 中没有其他参数
+                   location = location + '?CSRFToken=' + csrftoken; 
+               } 
+               if(fragment != null){ 
+                   location += fragment; 
+               } 
+                
+               element.setAttribute(attr, location); 
+           } 
+        }
+
+	</script>
+
+    <!--皮肤样式-->
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/base.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/easyui.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/main.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/module.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/m-style/m_iconfont.css?v=V1.4.13.0-20260306-3">
+	
+    <script type="text/javascript" src="/res/easyui/jquery.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/jquery.easyui.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/locale/easyui-lang-zh_CN.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- jBox -->
+    <link rel="stylesheet" type="text/css"  href="/res/easyui/jbox/jBox.css?v=V1.4.13.0-20260306-3" />
+    <script type="text/javascript" src="/res/easyui/jbox/jBox.min.js?v=V1.4.13.0-20260306-3"> </script>
+    <script type="text/javascript" src="/res/easyui/plugins/in_basis.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/formatDate.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.form.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.serializejson.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- common -->
+    <script type="text/javascript" src="/res/js/common.js?v=V1.4.13.0-20260306-3"></script>
+   
+  
+</head>
+<body>
+<div id="cc-yk" class="easyui-layout"
+     style="width: 100%; height: 100%;">
+    <div data-options="region:'center'">
+        <dl class="t_details">
+            <dt>
+                <b> <i class="iconfont icon-gengduo"></i> 遥调设置
+                </b>
+            </dt>
+            <dd>
+                <form id="ytForm" method="post" enctype="multipart/form-data">
+                    <table class="tableForm02" cellspacing="0" cellpadding="0">
+                        <tbody>
+                        <tr>
+                            <th>最小值</th>
+                            <td><input type="text" class="easyui-textbox"
+                                       id="minValue" name="MIN_VALUE" prompt="请输入..." addClear="true" required>
+                            </td>
+                            <th>最大值</th>
+                            <td><input type="text" class="easyui-textbox"
+                                       id="maxValue" name="MAX_VALUE" prompt="请输入..." addClear="true" required>
+                            </td>
+
+                            <th>单位</th>
+                            <td><input type="text" class="easyui-textbox"
+                                       id="unitName" name="UNIT_NAME" prompt="请输入..." addClear="true" required>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </dd>
+        </dl>
+    </div>
+</div>
+<script type="text/javascript" src="/js/addClear.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/common.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/monitor/yt.js?v=V1.4.13.0-20260306-3"></script>
+</body>
+</html>

@@ -47,3 +47,19 @@ system:
   alarm_count_url: /amcs/realTimeAlarm/alarmCount
   timestamp_url: /amcs/getTimestamp
   health_url: /amcs/info/amcsHealth
+
+database:
+  monitor_page_url: /monitor/page
+  monitor_validate_url: /monitor/validateMonitor
+  monitor_save_url: /monitor/saveOrUpdate
+  monitor_can_delete_url: /monitor/canDeleteMonitor/
+  monitor_delete_url: /monitor/deleteMonitorByIds
+  monitor_edit_page_url: /monitor/toEditPage
+  monitor_import_page_url: /monitor/openImportPage
+  monitor_xml_export_url: /monitor/exportXml
+  monitor_template_download_url: /amcs/excel_2019/downloadTemp
+  monitor_excel_import_url: /amcs/excel_2019/import
+  monitor_excel_export_url: /amcs/excel_2019/export
+  monitor_related_equip_url: /amcs/monitorArea/queryEquipPresetList
+  monitor_camera_list_url: /amcs/monitorArea/queryCameraList
+  monitor_preset_list_url: /amcs/monitorArea/preset/list

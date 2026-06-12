@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>监控点</title>
+    <link rel="stylesheet" type="text/css" href="/css/monitorEdit.css?v=V1.4.13.0-20260306-3">
+
+    <script type="text/javascript">
+		var ctx="";
+		var resPath="/res";
+		var csrftoken = "e7c53633-5d0e-466f-a0fb-dc3e05cfa3b7";
+		var projectVersion="V1.4.13.0-20260306-3";
+
+		//初始化表单隐藏域
+		 function appendToken(){ 
+           updateForms(); 
+           //updateTags(); 
+        } 
+     
+        function updateForms() { 
+           // 得到页面中所有的 form 元素
+           var forms = document.getElementsByTagName('form'); 
+           for(i=0; i<forms.length; i++) { 
+               // var url = forms[i].action; 
+         
+               // 如果这个 form 的 action 值为空，则不附加 csrftoken 
+               // if(url == null || url == "" ) continue; 
+         
+               // 动态生成 input 元素，加入到 form 之后
+               var e = document.createElement("input"); 
+               e.name = "CSRFToken"; 
+               e.value = csrftoken; 
+               e.type="hidden"; 
+               forms[i].appendChild(e); 
+            } 
+        } 
+     
+        function updateTags() { 
+           var all = document.getElementsByTagName('a'); 
+           var len = all.length; 
+         
+           // 遍历所有 a 元素
+           for(var i=0; i<len; i++) { 
+               var e = all[i]; 
+               updateTag(e, 'href', csrftoken); 
+           } 
+        } 
+         
+        function updateTag(element, attr, token) { 
+           var location = element.getAttribute(attr); 
+           if(location != null && location != '' ) { 
+               var fragmentIndex = location.indexOf('#'); 
+               var fragment = null; 
+               if(fragmentIndex != -1){ 
+         
+                   //url 中含有只相当页的锚标记
+                   fragment = location.substring(fragmentIndex); 
+                   location = location.substring(0,fragmentIndex); 
+               } 
+                
+               var index = location.indexOf('?'); 
+         
+               if(index != -1) { 
+                   //url 中已含有其他参数
+                   location = location + '&CSRFToken=' + csrftoken; 
+               } else { 
+                   //url 中没有其他参数
+                   location = location + '?CSRFToken=' + csrftoken; 
+               } 
+               if(fragment != null){ 
+                   location += fragment; 
+               } 
+                
+               element.setAttribute(attr, location); 
+           } 
+        }
+
+	</script>
+
+    <!--皮肤样式-->
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/base.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/easyui.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/main.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/module.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/m-style/m_iconfont.css?v=V1.4.13.0-20260306-3">
+	
+    <script type="text/javascript" src="/res/easyui/jquery.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/jquery.easyui.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/locale/easyui-lang-zh_CN.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- jBox -->
+    <link rel="stylesheet" type="text/css"  href="/res/easyui/jbox/jBox.css?v=V1.4.13.0-20260306-3" />
+    <script type="text/javascript" src="/res/easyui/jbox/jBox.min.js?v=V1.4.13.0-20260306-3"> </script>
+    <script type="text/javascript" src="/res/easyui/plugins/in_basis.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/formatDate.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.form.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.serializejson.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- common -->
+    <script type="text/javascript" src="/res/js/common.js?v=V1.4.13.0-20260306-3"></script>
+   
+  
+    <style>
+       .condition_list p{
+            display: block;
+            width: 180px;
+            float: left;
+           margin-left: 10px;
+        }
+       .condition_list li {
+           display: flex;
+       }
+       .condition_list float_r {
+           float: right;
+       }
+
+    </style>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west'" title="遥测显示" style="width:270px;border-right: 1px dotted;" class="bor_gray">
+            <form id="ycForm">
+            <table class="tableForm02">
+                <tr>
+                    <th width="110">单位&nbsp;</th>
+                    <td><input class="easyui-textbox" type="text" name="UNIT_NAME" style="width:110px" id="UNIT_NAME"
+                               addClear></td>
+                </tr>
+                <tr>
+                    <th>格式化&nbsp;</th>
+                    <td><input class="easyui-textbox" type="number" name="FORMAT" style="width:110px" id="FORMAT"
+                               addClear>&nbsp;<i title="说明：0为不保留小数，0.0表示保留1位有效小数，0.00表示保留2位有效小数。包括小数位最好不要超过10位" class="iconfont icon-zhuangtai-weidenglu tx_yellow"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <th>启用变比系数<input class="easyui-checkbox" name="isRatio" id="isRatio" data-options='onChange:changeRatio' value="1"></th>
+                    <td><input class="easyui-textbox" type="number" readonly data-options="prompt:'变比系数'" name="changeRatio"
+                               style="width:110px" id="changeRatio" addClear>&nbsp;<i title="说明：例如遥测值为2.0，变比系数为1000，则主站显示该值为 2.0*1000=2000.0"
+                                                                              class="iconfont icon-zhuangtai-weidenglu tx_yellow"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <th>启用偏移量<input class="easyui-checkbox" name="isOffset" data-options='onChange:changeOffset' id="isOffset"></th>
+                    <td><input class="easyui-textbox" type="number"  data-options="prompt:'偏移量'" name="offset"
+                               style="width:110px" id="offset" readonly addClear>&nbsp;<i title="说明：默认值为0，可为正数、负数。"
+                                                                              class="iconfont icon-zhuangtai-weidenglu tx_yellow"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <th>启用存储历史<input class="easyui-checkbox" name="isStored" id="isStored" data-options='onChange:changeIsStored'></th>
+                    <td><input class="easyui-textbox" type="number"  data-options="prompt:'变化阈值'" name="changeThreshold"
+                               style="width:110px" id="changeThreshold" readonly addClear>&nbsp;<i title="说明：例如环境温度，填写0.001，变化超过0.001存储。"
+                                                                                          class="iconfont icon-zhuangtai-weidenglu tx_yellow"></i>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>启用趋势报警<input class="easyui-checkbox" name="trendAlarmEnable" id="trendAlarmEnable" data-options='onChange:changeTrendAlarmEnable'></th>
+                    <td>
+                        <div style="margin-bottom: 5px;">
+                        <input type="text" class="easyui-combobox" id="trendAlarmLevel" name="trendAlarmLevel"
+                               editable="false" prompt="报警级别" style="width: 110px;margin-bottom: 5px" readonly addClear
+                               data-options="url:'/dicData/listDictNoRoot/CAMS_ALAM_LEVEL',method:'get',valueField: 'code',textField: 'name'">
+                        </div>
+                        <div>
+                            <input class="easyui-textbox" type="number"  data-options="prompt:'变化阈值'" name="trendChangeThreshold"
+                                   style="width:110px;margin-top: 10px" id="trendChangeThreshold" readonly addClear>&nbsp;<i title="说明：例如环境温度，填写5，变化趋势超过5报警。" class="iconfont icon-zhuangtai-weidenglu tx_yellow"></i>
+                        </div>
+
+                        <div>
+                            <input type="text" class="easyui-combobox" id="trendInterval" name="trendInterval"
+                                   editable="false" prompt="变化周期" style="width: 110px;margin-bottom: 5px" readonly addClear
+                                   data-options="url:'/dicData/listDictNoRoot/CAMS_ALAM_TREND_INTERVAL',method:'get',valueField: 'code',textField: 'name'">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+
+    <div data-options="region:'center'" title="触发条件">
+        <div style="float: right;position: absolute;top: 4px;right: 10px;">
+            <a id="addConditionBtn" class="easyui-linkbutton bg_red" data-options="iconCls:'iconfont icon-tianjia1'">新增触发条件</a>
+            <a id="delConditionBtn" class="easyui-linkbutton bg_blue" data-options="iconCls:'iconfont icon-shanchu'">删除触发条件</a>
+        </div>
+        <ul class="condition_list" id="condition_list"></ul>
+    </div>
+
+    <div data-options="region:'east'" title="联动资源" style="width:547px;border-left: 1px dotted; " class="bor_gray">
+<div style="float: right;position: absolute;top: 4px;right: 10px;">
+    <a onclick="delClickLinkage()" class="easyui-linkbutton bg_blue" data-options="iconCls:'iconfont icon-shanchu'">删除</a>
+    <a onclick="moveLinkage('up')" class="easyui-linkbutton bg_green" data-options="iconCls:'iconfont icon-aui-icon-top'">上移</a>
+    <a onclick="moveLinkage('down')" class="easyui-linkbutton bg_green" data-options="iconCls:'iconfont icon-aui-icon-down'">下移</a>
+</div>
+<div>
+    <ul id="linkage_list">
+    </ul>
+</div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/addClear.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/common.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/monitor/editCommon.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/monitor/linkage.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/monitor/condition.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/monitor/yc.js?v=V1.4.13.0-20260306-3"></script>
+</body>
+</html>

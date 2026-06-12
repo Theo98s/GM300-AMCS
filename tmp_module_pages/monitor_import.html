@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>导入页面</title>
+    
+    <script type="text/javascript">
+		var ctx="";
+		var resPath="/res";
+		var csrftoken = "cee3bf0a-34bb-4177-ba77-5583cd1e9ab0";
+		var projectVersion="V1.4.13.0-20260306-3";
+
+		//初始化表单隐藏域
+		 function appendToken(){ 
+           updateForms(); 
+           //updateTags(); 
+        } 
+     
+        function updateForms() { 
+           // 得到页面中所有的 form 元素
+           var forms = document.getElementsByTagName('form'); 
+           for(i=0; i<forms.length; i++) { 
+               // var url = forms[i].action; 
+         
+               // 如果这个 form 的 action 值为空，则不附加 csrftoken 
+               // if(url == null || url == "" ) continue; 
+         
+               // 动态生成 input 元素，加入到 form 之后
+               var e = document.createElement("input"); 
+               e.name = "CSRFToken"; 
+               e.value = csrftoken; 
+               e.type="hidden"; 
+               forms[i].appendChild(e); 
+            } 
+        } 
+     
+        function updateTags() { 
+           var all = document.getElementsByTagName('a'); 
+           var len = all.length; 
+         
+           // 遍历所有 a 元素
+           for(var i=0; i<len; i++) { 
+               var e = all[i]; 
+               updateTag(e, 'href', csrftoken); 
+           } 
+        } 
+         
+        function updateTag(element, attr, token) { 
+           var location = element.getAttribute(attr); 
+           if(location != null && location != '' ) { 
+               var fragmentIndex = location.indexOf('#'); 
+               var fragment = null; 
+               if(fragmentIndex != -1){ 
+         
+                   //url 中含有只相当页的锚标记
+                   fragment = location.substring(fragmentIndex); 
+                   location = location.substring(0,fragmentIndex); 
+               } 
+                
+               var index = location.indexOf('?'); 
+         
+               if(index != -1) { 
+                   //url 中已含有其他参数
+                   location = location + '&CSRFToken=' + csrftoken; 
+               } else { 
+                   //url 中没有其他参数
+                   location = location + '?CSRFToken=' + csrftoken; 
+               } 
+               if(fragment != null){ 
+                   location += fragment; 
+               } 
+                
+               element.setAttribute(attr, location); 
+           } 
+        }
+
+	</script>
+
+    <!--皮肤样式-->
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/base.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/easyui.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/main.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/module.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/m-style/m_iconfont.css?v=V1.4.13.0-20260306-3">
+	
+    <script type="text/javascript" src="/res/easyui/jquery.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/jquery.easyui.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/locale/easyui-lang-zh_CN.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- jBox -->
+    <link rel="stylesheet" type="text/css"  href="/res/easyui/jbox/jBox.css?v=V1.4.13.0-20260306-3" />
+    <script type="text/javascript" src="/res/easyui/jbox/jBox.min.js?v=V1.4.13.0-20260306-3"> </script>
+    <script type="text/javascript" src="/res/easyui/plugins/in_basis.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/formatDate.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.form.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.serializejson.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- common -->
+    <script type="text/javascript" src="/res/js/common.js?v=V1.4.13.0-20260306-3"></script>
+   
+  
+</head>
+<body>
+<style type="text/css">
+    .tableForm td {
+        text-align: center;
+        height: 60px;
+        background-color: #253048;
+        padding-left: 0;
+    }
+    .tableForm td .easyui-linkbutton {
+        margin-left: 0;
+    }
+</style>
+<div id="cc" class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'center'">
+        <div id="tt" class="easyui-tabs" style="width:100%;height:100%;">
+            <div title="监控点">
+                <table class="tableForm lvlitable" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <a href="javascript:down(0);" class="easyui-linkbutton bg_blue"
+                               data-options="iconCls:'iconfont icon-icondownload'">模板下载</a>
+                        </td>
+                        <td>
+                            <a href="javascript:importExcel(0);" class="easyui-linkbutton bg_red"
+                               data-options="iconCls:'iconfont icon-zhankaicaidan'">导入</a>
+                        </td>
+
+                        <td>
+                            <a href="javascript:downExcel(0);" class="easyui-linkbutton bg_green"
+                               data-options="iconCls:'iconfont icon-shouqicaidan'">导出</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div title="报警配置">
+                <table class="tableForm lvlitable" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <a href="javascript:down(1);" class="easyui-linkbutton bg_blue"
+                               data-options="iconCls:'iconfont icon-icondownload'">模板下载</a>
+                        </td>
+                        <td>
+                            <a href="javascript:importExcel(1);" class="easyui-linkbutton bg_red"
+                               data-options="iconCls:'iconfont icon-zhankaicaidan'">导入</a>
+                        </td>
+                        <td>
+                            <a href="javascript:downExcel(1);" class="easyui-linkbutton bg_green"
+                               data-options="iconCls:'iconfont icon-shouqicaidan'">导出</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div title="联动配置">
+                <table class="tableForm lvlitable" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <a href="javascript:down(2);" class="easyui-linkbutton bg_blue"
+                               data-options="iconCls:'iconfont icon-icondownload'">模板下载</a>
+                        </td>
+                        <td>
+                            <a href="javascript:importExcel(2);" class="easyui-linkbutton bg_red"
+                               data-options="iconCls:'iconfont icon-zhankaicaidan'">导入</a>
+                        </td>
+
+                        <td>
+                            <a href="javascript:downExcel(2);" class="easyui-linkbutton bg_green"
+                               data-options="iconCls:'iconfont icon-shouqicaidan'">导出</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div title="XML点表">
+                <table class="tableForm lvlitable" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <a href="javascript:downXml();" class="easyui-linkbutton bg_green"
+                               data-options="iconCls:'iconfont icon-shouqicaidan'">导出</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function down(type) {
+        let templateName = "";
+        let fileName = "";
+        if ("0"== type) {
+            templateName = "monitorTemplate.xls";
+            fileName = "监控点模板";
+            // excelName = "monitorExportDemo";
+        } else if ("1"==type) {
+            templateName = "alarmTemplate.xls";
+            fileName = "报警配置模板";
+            // excelName = "alarmExportDemo";
+        } else if ("2"==type) {
+            templateName = "linkageTemplate.xls";
+            fileName = "联动配置模板";
+            // excelName = "linkExportDemo";
+        }else{
+            return;
+        }
+        // location.href = '/cams/linkconfig/downDemo/' + type;
+        location.href = ctx+'/amcs/excel_2019/downloadTemp?templateName='+templateName+'&downloadName='+fileName;
+    }
+
+    //导入excel
+    function importExcel(type) {
+        var title = "";
+        var demoName = "";
+        var remindMsg = "";
+        var height = 180;
+        if (type == '0') {
+            title = "导入监控点";
+            demoName = "monitorImport.xls";
+        } else if (type == '1') {
+            title = "导入报警配置";
+            demoName = "alarmImport.xls";
+        } else if (type == '2') {
+            title = "导入联动配置";
+            remindMsg = "<span style='font-size: 13px;color:#6d7c9d'>导入联动资源将覆盖同一个监控点相同报警触发条件下已存在的联动资源，请先导出备份已有数据。</span>";
+            height = 225;
+            demoName = "linkageImport.xls";
+        } else {
+            Msg.error("提示", "导入参数异常！");
+            return;
+        }
+        var url = ctx+'/excel/import';
+        $("<div/>").dialog({
+            id: "ui_important_dialog",
+            href: url,
+            title: title,
+            width: 300,
+            height: height,
+            modal: true,
+            onClose: function () {
+                $("#ui_important_dialog").dialog('destroy'); //销毁dialog对象
+            },
+            onLoad :function (){
+                // 加载完成添加提示文字
+                $("#tipsTextDiv").html(remindMsg);
+                if (type == '2') {
+                    $("#uploadFile").filebox({
+                        accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel'
+                    });
+                }
+            },
+            buttons: [{
+                id: 'stationDialogButton',
+                text: '导入',
+                position: 'center',
+                iconCls: 'icon-ok',
+                handler: function () {
+                    if ($(this).form('validate')) {
+                        if (!$("#uploadFile").filebox("getValue")) {
+                            Msg.error("错误", "请选择文件！");
+                            return false;
+                        }
+                        ajaxSubmitForm2(
+                            "importForm",
+                             '/amcs/excel_2019/import?templateName=' + demoName,
+                            function (result) {
+                                    var newHtml = result.message;
+                                    if (result.data) {
+                                        for (var i = 0; i < result.data.length; i++) {
+                                            if (i == 0) {
+                                                if(result.status == 0){
+                                                    newHtml += result.data[i] + "<br>";
+                                                }else{
+                                                    newHtml += "<br><font style='color:Lightcoral;'>"+result.data[i] + "</font><br>";
+                                                }
+                                            } else {
+                                                newHtml += "<font style='color:Lightcoral;'>" + result.data[i] + "</font><br>";
+                                            }
+                                        }
+                                    }
+                                $("#remindMsg").html(newHtml);
+                                $("#uploadFile").filebox('clear');
+                                $('#remindMsg_dialog').window('open');
+                                $('#dg').datagrid('reload');
+                                $('#ui_important_dialog').dialog("destroy")
+                            }
+                        );
+                    } else {
+                        return false;
+                    }
+                }
+            },
+                {
+                    text: '取消',
+                    position: 'center',
+                    iconCls: 'icon-cancel',
+                    handler: function () {
+                        $("#ui_important_dialog").dialog('destroy'); //销毁dialog对象
+                    }
+                }]
+        });
+    }
+
+    /*导出*/
+    function downExcel(type) {
+        var downloadName = "";
+        var templateName = "";
+        if (type == '0') {
+            downloadName = "监控点";
+            templateName = "monitorImport.xls";
+        } else if (type == '1') {
+            downloadName = "报警配置";
+            templateName = "alarmImport.xls";
+        } else if (type == '2') {
+            downloadName = "联动配置";
+            templateName = "linkageImport.xls";
+        } else {
+            Msg.error("提示", "导出参数异常！");
+            return;
+        }
+        var url = ctx+'/amcs/excel_2019/export?templateName='+templateName+'&downloadName='+downloadName+ getParams();
+        // var url = "/cams/linkconfig/exportData/" + type + "?subId=" + tree.id + getParams();
+        location.href = url;
+    }
+
+    function getParams() {
+        /*let securityequiptype = $('#securityequiptype').combobox('getValue');
+        let alarmClass1 = $('#alarmClass1').combobox('getValue');
+        let equipName = $('#equipName').textbox('getValue');
+        let alarmDatatype = $('#alarmDatatype').textbox('getValue');
+        let scadaAddr10 = $('#scadaAddr10').textbox('getValue');
+        return "&securityequiptype=" + securityequiptype + "&alarmClass1=" + alarmClass1
+            + "&equipName=" + equipName + "&scadaAddr10="+scadaAddr10+"&alarmDatatype="+alarmDatatype;*/
+        let conditions = getSearchCondition();
+        let params = "";
+        for(key in conditions){
+            params += "&" + key + "=" + conditions[key];
+        }
+        return params;
+
+    }
+
+    function downXml() {
+        var form = document.createElement("form");
+        form.style.display = 'none';
+        form.action = ctx + '/monitor/exportXml';
+        form.method = "post";
+        document.body.appendChild(form);
+        form.submit();
+        form.remove();
+    }
+
+
+</script>
+</body>
+</html>

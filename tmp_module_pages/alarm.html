@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>报警记录</title>
+    
+    <script type="text/javascript">
+		var ctx="";
+		var resPath="/res";
+		var csrftoken = "ef0f1187-b577-4e75-9f31-cc95ad2d0c47";
+		var projectVersion="V1.4.13.0-20260306-3";
+
+		//初始化表单隐藏域
+		 function appendToken(){ 
+           updateForms(); 
+           //updateTags(); 
+        } 
+     
+        function updateForms() { 
+           // 得到页面中所有的 form 元素
+           var forms = document.getElementsByTagName('form'); 
+           for(i=0; i<forms.length; i++) { 
+               // var url = forms[i].action; 
+         
+               // 如果这个 form 的 action 值为空，则不附加 csrftoken 
+               // if(url == null || url == "" ) continue; 
+         
+               // 动态生成 input 元素，加入到 form 之后
+               var e = document.createElement("input"); 
+               e.name = "CSRFToken"; 
+               e.value = csrftoken; 
+               e.type="hidden"; 
+               forms[i].appendChild(e); 
+            } 
+        } 
+     
+        function updateTags() { 
+           var all = document.getElementsByTagName('a'); 
+           var len = all.length; 
+         
+           // 遍历所有 a 元素
+           for(var i=0; i<len; i++) { 
+               var e = all[i]; 
+               updateTag(e, 'href', csrftoken); 
+           } 
+        } 
+         
+        function updateTag(element, attr, token) { 
+           var location = element.getAttribute(attr); 
+           if(location != null && location != '' ) { 
+               var fragmentIndex = location.indexOf('#'); 
+               var fragment = null; 
+               if(fragmentIndex != -1){ 
+         
+                   //url 中含有只相当页的锚标记
+                   fragment = location.substring(fragmentIndex); 
+                   location = location.substring(0,fragmentIndex); 
+               } 
+                
+               var index = location.indexOf('?'); 
+         
+               if(index != -1) { 
+                   //url 中已含有其他参数
+                   location = location + '&CSRFToken=' + csrftoken; 
+               } else { 
+                   //url 中没有其他参数
+                   location = location + '?CSRFToken=' + csrftoken; 
+               } 
+               if(fragment != null){ 
+                   location += fragment; 
+               } 
+                
+               element.setAttribute(attr, location); 
+           } 
+        }
+
+	</script>
+
+    <!--皮肤样式-->
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/base.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/easyui.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/main.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/module.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/m-style/m_iconfont.css?v=V1.4.13.0-20260306-3">
+	
+    <script type="text/javascript" src="/res/easyui/jquery.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/jquery.easyui.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/locale/easyui-lang-zh_CN.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- jBox -->
+    <link rel="stylesheet" type="text/css"  href="/res/easyui/jbox/jBox.css?v=V1.4.13.0-20260306-3" />
+    <script type="text/javascript" src="/res/easyui/jbox/jBox.min.js?v=V1.4.13.0-20260306-3"> </script>
+    <script type="text/javascript" src="/res/easyui/plugins/in_basis.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/formatDate.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.form.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.serializejson.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- common -->
+    <script type="text/javascript" src="/res/js/common.js?v=V1.4.13.0-20260306-3"></script>
+   
+  
+<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/m_gm200dip.css">
+<link rel="stylesheet" type="text/css" href="/css/media/video-js.min.css?v=V1.4.13.0-20260306-3">
+<link rel="stylesheet" type="text/css" href="/css/media/dip.css?v=V1.4.13.0-20260306-3">
+
+<script type="text/javascript" src="/js/mdmmn/plugin/video_main.js?v=V1.4.13.0-20260306-3"></script>
+<script type="text/javascript">addScript('/js/mdmmn/plugin/', '1781242250015');</script>
+
+<script type="text/javascript" src="/js/dateformat.js?v=V1.4.13.0-20260306-3"></script>
+<script type="text/javascript" src="/js/media/oopSupport.js?v=V1.4.13.0-20260306-3"></script>
+<script type="text/javascript" src="/js/media/video.proxy.js?v=V1.4.13.0-20260306-3"></script>
+<script type="text/javascript">
+    var videoProxy = new VideoProxy({});
+</script></head>
+<body class="easyui-layout">
+<div data-options="region:'north'">
+     <div id="buttons" style="float: right;margin-top: 5px">
+        <input id="startDate" type="text" class="easyui-datebox" data-options="prompt:'开始时间',width:'200px'" addClear>至
+        <input id="endDate" type="text" class="easyui-datebox" data-options="prompt:'结束时间',width:'200px'" addClear>
+         <input id="alarmSource" class="easyui-combobox"
+                data-options="prompt:'报警来源',width:'200px',panelHeight:'150px',url:'/home/listDictNoRoot/AMCS_ALARM_SOURCE',method:'get',valueField: 'code',textField: 'name'"
+                addClear>
+        <input id="alarmType" class="easyui-combobox"
+               data-options="prompt:'报警类型',width:'200px',panelHeight:'150px',url:'/home/listDictNoRoot/CAMS_ALAM_TYPE',method:'get',valueField: 'code',textField: 'name'"
+               addClear>
+        <input id='monitorName' class="easyui-textbox" data-options="prompt:'监控点'" addClear>
+        <a onclick="query()" class="easyui-linkbutton bg_blue" data-options="iconCls:'iconfont icon-sousuochaxun'">查询</a>
+        <a onclick="exportAlarmRecord()" class="easyui-linkbutton bg_green" data-options="iconCls:'iconfont icon-shouqicaidan'">导出</a>
+    </div>
+</div>
+<div data-options="region:'center'" style="padding-top: 5px">
+    <table id="dg"></table>
+</div>
+</body>
+<script src="/js/common.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/alarm/alarmRecord.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/dic_common.js?v=V1.4.13.0-20260306-3"></script>
+<script type="text/javascript">
+var playbackPlaytimeLead = parseInt('1');
+var playbackPlaytimeRange = parseInt('2');
+</script>
+</html>

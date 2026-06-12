@@ -16,6 +16,7 @@ import yaml
 
 from api.auth_api import AuthApi
 from api.alarm_api import AlarmApi
+from api.database_api import DatabaseApi
 from api.gis_api import GisApi
 from api.history_api import HistoryApi
 from api.home_api import HomeApi
@@ -31,6 +32,7 @@ from common.request_util import RequestUtil
 CASE_INDEX_PREFIX = {
     "test_alarm_api.py": "ALARM",
     "test_auth_login.py": "AUTH-LOGIN",
+    "test_database_api.py": "DATABASE",
     "test_gis_api.py": "GIS",
     "test_home_api.py": "HOME",
     "test_history_api.py": "HISTORY",
@@ -179,3 +181,9 @@ def alarm_api(request_util, config):
 def gis_api(request_util, config):
     """提供 GIS 接口客户端。"""
     return GisApi(request_util, config)
+
+
+@pytest.fixture
+def database_api(request_util, config):
+    """提供基础数据库相关接口客户端。"""
+    return DatabaseApi(request_util, config)

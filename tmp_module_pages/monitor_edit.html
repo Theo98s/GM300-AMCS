@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>监控点编辑</title>
+    
+    <script type="text/javascript">
+		var ctx="";
+		var resPath="/res";
+		var csrftoken = "cee3bf0a-34bb-4177-ba77-5583cd1e9ab0";
+		var projectVersion="V1.4.13.0-20260306-3";
+
+		//初始化表单隐藏域
+		 function appendToken(){ 
+           updateForms(); 
+           //updateTags(); 
+        } 
+     
+        function updateForms() { 
+           // 得到页面中所有的 form 元素
+           var forms = document.getElementsByTagName('form'); 
+           for(i=0; i<forms.length; i++) { 
+               // var url = forms[i].action; 
+         
+               // 如果这个 form 的 action 值为空，则不附加 csrftoken 
+               // if(url == null || url == "" ) continue; 
+         
+               // 动态生成 input 元素，加入到 form 之后
+               var e = document.createElement("input"); 
+               e.name = "CSRFToken"; 
+               e.value = csrftoken; 
+               e.type="hidden"; 
+               forms[i].appendChild(e); 
+            } 
+        } 
+     
+        function updateTags() { 
+           var all = document.getElementsByTagName('a'); 
+           var len = all.length; 
+         
+           // 遍历所有 a 元素
+           for(var i=0; i<len; i++) { 
+               var e = all[i]; 
+               updateTag(e, 'href', csrftoken); 
+           } 
+        } 
+         
+        function updateTag(element, attr, token) { 
+           var location = element.getAttribute(attr); 
+           if(location != null && location != '' ) { 
+               var fragmentIndex = location.indexOf('#'); 
+               var fragment = null; 
+               if(fragmentIndex != -1){ 
+         
+                   //url 中含有只相当页的锚标记
+                   fragment = location.substring(fragmentIndex); 
+                   location = location.substring(0,fragmentIndex); 
+               } 
+                
+               var index = location.indexOf('?'); 
+         
+               if(index != -1) { 
+                   //url 中已含有其他参数
+                   location = location + '&CSRFToken=' + csrftoken; 
+               } else { 
+                   //url 中没有其他参数
+                   location = location + '?CSRFToken=' + csrftoken; 
+               } 
+               if(fragment != null){ 
+                   location += fragment; 
+               } 
+                
+               element.setAttribute(attr, location); 
+           } 
+        }
+
+	</script>
+
+    <!--皮肤样式-->
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/base.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/easyui.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/main.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/module.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/m-style/m_iconfont.css?v=V1.4.13.0-20260306-3">
+	
+    <script type="text/javascript" src="/res/easyui/jquery.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/jquery.easyui.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/locale/easyui-lang-zh_CN.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- jBox -->
+    <link rel="stylesheet" type="text/css"  href="/res/easyui/jbox/jBox.css?v=V1.4.13.0-20260306-3" />
+    <script type="text/javascript" src="/res/easyui/jbox/jBox.min.js?v=V1.4.13.0-20260306-3"> </script>
+    <script type="text/javascript" src="/res/easyui/plugins/in_basis.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/formatDate.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.form.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.serializejson.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- common -->
+    <script type="text/javascript" src="/res/js/common.js?v=V1.4.13.0-20260306-3"></script>
+   
+  
+</head>
+<body>
+<div id="cc-index" class="easyui-layout" data-options="fit:true" >
+    <div data-options="region:'north'" style="height:90px">
+        <form id="monitorEditId" method="post">
+            <input type="hidden" id="monitorJsonId" value="" />
+            <input type="hidden" id="editMonitorId" value="" />
+            <input type="hidden" id="delConditionIds" name="delConditionIds"/>
+            <input type="hidden" id="conditionLinkageJsonId" value="" />
+            <table class="tableForm02" cellspacing="0" cellpadding="0">
+                <tbody>
+                <tr>
+
+                    <th>设备大类</th>
+                    <td>
+                        <input type="text" style="width:120px" class="easyui-combobox" id="editSecurityequiptype"
+                               name="securityequiptype" prompt="请选择..."
+                               data-options="url:'/home/listDictNoRoot/cams_alarm_sourcetype',method:'get',valueField: 'code',textField: 'name'"
+                               editable="false"  required value="">
+                    </td>
+
+                    <th>设备名称</th>
+                    <td>
+                        <input type="text" style="width:300px" class="easyui-combobox"  id="editEquipId" name="equipId"
+                               prompt="请选择..." required value="">
+                    </td>
+                    <th>属性</th>
+                    <td>
+                        <input type="text" style="width:250px" class="easyui-textbox" id="editAlarmDatatype"
+                               name="alarmDatatype" prompt="请输入..."
+                                required value="">
+                    </td>
+                </tr>
+                <tr>
+
+                    <th>数据类型</th>
+                    <td>
+                        <input type="text" style="width:120px" class="easyui-combobox" id="editAlarmClass"
+                               name="alarmClass" editable="false" prompt="请选择..."
+                                required data-options="url:'/home/listDictNoRoot/CAMS_ALAM_DATACLASS',method:'get',valueField: 'code',textField: 'name'" value="">
+                    </td>
+                    <th>监测装置</th>
+                    <td>
+                        <input type="text" style="width:300px" class="easyui-combobox" id="monitorDeviceId" name="monitorDeviceId"
+                               prompt="请选择..."  value="">
+                    </td>
+
+                    <th>点位地址</th>
+                    <td>
+                        <input type="text" style="width:250px" class="easyui-textbox" id="editScadaAddr10"
+                               name="scadaAddr10" prompt="请输入..."
+                               value="">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <div data-options="region:'center'">
+        <div  class="easyui-layout"  data-options="fit:true">
+            <iframe id="monitorEditFrame" frameborder="0" src="" style="width:100%;height:100%;overflow: hidden;"></iframe>
+        </div>
+    </div>
+</div>
+<!--<script type="text/javascript" src="/js/addClear.js?v=V1.4.13.0-20260306-3"></script>-->
+<script src="/js/common.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/dic_common.js?v=V1.4.13.0-20260306-3"></script>
+<script src="/js/monitor/edit.js?v=V1.4.13.0-20260306-3"></script>
+</body>
+</html>

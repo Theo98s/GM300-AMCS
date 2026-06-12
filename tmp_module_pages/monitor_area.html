@@ -1,0 +1,449 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    
+    <script type="text/javascript">
+		var ctx="";
+		var resPath="/res";
+		var csrftoken = "cee3bf0a-34bb-4177-ba77-5583cd1e9ab0";
+		var projectVersion="V1.4.13.0-20260306-3";
+
+		//初始化表单隐藏域
+		 function appendToken(){ 
+           updateForms(); 
+           //updateTags(); 
+        } 
+     
+        function updateForms() { 
+           // 得到页面中所有的 form 元素
+           var forms = document.getElementsByTagName('form'); 
+           for(i=0; i<forms.length; i++) { 
+               // var url = forms[i].action; 
+         
+               // 如果这个 form 的 action 值为空，则不附加 csrftoken 
+               // if(url == null || url == "" ) continue; 
+         
+               // 动态生成 input 元素，加入到 form 之后
+               var e = document.createElement("input"); 
+               e.name = "CSRFToken"; 
+               e.value = csrftoken; 
+               e.type="hidden"; 
+               forms[i].appendChild(e); 
+            } 
+        } 
+     
+        function updateTags() { 
+           var all = document.getElementsByTagName('a'); 
+           var len = all.length; 
+         
+           // 遍历所有 a 元素
+           for(var i=0; i<len; i++) { 
+               var e = all[i]; 
+               updateTag(e, 'href', csrftoken); 
+           } 
+        } 
+         
+        function updateTag(element, attr, token) { 
+           var location = element.getAttribute(attr); 
+           if(location != null && location != '' ) { 
+               var fragmentIndex = location.indexOf('#'); 
+               var fragment = null; 
+               if(fragmentIndex != -1){ 
+         
+                   //url 中含有只相当页的锚标记
+                   fragment = location.substring(fragmentIndex); 
+                   location = location.substring(0,fragmentIndex); 
+               } 
+                
+               var index = location.indexOf('?'); 
+         
+               if(index != -1) { 
+                   //url 中已含有其他参数
+                   location = location + '&CSRFToken=' + csrftoken; 
+               } else { 
+                   //url 中没有其他参数
+                   location = location + '?CSRFToken=' + csrftoken; 
+               } 
+               if(fragment != null){ 
+                   location += fragment; 
+               } 
+                
+               element.setAttribute(attr, location); 
+           } 
+        }
+
+	</script>
+
+    <!--皮肤样式-->
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/base.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/easyui.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/main.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/dark/module.css?v=V1.4.13.0-20260306-3">
+	<link rel="stylesheet" type="text/css" href="/res/easyui/themes/m-style/m_iconfont.css?v=V1.4.13.0-20260306-3">
+	
+    <script type="text/javascript" src="/res/easyui/jquery.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/jquery.easyui.min.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/easyui/locale/easyui-lang-zh_CN.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- jBox -->
+    <link rel="stylesheet" type="text/css"  href="/res/easyui/jbox/jBox.css?v=V1.4.13.0-20260306-3" />
+    <script type="text/javascript" src="/res/easyui/jbox/jBox.min.js?v=V1.4.13.0-20260306-3"> </script>
+    <script type="text/javascript" src="/res/easyui/plugins/in_basis.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/formatDate.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.form.js?v=V1.4.13.0-20260306-3"></script>
+    <script type="text/javascript" src="/res/js/jquery.serializejson.js?v=V1.4.13.0-20260306-3"></script>
+    <!-- common -->
+    <script type="text/javascript" src="/res/js/common.js?v=V1.4.13.0-20260306-3"></script>
+   
+  
+    <title>巡检点位管理</title>
+</head>
+<body>
+<div class="easyui-layout pr_spjk" data-options="border:false,fit:true">
+    <div data-options="region:'north',height:'auto'">
+        <form id="conditionForm">
+            <div class="float_r">
+                <input class="easyui-textbox" type="text" name="cameraName" id="cameraName"
+                       data-options="prompt:'摄像机名称'" style="width: 160px" addClear/>
+                <input class="easyui-textbox" type="text" id="equipQueryName" data-options="prompt:'设备名称'"
+                       style="width: 160px" addClear/>
+                <input class="easyui-textbox" type="text" name="keyword" id="keyword"
+                       data-options="prompt:'预置位名称'" style="width: 160px" addClear/>
+                <a href="#" class="easyui-linkbutton bg_green" data-options="iconCls:'iconfont icon-sousuochaxun'"
+                   onclick="queryData()">过滤</a>
+            </div>
+        </form>
+    </div>
+    <div data-options="region:'center'" style="padding-left:7px">
+        <div id="areaToolbar" class="datagrid-toolbar" style="height:auto;">
+            <a href="#" class="easyui-linkbutton bg_red" data-options="iconCls:'iconfont icon-tianjia1'"
+               onclick="showAddDialog('',0);">新增</a>
+			<a href="#" class="easyui-linkbutton b-btn-blue2" data-options="iconCls:'iconfont icon-shanchu'"
+   			   onclick="batchDelete();" >删除</a>
+			<a href="#" class="easyui-linkbutton bg_blue" data-options="iconCls:'iconfont icon-zhankaicaidan'"
+           	   onclick="showImportDialog();" >导入</a>
+            <a href="#" class="easyui-linkbutton bg_blue" data-options="iconCls:'iconfont icon-shouqicaidan'"
+       		   onclick="exportPoint();">导出</a>
+		</div>
+		<table class="easyui-datagrid" id="areaTable" data-options="pageSize:10,
+				multiSort:true,border:false,pagination:true,fit:true,rownumbers:true,toolbar:'#areaToolbar'">
+			<thead>
+			<tr>
+			    <th data-options="field:'c',width:'5%',align:'center'" formatter="toOperate">操作</th>
+			    <th data-options="field:'c',width:'15%',align:'center'">操作</th>
+				<th data-options="field:'c',width:'25%',align:'center'">摄像机名称</th>
+				<th data-options="field:'c',width:'20%',align:'center'">设备名称</th>
+			    <th data-options="field:'c',width:'20%',align:'center'">预置位名称</th>
+			    <th data-options="field:'c',width:'20%',align:'center'">预置位编号</th>
+			</tr>
+			</thead>
+		</table>
+		<!--导入弹窗  -->
+		<div id="import_dialog" class="easyui-dialog" title="导入巡检点位"
+		     data-options="resizable:true,modal:true,closed:true,width:'500px',height:'400px',">
+		    <div style="margin:30px 0px 0px 20px">
+		        <form id="monitorareaImport" name="excelImportForm" method="post" enctype="multipart/form-data">
+		            <table class="tableForm02" style="">
+		                <tr>
+		                    <td colspan="4" style="padding-left:30px;">
+		                        <input type="hidden" name="templateName" value="monitorArea_amcs.xls" />
+		                        <input class="easyui-filebox"
+		                               data-options="required:true,buttonText:'请选择excel文件',prompt:'最大允许上传20M的文件',accept:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel'"
+		                               style="width:400px;" name="file" id="file" />
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <td colspan="4" style="text-align:center;">
+		                        <a href="#" onclick="importMonitorArea();" class="easyui-linkbutton bg_blue"
+		                           data-options="iconCls:'iconfont icon-shouqicaidan'">开始导入</a>
+		                    </td>
+		                </tr>
+		            </table>
+		        </form>
+		    </div>
+		    <hr />
+		    <div id="remindMsg" class="easyui-textarea" style="height:auto;overflow-y:scroll;padding-left:30px;">
+		    </div>
+		</div>
+		<div id="delete_dialog" class="easyui-dialog" title="删除提示"
+		     data-options="resizable:true,modal:true,closed:true,width:'850px',height:'390px',">
+		    <div class="easyui-layout" data-options="fit:true">
+		       <!-- <div id="delete_Msg" data-options="region:'center'" class="easyui-textarea" style="overflow-y:scroll;padding:10px;">
+		        </div>-->
+				<div style="height: 40px;align-content: center;"><span style="color: orange;font-size: 17px;">以下巡检点位已被使用。</span></div>
+				<table  id="delete_tip_dg" style="height: 255px"> </table>
+		        <div data-options="region:'south'" class="dialog-toolbar ifr-toolbar">
+		            <a href="#" id="saveBt" class="easyui-linkbutton bg_orange" onclick="$('#delete_dialog').window('close')"
+		               data-options="iconCls:'iconfont icon-zhengque'">确定</a>
+		            <a href="#" class="easyui-linkbutton" onclick="$('#delete_dialog').window('close')"
+		               data-options="iconCls:'iconfont  icon-guanbi'">取消</a>
+		        </div>
+		    </div>
+		</div>
+	</div>
+	<div id="edit"></div>
+	<div id="delete"></div>
+</div>
+<script src="/js/common.js?v=V1.4.13.0-20260306-3"></script>
+<script type="text/javascript" src="/js/jsencrypt.min.js?v=V1.4.13.0-20260306-3"></script>
+<script type="text/javascript" src="/js/jsWebControl-1.0.0.min.js?v=V1.4.13.0-20260306-3"></script>
+<script type="text/javascript" src="/js/common/datagrid-scrollview.js?v=V1.4.13.0-20260306-3"></script>
+<style>
+	#delete_dialog .datagrid-cell {
+		word-wrap: break-word;
+		white-space: normal;
+	}
+</style>
+<script type="text/javascript">
+	window.onbeforeunload = function (e) {
+        if (parent && parent.playerWndSetting && parent.playerWndSetting.state != undefined) {
+            parent.playerWndSetting.state = false;
+        }
+    }
+
+    $(function(){
+    	$('#conditionForm .easyui-textbox').textbox({
+            iconWidth:20,
+            icons:[{
+                iconCls:'iconfont icon-guanbi3',
+                handler: function(e){
+                    $(e.data.target).textbox('clear');
+                }
+            }]
+        });
+    	
+    	queryData();
+    	
+    	$(document).keydown(function (event) {
+            if (event.keyCode == 13) {
+                queryData();
+            }
+        });
+    })
+    
+    function getQueryParams(){
+    	var data = {
+            cameraName: $("#cameraName").val(),
+            equipName: $("#equipQueryName").val(),
+            keyword: $("#keyword").val()
+        };
+    	return data;
+    }
+    
+    function queryData() {
+        $('#areaTable').datagrid({
+            url: "/amcs/monitorArea/findPage",
+            pagination: true,
+            pageSize: 10,
+            pageList : [10, 20, 30, 40, 50],
+            nowrap : false,
+            fit : true,
+            fitColumns : true,
+            border : false,
+            idField : 'id',
+            multiSort : true,
+            queryParams : getQueryParams(),
+            columns: [[
+                { title: 'id', field: 'id', width: '5%', checkbox: true },
+                { title: '操作', field: 'c', align: 'center', width: '15%', formatter: toOperate },
+				{ title: '摄像机名称', field: 'cameraName', align: 'center', width: '24%' },
+				{ title: '设备名称', field: 'equipName', align: 'center', width: '20%',formatter:formatValue },
+                { title: '预置位名称', field: 'presetName', align: 'center', width: '20%' },
+                { title: '预置位编号', field: 'presetNum', align: 'center', width: '20%' }
+            ]],
+            onLoadError:function (n) {
+                $.messager.show({
+                    title: '错误',
+                    msg: '列表数据加载失败！'
+                });
+            }
+        });
+    }
+    
+    function toOperate(value, row, index) {
+        var html = '<a href="javascript:void(0);" class="tx_blue"'
+            + ' onClick="javascript:showAddDialog(\''
+            + row.id
+            + '\',1);">查看</a>';
+        if ($("#edit")[0]) {
+            html += '&nbsp;|&nbsp;  <a href="javascript:void(0);" class="tx_orange"  onclick="showAddDialog(\''
+                + row.id
+                + '\',0)">编辑</a>';
+        }
+        return html;
+    }
+    
+    function showAddDialog(id, readonly) {
+        var url = '/amcs/monitorArea/editPage?id=' + id + "&readonly=" + readonly;
+        var title = (readonly == 1) ? "查看巡检点位" : (id ? "编辑巡检点位" : "新增巡检点位");
+
+        sy.openEasyUIDialog({
+        	isTop:true,
+            title: title,
+            fit: false,
+            width: '1600px',
+            height: '800px',
+            modal: true,
+            closed: true,
+            contentUrl: url,
+            callback: function (dom, flag) {
+				$("#areaTable").datagrid("reload");
+       	    }
+        });
+    }
+
+
+    
+  	//批量刪除
+    function batchDelete() {
+        var rows = $('#areaTable').datagrid('getSelections');
+        if (rows.length <= 0) {
+            Msg.warning("警告", "请选择一条记录来删除！");
+            return;
+        }
+
+        var objArr = [];
+        var ids = [];
+        for (var i = 0; i < rows.length; i++) {
+            var obj = {
+                'id':'',
+                'equipName':'',
+                'cameraName':'',
+                'presetName':'',
+                'presetNum':''
+            };
+            obj.id = rows[i].id;
+            ids.push(rows[i].id);
+            obj.equipName = rows[i].equipName;
+            obj.cameraName = rows[i].cameraName;
+            obj.presetName = rows[i].presetName;
+            obj.presetNum = rows[i].presetNum;
+            objArr.push(obj);
+        }
+        doDeleteEntity(ids, objArr, rows.length);
+    }
+  	
+  	//删除巡检点位
+    function doDeleteEntity(ids, objArr, num) {
+        if (!ids || ids.length == 0) {
+            $.messager.alert("提示", '请选择一条记录');
+            return;
+        }
+        var data = ids.join(",");
+        $.ajax({
+            url: '/amcs/monitorArea/couldDelete',
+            contentType : "application/json" ,
+            data: JSON.stringify(objArr) ,
+            cache: false,
+            success: function (result) {
+                if (result.status == 0) {
+                    if (result.data.code == 0) {
+                        $.messager.confirm('确认', '你确定要删除选定的' + num + '条记录吗?', function (r) {
+                            if (r) {
+                                $.ajax({
+                                    url: "/amcs/monitorArea/delete",
+                                    data: { 'ids': data },
+                                    success: function (result) {
+                                        if (result.status == 0) {
+                                            $('#areaTable').datagrid("reload");
+                                            Msg.success("提示", "删除成功");
+                                            $('#areaTable').datagrid("clearSelections");
+                                        } else {
+                                            Msg.error("错误", result.data || result.message);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        $("#delete_Msg").html('');
+						$("#delete_dialog").dialog("open");
+						$('#delete_tip_dg').datagrid({
+							view: scrollview,
+							// rownumbers: true,
+							singleSelect:true,
+							pageSize: 6,
+							columns: [[
+								{field: "seq", title: "序号", width: "5%",align:'center',formatter:function(value,row,index){
+									return index+1;
+									}},
+								{field: "camName", title: "摄像机名称", width: "30%",halign:'center'},
+								{field: "presetName", title: "预置位名称", width: "20%",halign:'center'},
+								{field: "cardList", title: "巡检卡片名称", width: "46%",halign:'center'}
+							]],
+							data: result.data.reason,
+							onLoadSuccess: function (data) {
+							/*	let rows = $('#delete_tip_dg').datagrid("getRows");
+								if(rows.length>0){
+									for(let i=0;i<rows.length;i++){
+										let camName = rows[i].camName;
+										let presetName = rows[i].presetName;
+										let cardList = rows[i].cardList;
+									}
+								}*/
+								if (data.rows.length < 6) {
+									document.querySelector('#delete_dialog .datagrid-view2 #datagrid-body').style.overflowY = 'hidden'
+								} else {
+									document.querySelector('#delete_dialog .datagrid-view2 #datagrid-body').style.overflowY = ''
+								}
+
+							}
+
+						})
+						return;
+                    }
+                }
+            },
+            error: function () {
+                Msg.error("错误", "网络中断，不能删除");
+            }
+        });
+    }
+  	
+  	//导出巡检点位
+    function exportPoint() {
+    	var data = getQueryParams();
+        window.location.href = '/amcs/monitorArea/export?keyword='+data.keyword+'&cameraName='+data.cameraName+'&equipName='+data.equipName;
+    }
+  	
+  	//打开导入弹窗
+    function showImportDialog() {
+        $("#file").filebox({ required: true, buttonText: '请选择excel文件', prompt: '最大允许上传20M的文件', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel' });
+        $("#remindMsg").html('');
+        $("#import_dialog").dialog("open");
+    }
+    //开始导入
+    function importMonitorArea() {
+        $("#remindMsg").html("");
+        var file = $("#file").filebox('getValue');
+        if(!file){
+            Msg.error("请选择需要导入的文件！");
+            return;
+        }
+        ajaxSubmitForm("monitorareaImport","/amcs/monitorArea/import",showImportMsg, showImportMsg);
+    }
+    //显示导入信息
+    function showImportMsg(result) {
+        $("#remindMsg").html('');
+        var newHtml = result.message;
+        if (result.data) {
+            for (var i = 0; i < result.data.length; i++) {
+                if(i == 0){
+                    newHtml += "：" + result.data[i] + "<br>";
+                }else{
+                    newHtml += "<font style='color:Lightcoral;'>"+ result.data[i] + "</font><br>";
+                }
+            }
+        }
+        $("#remindMsg").html(newHtml);
+        $("#file").filebox('clear');
+        // 导入完成后刷新表格。
+        queryData();
+    }
+	function formatValue(val){
+		return val || '--';
+	}
+    
+</script>
+</body>
+
+</html>
