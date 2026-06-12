@@ -17,12 +17,25 @@ menu:
 plugin:
   find_plugin_url: /plugin/findPlugin
 
+video:
+  camera_tree_url: /video/v1/cameraTree
+  preset_cameras_url: /preset/getCameras
+
 patrol:
   patrol_card_list_url: /amcs/patrol/card/list
   patrol_plan_list_url: /amcs/patrol/plan/findPatrolPlanVoList
 
+alarm:
+  alarm_record_page_url: /alarmRecord/getPageData2
+
 history:
   monitor_link_history_url: /amcs/monitorLink/findHistoryPage
+
+gis:
+  d2_data_path_url: /amcs/gis2d/getD2DataPath
+  d2_map_prop_url: /amcs/gis3d/getMapProp
+  d3_map_prop_url: /amcs/gis3d/get3dMapProp
+  d3_gis_config_url: /amcs/gis3d/getGisConfig
 
 rdac:
   station_list_url: /rdac/subList

@@ -15,5 +15,8 @@ class PluginApi:
         self.find_plugin_url = config["plugin"]["find_plugin_url"]
 
     def find_plugin(self):
-        """查询系统已加载的插件列表。"""
+        """查询系统已加载的插件列表。
+
+        返回结果里包含 menuContent XML，可用于反查系统菜单定义和页面路由。
+        """
         return self.request_util.send_request("get", self.find_plugin_url)

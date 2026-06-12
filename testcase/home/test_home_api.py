@@ -11,7 +11,10 @@ class TestHomeApi:
 
     @allure.title("首页菜单初始化返回核心一级菜单")
     def test_init_menu_contains_core_top_modules(self, auth_api, home_api, test_user):
-        """校验首页初始化菜单里包含核心一级菜单。"""
+        """校验首页初始化菜单里包含核心一级菜单。
+
+        这里不要求顺序完全一致，只要求核心模块仍然可见，避免因为菜单微调导致误报。
+        """
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],

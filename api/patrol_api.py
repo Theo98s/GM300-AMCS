@@ -23,5 +23,8 @@ class PatrolApi:
         return self.request_util.send_request("post", self.patrol_card_list_url, data={})
 
     def list_patrol_plans(self):
-        """查询巡检计划视图列表。"""
+        """查询巡检计划视图列表。
+
+        当前环境下可能为空列表，所以测试只断言接口可访问和结构正确。
+        """
         return self.request_util.send_request("get", self.patrol_plan_list_url)

@@ -15,6 +15,8 @@ import pytest
 import yaml
 
 from api.auth_api import AuthApi
+from api.alarm_api import AlarmApi
+from api.gis_api import GisApi
 from api.history_api import HistoryApi
 from api.home_api import HomeApi
 from api.menu_api import MenuApi
@@ -22,17 +24,21 @@ from api.patrol_api import PatrolApi
 from api.plugin_api import PluginApi
 from api.rdac_api import RdacApi
 from api.system_api import SystemApi
+from api.video_api import VideoApi
 from common.request_util import RequestUtil
 
 
 CASE_INDEX_PREFIX = {
+    "test_alarm_api.py": "ALARM",
     "test_auth_login.py": "AUTH-LOGIN",
+    "test_gis_api.py": "GIS",
     "test_home_api.py": "HOME",
     "test_history_api.py": "HISTORY",
     "test_patrol_api.py": "PATROL",
     "test_rdac_api.py": "RDAC",
     "test_menu_plugin_api.py": "MENU-PLUGIN",
     "test_system_smoke.py": "SYSTEM-SMOKE",
+    "test_video_api.py": "VIDEO",
 }
 
 
@@ -155,3 +161,21 @@ def history_api(request_util, config):
 def rdac_api(request_util, config):
     """提供 RDAC 接口客户端。"""
     return RdacApi(request_util, config)
+
+
+@pytest.fixture
+def video_api(request_util, config):
+    """提供视频监控接口客户端。"""
+    return VideoApi(request_util, config)
+
+
+@pytest.fixture
+def alarm_api(request_util, config):
+    """提供报警接口客户端。"""
+    return AlarmApi(request_util, config)
+
+
+@pytest.fixture
+def gis_api(request_util, config):
+    """提供 GIS 接口客户端。"""
+    return GisApi(request_util, config)

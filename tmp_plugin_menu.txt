@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin pkey="GM300-AMCS" name="牵引变电所辅助监控被控站系统" welcomeUrl='/amcs/index' seq="1">
+	<resource>
+		<group id="amcs_welcome" name="首页" seq="1" icon="iconfont icon-zhuye" state="1" url="/das/home">
+		</group>
+		<group id="video" name="视频监控" seq="2" icon="iconfont icon-wangluoshexiangji" state="1">
+			<page id="video_realtime" name="实时视频" seq="1" state="1" url="/amcs/video/preview">
+				<item id="view" name="查看" url="/amcs/video/preview/view" seq="1" state="1" icon="" />
+				<item id="goto" name="调阅" url="/amcs/video/preview/goto" seq="2" state="1" icon="" />
+			</page>
+			<page id="video_playback" name="视频回放" seq="2" state="1" url="/amcs/video/playback">
+				<item id="view" name="查看" url="/amcs/video/playback/view" seq="1" state="1" icon="" />
+			</page>
+			<page id="realtime_thermometry" name="实时测温" seq="3" state="1" url="/amcs/video/thermometry">
+			</page>
+		</group>
+		<group id="amcs_das" name="实时监控" seq="3" icon="iconfont icon-aui-icon-map-copy" state="1">
+			<page id="panorama_equip" name="供电设备" seq="1" state="1" url="/amcs/gis3d/panorama_equip">
+				<item id="equip_view" name="查看" url="/cams/gis3d/panoramaTabPage/panorama_equip/view" seq="1" state="1"
+					  icon=""/>
+			</page>
+			<page id="amcs_das_item" name="PSCADA监测" seq="2" state="1" url="/das/index?itemType=psc"></page>
+			<page id="amcs_das_online" name="在线监测" seq="3" state="1" url="/das/index?itemType=pse"></page>
+			<page id="amcs_das_sealHead " name="动环安防" seq="4" state="1" url="/das/index?itemType=dee"></page>
+		<!--	<page id="amcs_nvr_alarm" name="视频设备自检" seq="4" state="1" url="/amcs/nvrAlram/index"></page>-->
+		</group>
+		<group id="amcs_patrol" name="巡检管理" seq="4" icon="iconfont icon-aui-icon-map-copy" state="1">
+			<page id="amcs_patrol_plan" name="视频巡检" seq="1" state="1" url="/amcs/patrol/plan"></page>
+			<page id="amcs_patrol_card" name="巡检卡片" seq="2" state="1" url="/amcs/patrol/card"></page>
+			<page id="amcs_patrol_record" name="巡检记录" seq="3" state="1" url="/amcs/patrol/record"></page>
+		</group>
+		<group id="history" name="历史记录" seq="5" icon="iconfont icon-wangluopinpaishu" state="1" url="">
+			<page id="linkage" name="联动记录" url="/amcs/monitorLink/index" seq="1" state="1"/>
+			<page id="trendHistory" name="历史趋势" url="/amcs/trend/index" seq="2" state="1"/>
+			<page id="alarmRecord" name="报警记录" url="/amcs/alarm/index" seq="2" state="1"/>
+		</group>
+		<!--  	<group id="amcs_tasks" name="定时管理" seq="5" icon="iconfont icon-aui-icon-map-copy" state="1">
+                <page id="amcs_tasks" name="定时任务" seq="1" state="1" url="/sys-tasks"></page>
+              </group>-->
+		<!--
+        <group id="amcs_link" name="查看联动" seq="6" icon="iconfont icon-aui-icon-map-copy" state="1">
+          <page id="amcs_tr" name="监控对象" seq="1" state="1" url="/link/index?type=1"></page>
+          <page id="amcs_lk" name="联动对象" seq="2" state="1" url="/link/index?type=2"></page>
+        </group>-->
+		<group id="base" name="基础数据" seq="8" icon="iconfont icon-process" state="1" url="">
+			<page id="config" name="站点配置" seq="1" state="1" url="/rdac/"/>
+			<page id="equipType" name="设备类型管理" url="/equipType/index?projectMajors=BIZTYPE_CODE:2" seq="3" state="1" icon=""/>
+			<page id="equipment" name="设备管理" url="/poms/equip/" seq="4" state="1" icon="">	</page>
+			<page id="monitor_area" name="巡检点位管理" seq="5" state="1" url="/amcs/monitorArea/index" ></page>
+			<page id="monitor" name="监控点管理" seq="6" state="1" url="/monitor/index"/>
+			<page id="workDiagramCfg" name="工况管理" seq="7" url="/amcs/equipNetworkCfg/subIndex" state="1" icon=""/>
+			<page id="calibrate" name="信号校核配置" seq="8" state="1" url="/calibrate/index"/>
+			<page id="thermalMeasureCfg" name="红外测温管理" seq="8" state="1" url="/thermalMeasureCfg/index"/>
+			<page id="illEquip" name="照明管控" seq="9" state="1" url="/illumination/index"/>
+		</group>
+		<group id="config" name="系统配置" seq="9" icon="iconfont icon-peizhiguanli" state="1" url="">
+			<page id="map_cfg" name="地图配置" url="/amcs/gis2d/mapCfg" seq="1" state="1">
+				<item id="view" name="查看" url="/amcs/gis2d/mapCfg/view"/>
+				<item id="apply" name="应用" url="/amcs/gis2d/mapCfg/apply"/>
+			</page>
+			<page id="equip_3dModel" name="三维模型配置" url="/amcs/gis3d/equipModelPage" seq="2" state="1">
+				<item id="view" name="查看" url="/amcs/gis3d/equipModelPage/view"/>
+			</page>
+			<page id="presetSetting" seq="3" name="预置位配置" url="/amcs/video/preset"  state="1"/>
+			<page seq="4" name="摄像机管理"  pkey="DIP-MDMM" url="/mdmm/mdmm/cameraConfig/initPage" id="dfthdth" state="1"/>
+			<page id="picAnaly" name="图像识别配置" url="/imageRecognition/config" seq="5" state="1" />
+		</group>
+		<group id="sys" name="系统管理" seq="10" icon="iconfont icon-set1" state="1" url="">
+			<page icon="fa-user" id="menu" name="菜单管理" seq="1" state="1" url="/menu"/>
+			<page icon="fa-users" id="role" name="角色管理" seq="2" state="1" url="/role"/>
+            <page icon="" id="employee" name="员工管理" seq="3" state="1" url="/hrms/ryjbxxKY/index"/>
+            <page icon="fa-flag" id="org" name="账号管理" seq="4" state="1" url="/org"/>
+			<page id="conf_manager" name="参数管理" seq="5" state="1" url="/conf?isSystem=0"/>
+		</group>
+	</resource>
+	<perm>
+		/amcs/getSysLogo = anon
+		/api/** = anon
+		/analy/** = anon
+		/link/** = anon
+		/card/** = anon
+		/patrol/** = anon
+		/cmd/** = anon
+		/das/** = anon
+		/rail/** = anon
+		/securityProtection/** = anon
+		/webjars/** = anon
+		/swagger-ui.html = anon
+		/swagger-resources/** =anon
+		/v2/** = anon
+		/res/** = anon
+		/css/** = anon
+		/font/** = anon
+		/images/** = anon
+		/image/** = anon
+		/js/** = anon
+		/plugins/** = anon
+		/favicon.ico = anon
+		/pcc/** = anon
+		/sso/** = anon
+		/restful/**=anon
+
+		/info = anon
+		/health = anon
+		/amcs/info/** = anon
+
+		/** = user
+		/appconfig/**=anon
+		/monitor/**=anon
+		/poms/equip/syncEquip=anon
+		/amcs/topological/equip/network/**=anon
+		/amcs/gis2d/**=anon
+		/online/**=anon
+		/das/allCall=anon
+		/poms/equip/buildEquipTypeTree=anon
+		/poms/equip/findEquipByType=anon
+		/poms/equip/detail/**=anon
+		/daStomp/**=anon
+		/stomp/**=anon
+	</perm>
+
+</plugin>

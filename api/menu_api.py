@@ -15,5 +15,8 @@ class MenuApi:
         self.user_menu_tree_url = config["menu"]["user_menu_tree_url"]
 
     def get_user_menu_tree(self):
-        """查询当前用户完整菜单树。"""
+        """查询当前用户完整菜单树。
+
+        和首页 initMenu 相比，这里更接近系统管理里的菜单树展示结构。
+        """
         return self.request_util.send_request("get", self.user_menu_tree_url)

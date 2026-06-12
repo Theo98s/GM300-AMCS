@@ -17,7 +17,10 @@ class RdacApi:
         self.station_item_list_url = config["rdac"]["station_item_list_url"]
 
     def list_stations(self):
-        """查询 RDAC 站点列表。"""
+        """查询 RDAC 站点列表。
+
+        站点配置页左侧主表格就是基于这个接口渲染的。
+        """
         return self.request_util.send_request("post", self.station_list_url, json={})
 
     def get_station_items_page(self, sub_name: str, protocol: str):
@@ -29,7 +32,10 @@ class RdacApi:
         )
 
     def list_station_items(self, sub_name: str, protocol: str):
-        """查询某个站点的点位配置 JSON。"""
+        """查询某个站点的点位配置 JSON。
+
+        返回的五类点位列表分别对应遥测、遥信、遥控、遥调和局放配置。
+        """
         return self.request_util.send_request(
             "post",
             self.station_item_list_url,
