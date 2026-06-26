@@ -98,6 +98,13 @@ class TestDatabaseApi:
             temp_file.write(response.content)
             return temp_file.name
 
+    @staticmethod
+    def _get_existing_monitor_row(database_api) -> dict:
+        """获取一条现网已有监控点，供编辑页和详情类接口复用。"""
+        rows = database_api.list_monitors().json()["rows"]
+        assert len(rows) > 0
+        return rows[0]
+
     @allure.title("监控点新增接口可保存新记录")
     def test_monitor_add(self, auth_api, database_api, test_user):
         """校验监控点新增接口可成功保存，并能在列表中查到新数据。"""
@@ -197,6 +204,62 @@ class TestDatabaseApi:
         assert response.status_code == 200
         assert len(response.content) > 0
         assert "attachment" in response.headers.get("Content-Disposition", "")
+
+    @allure.title("监控点导入页包含三类导入导出配置")
+    def test_monitor_import_page_contains_expected_sections(self, auth_api, database_api, test_user):
+        """校验导入页已挂载监控点、报警配置和联动配置三类入口。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.get_monitor_import_page()
+        assert response.status_code == 200
+
+        page_text = response.text
+        assert "monitorTemplate.xls" in page_text
+        assert "alarmTemplate.xls" in page_text
+        assert "linkageTemplate.xls" in page_text
+        assert "monitorImport.xls" in page_text
+        assert "alarmImport.xls" in page_text
+        assert "linkageImport.xls" in page_text
+
+    @allure.title("监控点三类模板下载接口返回文件流")
+    def test_monitor_template_downloads(self, auth_api, database_api, test_user):
+        """依次校验监控点、报警配置和联动配置模板都可以正常下载。"""
+        self._login(auth_api, test_user)
+
+        template_cases = [
+            ("monitorTemplate.xls", "监控点模板"),
+            ("alarmTemplate.xls", "报警配置模板"),
+            ("linkageTemplate.xls", "联动配置模板"),
+        ]
+        for template_name, download_name in template_cases:
+            response = database_api.download_template(template_name, download_name)
+            assert response.status_code == 200
+            assert len(response.content) > 0
+            assert "application/vnd.ms-excel" in response.headers.get("Content-Type", "")
+
+    @allure.title("监控点编辑页可返回隐藏配置字段")
+    def test_monitor_edit_page_contains_hidden_json_fields(self, auth_api, database_api, test_user):
+        """打开现有监控点编辑页，校验监控点和条件联动隐藏字段存在。"""
+        self._login(auth_api, test_user)
+
+        row = self._get_existing_monitor_row(database_api)
+        response = database_api.get_monitor_edit_page(row["id"])
+        assert response.status_code == 200
+
+        page_text = response.text
+        assert 'id="monitorJsonId"' in page_text
+        assert 'id="conditionLinkageJsonId"' in page_text
+        assert 'id="editMonitorId"' in page_text
+
+    @allure.title("监控点 XML 导出接口返回点表文件流")
+    def test_monitor_xml_export(self, auth_api, database_api, test_user):
+        """校验 XML 点表导出接口可返回非空文件内容。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.export_monitor_xml()
+        assert response.status_code == 200
+        assert len(response.content) > 0
+        assert "application/vnd.ms-excel" in response.headers.get("Content-Type", "")
 
     @allure.title("报警配置新增可持久化到监控点条件配置")
     def test_alarm_config_add(self, auth_api, database_api, test_user):
@@ -371,3 +434,34 @@ class TestDatabaseApi:
         assert response.status_code == 200
         assert len(response.content) > 0
         assert "attachment" in response.headers.get("Content-Disposition", "")
+
+    @allure.title("联动辅助查询接口可返回关联设备摄像机和预置位")
+    def test_linkage_auxiliary_queries(self, auth_api, database_api, test_user):
+        """校验联动新增依赖的三段辅助查询链路可正常取数。"""
+        self._login(auth_api, test_user)
+
+        related_equip_response = database_api.query_related_equip_list()
+        assert related_equip_response.status_code == 200
+
+        related_equip_list = related_equip_response.json()
+        assert len(related_equip_list) > 0
+        related_equip = related_equip_list[0]
+        assert related_equip["equipId"]
+        assert related_equip["equipName"]
+
+        camera_response = database_api.query_camera_list(related_equip["equipId"])
+        assert camera_response.status_code == 200
+
+        camera_body = camera_response.json()
+        assert camera_body["status"] == 0
+        assert len(camera_body["data"]) > 0
+        camera = camera_body["data"][0]
+        assert camera["id"]
+        assert camera["equipName"]
+
+        preset_response = database_api.query_preset_list(camera["id"], related_equip["equipId"])
+        assert preset_response.status_code == 200
+
+        preset_list = preset_response.json()
+        assert len(preset_list) > 0
+        assert preset_list[0]["valueField"]

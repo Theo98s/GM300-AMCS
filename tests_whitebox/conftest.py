@@ -8,25 +8,31 @@
 """
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 import allure
 import pytest
 import yaml
 
-from api.auth_api import AuthApi
-from api.alarm_api import AlarmApi
-from api.database_api import DatabaseApi
-from api.gis_api import GisApi
-from api.history_api import HistoryApi
-from api.home_api import HomeApi
-from api.menu_api import MenuApi
-from api.patrol_api import PatrolApi
-from api.plugin_api import PluginApi
-from api.rdac_api import RdacApi
-from api.system_api import SystemApi
-from api.video_api import VideoApi
-from common.request_util import RequestUtil
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+from amcs.api.core.auth_api import AuthApi
+from amcs.api.modules.alarm_api import AlarmApi
+from amcs.api.modules.database_api import DatabaseApi
+from amcs.api.modules.history_api import HistoryApi
+from amcs.api.modules.patrol_api import PatrolApi
+from amcs.api.modules.rdac_api import RdacApi
+from amcs.api.modules.video_api import VideoApi
+from amcs.api.platform.gis_api import GisApi
+from amcs.api.platform.home_api import HomeApi
+from amcs.api.platform.menu_api import MenuApi
+from amcs.api.platform.plugin_api import PluginApi
+from amcs.api.platform.system_api import SystemApi
+from amcs.common.request_util import RequestUtil
 
 
 CASE_INDEX_PREFIX = {
@@ -86,7 +92,7 @@ def allure_case_index(request):
 
 def load_yaml(path: str):
     """按 UTF-8 读取 YAML 配置文件。"""
-    with open(path, "r", encoding="utf-8") as file:
+    with open(PROJECT_ROOT / path, "r", encoding="utf-8") as file:
         return yaml.safe_load(file)
 
 
