@@ -205,6 +205,32 @@ class TestDatabaseApi:
         assert len(response.content) > 0
         assert "attachment" in response.headers.get("Content-Disposition", "")
 
+    @allure.title("监控点列表接口返回标准字段")
+    def test_monitor_list_returns_standard_fields(self, auth_api, database_api, test_user):
+        """校验监控点列表接口可返回至少一条带关键字段的记录。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.list_monitors()
+        assert response.status_code == 200
+
+        body = response.json()
+        assert isinstance(body, dict)
+        assert "rows" in body
+        assert isinstance(body["rows"], list)
+        assert len(body["rows"]) > 0
+
+        first_row = body["rows"][0]
+        assert set(first_row.keys()) >= {
+            "id",
+            "equipId",
+            "equipName",
+            "alarmDatatype",
+            "alarmClass",
+            "securityequiptype",
+        }
+        assert first_row["id"]
+        assert first_row["equipName"]
+
     @allure.title("监控点导入页包含三类导入导出配置")
     def test_monitor_import_page_contains_expected_sections(self, auth_api, database_api, test_user):
         """校验导入页已挂载监控点、报警配置和联动配置三类入口。"""
@@ -250,6 +276,42 @@ class TestDatabaseApi:
         assert 'id="monitorJsonId"' in page_text
         assert 'id="conditionLinkageJsonId"' in page_text
         assert 'id="editMonitorId"' in page_text
+
+    @allure.title("监控点编辑页监控点 JSON 与新建数据一致")
+    def test_monitor_edit_page_monitor_json_matches_created_monitor(self, auth_api, database_api, test_user):
+        """新建监控点后回查编辑页，校验监控点隐藏 JSON 与保存结果一致。"""
+        self._login(auth_api, test_user)
+
+        alarm_datatype = self._build_unique_text("AUTO-回显")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            edit_response = database_api.get_monitor_edit_page(created_monitor_id)
+            assert edit_response.status_code == 200
+
+            monitor_json = self._extract_hidden_json(edit_response.text, "monitorJsonId")
+            assert monitor_json["id"] == created_monitor_id
+            assert monitor_json["alarmDatatype"] == alarm_datatype
+            assert monitor_json["scadaAddr10"] == scada_addr10
+            assert monitor_json["equipId"] == payload["equipId"]
+            assert monitor_json["alarmClass"] == payload["alarmClass"]
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
     @allure.title("监控点 XML 导出接口返回点表文件流")
     def test_monitor_xml_export(self, auth_api, database_api, test_user):
@@ -302,6 +364,41 @@ class TestDatabaseApi:
             assert condition_linkage[0]["condition"]["alarmLevel"] == "01"
             assert condition_linkage[0]["condition"]["alarmType"] == "01"
             assert str(condition_linkage[0]["condition"]["isenable"]) == "1"
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
+    @allure.title("监控点删除前校验返回结构化结果")
+    def test_monitor_can_delete_returns_structured_result(self, auth_api, database_api, test_user):
+        """新建一条监控点后，校验删除前检查接口返回固定结构。"""
+        self._login(auth_api, test_user)
+
+        alarm_datatype = self._build_unique_text("AUTO-预校验")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            response = database_api.can_delete_monitor([created_monitor_id])
+            assert response.status_code == 200
+
+            body = response.json()
+            assert body["status"] == 0
+            assert "data" in body
+            assert "image" in body["data"]
+            assert isinstance(body["data"]["image"], list)
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 

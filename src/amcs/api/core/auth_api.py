@@ -8,6 +8,7 @@ AMCS 当前登录链路不是常见的 JSON token 登录，而是：
 from __future__ import annotations
 
 import re
+import time
 from typing import Any
 
 
@@ -38,14 +39,31 @@ class AuthApi:
         注意这里提交的是前端表单风格的 account/password/CSRFToken，
         登录成功后会话保存在 RequestUtil 的 Session 里，后续接口可以直接复用。
         """
-        login_page = self.get_login_page()
-        assert login_page.status_code == 200
-        csrf_token = self.extract_csrf_token(login_page.text)
+        last_response = None
+        for attempt in range(3):
+            login_page = self.get_login_page()
+            assert login_page.status_code == 200
+            csrf_token = self.extract_csrf_token(login_page.text)
 
-        # 这里沿用系统前端的表单字段命名，避免和实际登录链路不一致。
-        payload = {
-            "account": account,
-            "password": password,
-            "CSRFToken": csrf_token,
-        }
-        return self.request_util.send_request("post", self.login_submit_url, data=payload)
+            # 这里沿用系统前端的表单字段命名，避免和实际登录链路不一致。
+            payload = {
+                "account": account,
+                "password": password,
+                "CSRFToken": csrf_token,
+            }
+            response = self.request_util.send_request("post", self.login_submit_url, data=payload)
+            last_response = response
+
+            # 现场环境偶发返回非 JSON 文本错误，这里做轻量重试，避免整组用例被瞬时抖动拖垮。
+            try:
+                body = response.json()
+            except ValueError:
+                body = None
+
+            if body is not None and "status" in body:
+                return response
+
+            if attempt < 2:
+                time.sleep(1)
+
+        return last_response
