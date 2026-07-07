@@ -1,5 +1,3 @@
-env: test
-base_url: https://10.150.4.13:8443
 timeout: 15
 verify_ssl: false
 

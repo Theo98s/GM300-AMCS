@@ -27,8 +27,12 @@ class TestHistoryApi:
         assert body["total"] >= len(body["rows"])
 
     @allure.title("联动历史首条记录包含关键业务字段")
-    def test_monitor_link_history_first_row_contains_expected_fields(self, auth_api, history_api, test_user):
-        """校验联动历史记录包含站点、联动描述和状态等关键字段。"""
+    def test_monitor_link_history_first_row_contains_expected_fields(self, auth_api, history_api, test_user, target_config):
+        """校验联动历史记录包含站点、联动描述和状态等关键字段。
+
+        历史记录会随环境业务数据变化，这里不再写死某个所亭名称；
+        目标所亭只从外部配置读取并用于失败信息，方便定位当前测试环境。
+        """
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -48,4 +52,4 @@ class TestHistoryApi:
             "description",
             "status",
         }
-        assert first_row["subId"] == "青花牵引变电所"
+        assert first_row["subId"], f"联动历史记录应返回所属所亭；当前目标所亭：{target_config.get('substation_name', '')}"

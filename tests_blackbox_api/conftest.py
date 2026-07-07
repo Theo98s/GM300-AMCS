@@ -8,7 +8,9 @@ Responsibilities:
 """
 from __future__ import annotations
 
+import os
 import sys
+from copy import deepcopy
 from pathlib import Path
 
 import allure
@@ -18,6 +20,8 @@ import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SRC_ROOT = PROJECT_ROOT / "src"
+DEFAULT_TEST_CONFIG_PATH = PROJECT_ROOT / "config" / "test_config.example.yaml"
+TEST_CONFIG_ENV = "AMCS_CONFIG_FILE"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
@@ -91,22 +95,39 @@ def allure_case_index(request):
     allure.dynamic.tag(case_index.rsplit("-", 1)[0])
 
 
-def load_yaml(path: str):
-    """Read a YAML file relative to the project root."""
-    with open(PROJECT_ROOT / path, "r", encoding="utf-8") as file:
-        return yaml.safe_load(file)
+def _resolve_external_config_path() -> Path:
+    """Resolve the environment-specific AMCS config file.
+
+    By default the project uses config/test_config.example.yaml so the current
+    test environment still works out of the box. Other environments can set
+    AMCS_CONFIG_FILE to point at their own local YAML file without changing code.
+    """
+    override_path = os.environ.get(TEST_CONFIG_ENV)
+    if override_path:
+        return Path(override_path).expanduser().resolve()
+    return DEFAULT_TEST_CONFIG_PATH
 
 
-@pytest.fixture(scope="session")
-def config():
-    """Provide system runtime configuration."""
-    return load_yaml("config/config.yaml")
+def load_yaml(path: Path):
+    """Read a YAML file and always return a dictionary."""
+    with open(path, "r", encoding="utf-8") as file:
+        return yaml.safe_load(file) or {}
 
 
 @pytest.fixture(scope="session")
 def test_config():
-    """Provide test account and environment configuration."""
-    return load_yaml("config/test.yaml")
+    """Provide externally switchable account, address, line and station config."""
+    return load_yaml(_resolve_external_config_path())
+
+
+@pytest.fixture(scope="session")
+def config(test_config):
+    """Merge stable endpoint paths with external environment runtime settings."""
+    merged_config = deepcopy(load_yaml(PROJECT_ROOT / "config" / "config.yaml"))
+    for key in ("env", "base_url", "timeout", "verify_ssl"):
+        if key in test_config:
+            merged_config[key] = test_config[key]
+    return merged_config
 
 
 @pytest.fixture(scope="session")
@@ -116,6 +137,12 @@ def test_user(test_config):
         "username": test_config["username"],
         "password": test_config["password"],
     }
+
+
+@pytest.fixture(scope="session")
+def target_config(test_config):
+    """Return line, station and protocol values for environment-sensitive cases."""
+    return test_config.get("targets", {})
 
 
 @pytest.fixture

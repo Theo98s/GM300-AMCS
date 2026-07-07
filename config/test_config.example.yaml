@@ -1,0 +1,14 @@
+# Copy this file to a local path, then point AMCS_CONFIG_FILE to it when testing
+# another environment. Keep environment addresses, accounts, line and station
+# data here instead of hard-coding them in test cases.
+base_url: https://10.150.4.13:8443
+env: test
+username: gmservice
+password: "123456"
+
+targets:
+  line_id: ""
+  line_name: ""
+  substation_id: ""
+  substation_name: 青花牵引变电所
+  rdac_protocol: "104"
