@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""AMCS 自动化公共 fixture。
+"""AMCS black-box API test fixtures.
 
-职责包括：
-1. 读取环境配置和测试账号。
-2. 组装公共 API Client。
-3. 给 Allure 自动补充统一的用例编号。
+Responsibilities:
+1. Load environment and account configuration.
+2. Build shared API clients.
+3. Add stable Allure case numbers during collection.
 """
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ from pathlib import Path
 import allure
 import pytest
 import yaml
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SRC_ROOT = PROJECT_ROOT / "src"
@@ -51,7 +52,7 @@ CASE_INDEX_PREFIX = {
 
 
 def _case_index_prefix(item) -> str:
-    """根据测试文件名生成 Allure 用例编号前缀。"""
+    """Build the Allure case-number prefix from the test file name."""
     file_name = Path(str(item.fspath)).name
     if file_name in CASE_INDEX_PREFIX:
         return CASE_INDEX_PREFIX[file_name]
@@ -59,7 +60,7 @@ def _case_index_prefix(item) -> str:
 
 
 def pytest_collection_modifyitems(items):
-    """在收集阶段为每条用例分配稳定编号。"""
+    """Attach a stable AMCS case number to every collected test item."""
     counters = {}
     for item in items:
         prefix = _case_index_prefix(item)
@@ -78,7 +79,7 @@ def pytest_collection_modifyitems(items):
 
 @pytest.fixture(autouse=True)
 def allure_case_index(request):
-    """把收集阶段生成的编号同步到 Allure 标题和标签。"""
+    """Sync the collected AMCS case number into Allure metadata."""
     case_index = getattr(request.node, "_amcs_case_index", None)
     if not case_index:
         return
@@ -91,26 +92,26 @@ def allure_case_index(request):
 
 
 def load_yaml(path: str):
-    """按 UTF-8 读取 YAML 配置文件。"""
+    """Read a YAML file relative to the project root."""
     with open(PROJECT_ROOT / path, "r", encoding="utf-8") as file:
         return yaml.safe_load(file)
 
 
 @pytest.fixture(scope="session")
 def config():
-    """提供系统级运行配置。"""
+    """Provide system runtime configuration."""
     return load_yaml("config/config.yaml")
 
 
 @pytest.fixture(scope="session")
 def test_config():
-    """提供测试账号和环境配置。"""
+    """Provide test account and environment configuration."""
     return load_yaml("config/test.yaml")
 
 
 @pytest.fixture(scope="session")
 def test_user(test_config):
-    """返回测试账号，供登录类用例复用。"""
+    """Return the default test account."""
     return {
         "username": test_config["username"],
         "password": test_config["password"],
@@ -119,77 +120,77 @@ def test_user(test_config):
 
 @pytest.fixture
 def request_util(config):
-    """为每条用例创建独立的 RequestUtil，避免会话互相污染。"""
+    """Create an isolated RequestUtil per test to avoid session leakage."""
     return RequestUtil(config)
 
 
 @pytest.fixture
 def auth_api(request_util, config):
-    """提供认证接口客户端。"""
+    """Provide the authentication API client."""
     return AuthApi(request_util, config)
 
 
 @pytest.fixture
 def system_api(request_util, config):
-    """提供系统类接口客户端。"""
+    """Provide the system API client."""
     return SystemApi(request_util, config)
 
 
 @pytest.fixture
 def home_api(request_util, config):
-    """提供首页与字典接口客户端。"""
+    """Provide the home and dictionary API client."""
     return HomeApi(request_util, config)
 
 
 @pytest.fixture
 def menu_api(request_util, config):
-    """提供菜单接口客户端。"""
+    """Provide the menu API client."""
     return MenuApi(request_util, config)
 
 
 @pytest.fixture
 def plugin_api(request_util, config):
-    """提供插件接口客户端。"""
+    """Provide the plugin API client."""
     return PluginApi(request_util, config)
 
 
 @pytest.fixture
 def patrol_api(request_util, config):
-    """提供巡检管理接口客户端。"""
+    """Provide the patrol-management API client."""
     return PatrolApi(request_util, config)
 
 
 @pytest.fixture
 def history_api(request_util, config):
-    """提供历史记录接口客户端。"""
+    """Provide the history-record API client."""
     return HistoryApi(request_util, config)
 
 
 @pytest.fixture
 def rdac_api(request_util, config):
-    """提供 RDAC 接口客户端。"""
+    """Provide the RDAC API client."""
     return RdacApi(request_util, config)
 
 
 @pytest.fixture
 def video_api(request_util, config):
-    """提供视频监控接口客户端。"""
+    """Provide the video-monitoring API client."""
     return VideoApi(request_util, config)
 
 
 @pytest.fixture
 def alarm_api(request_util, config):
-    """提供报警接口客户端。"""
+    """Provide the alarm API client."""
     return AlarmApi(request_util, config)
 
 
 @pytest.fixture
 def gis_api(request_util, config):
-    """提供 GIS 接口客户端。"""
+    """Provide the GIS API client."""
     return GisApi(request_util, config)
 
 
 @pytest.fixture
 def database_api(request_util, config):
-    """提供基础数据库相关接口客户端。"""
+    """Provide the base-data API client."""
     return DatabaseApi(request_util, config)

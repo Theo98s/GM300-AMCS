@@ -1,39 +1,47 @@
 # GM300-AMCS 自动化
 
-项目已经整理为“源码分层 + 白盒测试分层 + UI 预留骨架”的结构，根目录只保留需要长期维护的内容，临时分析产物和测试报告也已经归档。
+本项目参考 `D:\gm\GM300-CAMS` 的目录方式整理，当前主要维护黑盒接口自动化用例，UI / E2E 目录作为后续扩展预留。
 
 ## 目录结构
 
 ```text
-GM300-AMCS/
-├─ src/
-│  └─ amcs/
-│     ├─ api/
-│     │  ├─ core/              # 登录、认证等基础能力
-│     │  ├─ platform/          # 首页、菜单、系统、GIS 等平台公共能力
-│     │  └─ modules/           # 视频、巡检、报警、历史、RDAC、基础数据库
-│     └─ common/               # 通用请求工具与公共能力
-├─ tests_whitebox/
-│  ├─ conftest.py              # 白盒测试公共夹具、账号、Allure 编号
-│  └─ cases/
-│     ├─ core/                 # 认证登录等基础能力
-│     ├─ platform/             # 首页、菜单、系统、GIS 等平台能力
-│     └─ modules/              # 业务模块接口测试
-├─ tests_blackbox_ui/
-│  ├─ conftest.py              # UI 黑盒测试公共夹具预留
-│  └─ pages/                   # Page Object 预留目录
-├─ config/                     # 环境地址、接口路径、测试账号
-├─ artifacts/
-│  └─ reverse_engineering/     # 页面逆向、路由探测等分析产物
-├─ reports/                    # Allure 结果与报告输出目录
-├─ pytest.ini
-├─ run.py
-└─ requirements.txt
+config/
+  config.yaml                 # 环境地址、接口路径
+  test.yaml                   # 测试账号
+
+src/
+  amcs/                       # 项目公共代码
+    api/
+      core/                   # 登录、认证等基础能力
+      platform/               # 首页、菜单、系统、GIS 等平台接口
+      modules/                # 视频、巡检、报警、历史、RDAC、基础数据库
+    common/                   # 通用请求工具
+
+tests_blackbox_api/           # 黑盒接口测试
+  conftest.py
+  auth/
+  alarm_event/
+  base_data/
+  gis/
+  history_records/
+  patrol_management/
+  rdac/
+  system_management/
+  video_monitor/
+
+tests_blackbox_ui/            # 黑盒 UI / E2E 测试预留目录
+  conftest.py
+  pages/
+
+artifacts/
+  reverse_engineering/        # 页面逆向、路由探测等分析产物
+
+reports/                      # Allure 结果与报告输出目录
 ```
 
 ## 当前覆盖
 
-- 认证登录
+- 登录认证
 - 首页、菜单、插件
 - 系统接口
 - GIS
@@ -44,23 +52,18 @@ GM300-AMCS/
 - RDAC
 - 基础数据库
 
-## 运行
+## 运行方式
 
-```bash
+```powershell
+cd D:\gm\GM300-AMCS
 pip install -r requirements.txt
 pytest
 ```
 
-生成 Allure 报告：
+生成 Allure 原始结果：
 
-```bash
+```powershell
 python run.py
 ```
 
-报告输出位置：
-
-```text
-reports/
-├─ allure-results/
-└─ allure-report/
-```
+如果本机安装了 Allure CLI，会继续生成 `reports/allure-report/`；未安装时会保留 `reports/allure-results/`。
