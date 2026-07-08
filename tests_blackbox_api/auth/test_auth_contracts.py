@@ -47,3 +47,21 @@ class TestAuthContracts:
         response = auth_api.get_login_page()
 
         assert re.search(r'var projectVersion="[^"]+";', response.text)
+
+    @allure.title("登录页标题包含系统名和登录字样")
+    def test_login_page_title_contains_system_name_and_login_text(self, auth_api):
+        """Verify the login page title still contains the system name and login keyword."""
+        response = auth_api.get_login_page()
+
+        title_match = re.search(r"<title>(.*?)</title>", response.text, re.IGNORECASE | re.DOTALL)
+        assert title_match
+        assert "牵引变电所辅助监控被控站系统" in title_match.group(1)
+        assert "登录" in title_match.group(1)
+
+    @allure.title("登录页包含密码输入框和登录提交地址")
+    def test_login_page_contains_password_field_and_submit_route(self, auth_api):
+        """Verify the login page keeps the password field and ajax login submission route."""
+        response = auth_api.get_login_page()
+
+        assert 'name="password"' in response.text
+        assert "/sso/ajaxcheck" in response.text

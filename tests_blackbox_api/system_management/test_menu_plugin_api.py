@@ -61,3 +61,38 @@ class TestMenuPluginApi:
 
         assert "/amcs/video/preview" in plugin["menuContent"]
         assert "video_playback" in plugin["menuContent"]
+
+    @allure.title("用户菜单树根节点包含系统标识与关闭状态")
+    def test_user_menu_tree_root_contains_identity_fields(self, auth_api, menu_api, test_user):
+        """校验用户菜单树根节点保留系统标识、文本和折叠状态字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = menu_api.get_user_menu_tree()
+        body = response.json()
+        root = body[0]
+
+        assert set(root.keys()) >= {"id", "text", "state", "children"}
+        assert root["id"] == "GM300-AMCS"
+        assert root["text"] == "牵引变电所辅助监控被控站系统"
+        assert root["state"] in {"open", "closed"}
+
+    @allure.title("主插件定义包含欢迎页和图标字段")
+    def test_plugin_definition_contains_welcome_url_and_icon(self, auth_api, plugin_api, test_user):
+        """校验主插件定义保留欢迎页路由和图标字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = plugin_api.find_plugin()
+        body = response.json()
+        plugin = next(item for item in body if item["pkey"] == "GM300-AMCS")
+
+        assert set(plugin.keys()) >= {"pkey", "name", "welcomeUrl", "icon", "isEnabled"}
+        assert plugin["welcomeUrl"] == "/amcs/index"
+        assert plugin["isEnabled"] == 1

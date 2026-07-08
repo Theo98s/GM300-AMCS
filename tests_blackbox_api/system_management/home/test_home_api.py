@@ -68,3 +68,38 @@ class TestHomeApi:
         area_map = {item["code"]: item["name"] for item in body}
         assert area_map["00"] == "全区"
         assert area_map["01"] == "进线区"
+
+    @allure.title("首页菜单叶子节点包含标准菜单字段")
+    def test_init_menu_leaf_nodes_contain_expected_keys(self, auth_api, home_api, test_user):
+        """校验首页初始化菜单的叶子节点包含菜单标识、名称、路由和展开状态字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = home_api.init_menu()
+        body = response.json()
+        first_leaf = body["data"]["hostMenuList"][0]["leaf"][0]
+
+        assert set(first_leaf.keys()) >= {"id", "name", "text", "url", "openClosed", "pluginKey"}
+        assert first_leaf["id"]
+        assert first_leaf["text"]
+        assert first_leaf["pluginKey"] == "GM300-AMCS"
+
+    @allure.title("设备区域字典项包含编码层级与展示字段")
+    def test_equip_area_dict_entries_contain_expected_keys(self, auth_api, home_api, test_user):
+        """校验设备区域字典项包含编码、名称、层级父节点和展示字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = home_api.list_dict_no_root("EQUIP_AREA")
+        body = response.json()
+        first_item = body[0]
+
+        assert set(first_item.keys()) >= {"id", "code", "name", "parentId", "text", "typekey"}
+        assert first_item["typekey"] == "EQUIP_AREA"
+        assert first_item["text"] == first_item["name"]

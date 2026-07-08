@@ -51,3 +51,26 @@ class TestSystemContracts:
         assert isinstance(body["data"], list)
         if body["data"]:
             assert set(body["data"][0].keys()) >= {"name", "serviceUp", "deviceList"}
+
+    @allure.title("系统 logo 公共接口返回字符串类型字段")
+    def test_sys_logo_public_data_uses_string_fields(self, system_api):
+        """Verify logo fields remain string values even when empty."""
+        response = system_api.get_sys_logo()
+        body = response.json()
+
+        assert isinstance(body["data"]["sys_logo_a"], str)
+        assert isinstance(body["data"]["sys_logo_b"], str)
+
+    @allure.title("健康检查首项服务结构包含设备列表布尔状态")
+    def test_health_check_first_service_contains_device_list_and_flag(self, system_api):
+        """Verify the first health-check service item keeps a boolean service flag and list payload."""
+        response = system_api.get_health()
+        body = response.json()
+
+        if not body["data"]:
+            return
+
+        first_service = body["data"][0]
+        assert isinstance(first_service["serviceUp"], bool)
+        assert isinstance(first_service["deviceList"], list)
+        assert first_service["name"]
