@@ -228,3 +228,37 @@ class TestMenuPluginApi:
 
         assert "/das/home" in plugin["menuContent"]
         assert "/amcs/video/playback" in plugin["menuContent"]
+
+    @allure.title("User menu root keeps closed state with expected child count")
+    def test_user_menu_tree_root_keeps_closed_state_and_expected_size(self, auth_api, menu_api, test_user):
+        """Verify the root menu node stays collapsed by default and exposes the expected top-level module count."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = menu_api.get_user_menu_tree()
+        body = response.json()
+        root = body[0]
+
+        assert root["state"] == "closed"
+        assert len(root["children"]) >= 8
+
+    @allure.title("Plugin definition keeps nullable icon and menus fields")
+    def test_plugin_definition_keeps_nullable_icon_and_menus_fields(self, auth_api, plugin_api, test_user):
+        """Verify the plugin definition still returns icon and menus fields even when they are null."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = plugin_api.find_plugin()
+        body = response.json()
+        plugin = next(item for item in body if item["pkey"] == "GM300-AMCS")
+
+        assert "icon" in plugin
+        assert "menus" in plugin
+        assert plugin["icon"] is None or isinstance(plugin["icon"], str)
+        assert plugin["menus"] is None or isinstance(plugin["menus"], list)

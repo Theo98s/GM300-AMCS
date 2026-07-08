@@ -212,3 +212,47 @@ class TestHomeApi:
         for item in top_modules:
             assert item["pluginKey"] == "GM300-AMCS"
             assert item["openClosed"] == "open"
+
+    @allure.title("Init menu container modules keep empty routes")
+    def test_init_menu_container_modules_keep_empty_route_strings(self, auth_api, home_api, test_user):
+        """Verify history, base, config, and system modules stay as open containers with empty-string routes."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = home_api.init_menu()
+        body = response.json()
+        host_leaf = body["data"]["hostMenuList"][0]["leaf"]
+        container_ids = {
+            "GM300-AMCS:history",
+            "GM300-AMCS:base",
+            "GM300-AMCS:config",
+            "GM300-AMCS:sys",
+        }
+
+        for item in host_leaf:
+            if item["id"] in container_ids:
+                assert item["url"] == ""
+                assert item["openClosed"] == "open"
+                assert item["state"] == 1
+
+    @allure.title("Init menu patrol module stays as open container")
+    def test_init_menu_patrol_module_is_open_container(self, auth_api, home_api, test_user):
+        """Verify the patrol-management top node remains an open container without a direct route."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = home_api.init_menu()
+        body = response.json()
+        host_leaf = body["data"]["hostMenuList"][0]["leaf"]
+        patrol_module = next(item for item in host_leaf if item["id"] == "GM300-AMCS:amcs_patrol")
+
+        assert patrol_module["text"] == "巡检管理"
+        assert patrol_module["url"] is None
+        assert patrol_module["openClosed"] == "open"
+        assert patrol_module["state"] == 1

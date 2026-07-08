@@ -239,3 +239,38 @@ class TestVideoApi:
         assert first_model["checked"] is False
         assert first_model["state"] == "open"
         assert first_model["channelNum"] >= 1
+
+    @allure.title("First camera tree model keeps openClosed and empty route contract")
+    def test_camera_tree_first_model_open_closed_and_url_are_stable(self, auth_api, video_api, test_user):
+        """Verify the embedded camera model keeps openClosed and empty-route fields for tree rendering."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_camera_tree()
+        first_model = response.json()[0]["model"]
+
+        assert first_model["openClosed"] == "open"
+        assert first_model["url"] == ""
+        assert first_model["text"] == first_model["name"]
+
+    @allure.title("First preset camera matches first camera tree node identity")
+    def test_first_preset_camera_matches_first_camera_tree_node(self, auth_api, video_api, test_user):
+        """Verify the first preset entry stays aligned with the first camera-tree node on id, name, channel, and NVR."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        first_node = video_api.get_camera_tree().json()[0]
+        first_model = first_node["model"]
+        first_preset = video_api.get_preset_cameras().json()["data"][0]
+
+        assert first_preset["id"] == first_node["id"]
+        assert first_preset["equipName"] == first_node["text"]
+        assert first_preset["text"] == first_model["name"]
+        assert first_preset["channelNo"] == str(first_model["channelNum"])
+        assert first_preset["nvrSerialNum"] == first_model["nvrSerialNum"]
