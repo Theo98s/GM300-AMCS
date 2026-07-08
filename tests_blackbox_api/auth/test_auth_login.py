@@ -38,6 +38,21 @@ class TestAuthLogin:
         body = response.json()
         assert body["status"] != 0
         assert "成功" not in body["message"]
+        assert body["data"] is None
+
+    @allure.title("AMCS 错误密码登录返回标准失败提示")
+    def test_login_fail_with_wrong_password_returns_expected_message(self, auth_api, test_user):
+        """校验错误密码登录时返回固定失败消息，便于前端稳定提示。"""
+        response = auth_api.login(
+            account=test_user["username"],
+            password=f"{test_user['password']}_bad",
+        )
+
+        assert response.status_code == 200
+        body = response.json()
+        assert body["status"] == 1
+        assert body["message"] == "用户名/密码错误"
+        assert body["data"] is None
 
     @allure.title("AMCS 登录页可提取 CSRFToken")
     def test_login_page_contains_csrf_token(self, auth_api):

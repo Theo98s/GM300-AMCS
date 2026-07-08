@@ -39,6 +39,21 @@ class TestSystemSmoke:
         assert isinstance(body["data"], int)
         assert body["data"] >= 0
 
+    @allure.title("告警数量接口登录后返回标准成功消息")
+    def test_alarm_count_after_login_returns_success_message(self, auth_api, system_api, test_user):
+        """校验告警数量接口登录后返回固定成功消息，便于前端统一处理。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = system_api.get_alarm_count()
+        body = response.json()
+
+        assert body["status"] == 0
+        assert body["message"] == "数据查询成功!"
+
     @allure.title("告警数量接口未登录时会被拦截")
     def test_alarm_count_requires_login(self, system_api):
         """校验告警数量接口具备登录态保护。"""
@@ -61,6 +76,21 @@ class TestSystemSmoke:
         body = response.json()
         assert isinstance(body, int)
         assert body > 0
+
+    @allure.title("时间戳接口登录后返回毫秒级时间戳")
+    def test_timestamp_after_login_returns_millisecond_precision(self, auth_api, system_api, test_user):
+        """校验时间戳接口返回 13 位毫秒级时间戳。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = system_api.get_timestamp()
+        body = response.json()
+
+        assert isinstance(body, int)
+        assert body >= 10**12
 
     @allure.title("系统健康检查接口返回设备列表")
     def test_health_check_returns_service_data(self, system_api):

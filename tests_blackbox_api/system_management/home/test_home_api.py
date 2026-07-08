@@ -87,6 +87,24 @@ class TestHomeApi:
         assert first_leaf["text"]
         assert first_leaf["pluginKey"] == "GM300-AMCS"
 
+    @allure.title("首页菜单视频监控模块包含实时视频和视频回放")
+    def test_init_menu_video_module_contains_expected_routes(self, auth_api, home_api, test_user):
+        """校验首页菜单中的视频监控模块保留实时视频和视频回放两个核心子菜单。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = home_api.init_menu()
+        body = response.json()
+        host_leaf = body["data"]["hostMenuList"][0]["leaf"]
+        video_module = next(item for item in host_leaf if item["id"] == "GM300-AMCS:video")
+        child_routes = {item["id"]: item["url"] for item in video_module["leaf"]}
+
+        assert child_routes["GM300-AMCS:video:video_realtime"] == "/amcs/video/preview"
+        assert child_routes["GM300-AMCS:video:video_playback"] == "/amcs/video/playback"
+
     @allure.title("设备区域字典项包含编码层级与展示字段")
     def test_equip_area_dict_entries_contain_expected_keys(self, auth_api, home_api, test_user):
         """校验设备区域字典项包含编码、名称、层级父节点和展示字段。"""
