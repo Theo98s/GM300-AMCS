@@ -474,6 +474,18 @@ class TestDatabaseApi:
         assert body["total"] >= 2
         assert len(body["rows"]) == 2
 
+    @allure.title("监控点列表超出总页数时返回空结果")
+    def test_monitor_list_returns_empty_rows_for_out_of_range_page(self, auth_api, database_api, test_user):
+        """校验监控点列表在超出总页数的分页参数下返回空列表而不是报错。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.list_monitors(page=100, rows=20)
+        assert response.status_code == 200
+
+        body = response.json()
+        assert body["total"] >= 0
+        assert body["rows"] == []
+
     @allure.title("监控点导入页包含三类导入导出配置")
     def test_monitor_import_page_contains_expected_sections(self, auth_api, database_api, test_user):
         """校验导入页已挂载监控点、报警配置和联动配置三类入口。"""
@@ -816,6 +828,7 @@ class TestDatabaseApi:
             assert condition["alarmType"] == "02"
             assert condition["teleMinValue"] == "false"
             assert condition["trigecondition"] == "2"
+            assert condition["datatypeId"] == created_monitor_id
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
@@ -1117,9 +1130,12 @@ class TestDatabaseApi:
             assert edit_response.status_code == 200
 
             condition_linkage = self._extract_hidden_json(edit_response.text, "conditionLinkageJsonId")
+            condition = condition_linkage[0]["condition"]
             linkage = condition_linkage[0]["linkageList"][0]
+            assert condition["datatypeId"] == created_monitor_id
             assert linkage["exeNo"] == 7
             assert linkage["isremote"] == "0"
+            assert linkage["presetName"] == preset["presetPointName"]
             assert int(linkage["residenceTime"]) == 11
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
@@ -1353,6 +1369,17 @@ class TestDatabaseApi:
             "nvrSerialNum",
             "valueField",
         }
+
+    @allure.title("联动摄像机和预置位查询结果引用同一摄像机设备")
+    def test_linkage_camera_and_preset_entries_reference_same_camera(self, auth_api, database_api, test_user):
+        """校验预置位列表中的摄像机设备标识与摄像机查询结果一致。"""
+        self._login(auth_api, test_user)
+
+        related_equip, camera, preset = self._get_linkage_target(database_api)
+        assert camera["equipId"] == camera["id"]
+        assert preset["equipId"] == camera["equipId"]
+        assert preset["presetPointName"]
+        assert preset["valueField"]
 
     @allure.title("联动预置位列表返回标准视频字段")
     def test_linkage_preset_entries_contain_expected_keys(self, auth_api, database_api, test_user):

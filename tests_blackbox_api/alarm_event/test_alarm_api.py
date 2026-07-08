@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import allure
 import pytest
+import re
 
 
 @allure.feature("报警事件")
@@ -51,3 +52,43 @@ class TestAlarmApi:
         }
         assert first_row["alarmDt"]
         assert first_row["warnContent"]
+
+    @allure.title("报警记录首条数据包含标识与状态字段")
+    def test_alarm_record_first_row_contains_identity_and_status_fields(self, auth_api, alarm_api, test_user):
+        """有报警数据时校验首条记录包含主键、设备标识和状态类字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = alarm_api.get_alarm_record_page()
+        body = response.json()
+        if not body:
+            pytest.skip("当前环境没有报警记录，跳过标识字段校验")
+
+        first_row = body[0]
+        assert first_row["id"]
+        assert first_row["equipId"]
+        assert first_row["alarmSource"]
+        assert first_row["alarmLevel"]
+        assert first_row["status"] is not None
+        assert first_row["hasLink"] in {"0", "1"}
+        assert first_row["isPatrol"] in {"0", "1"}
+
+    @allure.title("报警记录时间字段使用标准日期时间字符串")
+    def test_alarm_record_datetime_uses_timestamp_string(self, auth_api, alarm_api, test_user):
+        """有报警数据时校验 alarmDt 字段使用标准日期时间字符串格式。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = alarm_api.get_alarm_record_page()
+        body = response.json()
+        if not body:
+            pytest.skip("当前环境没有报警记录，跳过时间格式校验")
+
+        alarm_dt = body[0]["alarmDt"]
+        assert re.fullmatch(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}", alarm_dt)
