@@ -48,3 +48,40 @@ class TestAccessControlContracts:
         )
 
         self._assert_redirects_to_login(response)
+
+    @allure.title("首页菜单初始化接口默认行为会落到登录页 HTML")
+    def test_init_menu_default_request_returns_login_html(self, request_util, config):
+        """Verify initMenu without allow_redirects control eventually resolves to the login page HTML."""
+        response = request_util.send_request(
+            "post",
+            config["home"]["init_menu_url"],
+            data={},
+        )
+
+        assert response.status_code == 200
+        assert "text/html" in response.headers.get("Content-Type", "")
+        assert "window.top" in response.text
+
+    @allure.title("用户菜单树接口默认行为会落到登录页 HTML")
+    def test_user_menu_tree_default_request_returns_login_html(self, request_util, config):
+        """Verify getUserMenuTree without login resolves to the login page HTML."""
+        response = request_util.send_request(
+            "get",
+            config["menu"]["user_menu_tree_url"],
+        )
+
+        assert response.status_code == 200
+        assert "text/html" in response.headers.get("Content-Type", "")
+        assert "window.top" in response.text
+
+    @allure.title("设备区域字典接口默认行为会落到登录页 HTML")
+    def test_dict_list_default_request_returns_login_html(self, request_util, config):
+        """Verify dictionary requests without login resolve to the login page HTML."""
+        response = request_util.send_request(
+            "get",
+            f"{config['home']['dict_list_url_prefix']}/EQUIP_AREA",
+        )
+
+        assert response.status_code == 200
+        assert "text/html" in response.headers.get("Content-Type", "")
+        assert "window.top" in response.text

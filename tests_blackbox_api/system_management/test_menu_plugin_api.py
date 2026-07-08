@@ -99,6 +99,28 @@ class TestMenuPluginApi:
         assert first_child["url"] == "/das/home"
         assert first_child["state"] == "open"
 
+    @allure.title("用户菜单树保留核心一级菜单 ID")
+    def test_user_menu_tree_contains_expected_top_level_ids(self, auth_api, menu_api, test_user):
+        """校验用户菜单树一级子菜单仍包含视频、巡检、历史、基础、配置和系统管理模块。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = menu_api.get_user_menu_tree()
+        body = response.json()
+        child_ids = {item["id"] for item in body[0]["children"]}
+
+        assert {
+            "GM300-AMCS:video",
+            "GM300-AMCS:amcs_patrol",
+            "GM300-AMCS:history",
+            "GM300-AMCS:base",
+            "GM300-AMCS:config",
+            "GM300-AMCS:sys",
+        } <= child_ids
+
     @allure.title("主插件定义包含欢迎页和图标字段")
     def test_plugin_definition_contains_welcome_url_and_icon(self, auth_api, plugin_api, test_user):
         """校验主插件定义保留欢迎页路由和图标字段。"""
@@ -115,3 +137,21 @@ class TestMenuPluginApi:
         assert set(plugin.keys()) >= {"pkey", "name", "welcomeUrl", "icon", "isEnabled"}
         assert plugin["welcomeUrl"] == "/amcs/index"
         assert plugin["isEnabled"] == 1
+
+    @allure.title("主插件菜单定义包含巡检监控报警和预置位路由")
+    def test_plugin_menu_content_contains_core_business_routes(self, auth_api, plugin_api, test_user):
+        """校验主插件 XML 菜单定义仍包含巡检、监控点、报警记录和预置位配置路由。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = plugin_api.find_plugin()
+        body = response.json()
+        plugin = next(item for item in body if item["pkey"] == "GM300-AMCS")
+
+        assert "/amcs/patrol/plan" in plugin["menuContent"]
+        assert "/monitor/index" in plugin["menuContent"]
+        assert "/amcs/alarm/index" in plugin["menuContent"]
+        assert "/amcs/video/preset" in plugin["menuContent"]
