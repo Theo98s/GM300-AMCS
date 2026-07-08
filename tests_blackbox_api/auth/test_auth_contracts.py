@@ -65,3 +65,11 @@ class TestAuthContracts:
 
         assert 'name="password"' in response.text
         assert "/sso/ajaxcheck" in response.text
+
+    @allure.title("Login page contains account input field id and name")
+    def test_login_page_contains_account_field_markers(self, auth_api):
+        """Verify the login page keeps the account input field markers used by automation and frontend scripts."""
+        response = auth_api.get_login_page()
+
+        assert 'name="account"' in response.text
+        assert 'id="password"' in response.text

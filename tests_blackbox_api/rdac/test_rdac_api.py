@@ -140,3 +140,37 @@ class TestRdacApi:
         for item in body:
             assert item["status"] in {"REGISTERED", "UNREGISTERED"}
             assert item["protocolName"]
+
+    @allure.title("RDAC telemetry precision and variation stay numeric")
+    def test_rdac_telemetry_item_precision_and_variation_are_numeric(self, auth_api, rdac_api, test_user, target_config):
+        """Verify telemetry precision and variation fields stay numeric for downstream formatting."""
+        target_sub_name, target_protocol = self._rdac_target(target_config)
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = rdac_api.list_station_items(target_sub_name, target_protocol)
+        telemetry_item = response.json()["data"]["telemetryItems"][0]
+
+        assert isinstance(telemetry_item["precision"], int)
+        assert telemetry_item["precision"] >= 0
+        assert isinstance(telemetry_item["variation"], (int, float))
+
+    @allure.title("RDAC telemetry unit and reference stay populated")
+    def test_rdac_telemetry_item_unit_and_reference_are_non_empty(self, auth_api, rdac_api, test_user, target_config):
+        """Verify telemetry preview rows keep non-empty unit and reference metadata."""
+        target_sub_name, target_protocol = self._rdac_target(target_config)
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = rdac_api.list_station_items(target_sub_name, target_protocol)
+        telemetry_item = response.json()["data"]["telemetryItems"][0]
+
+        assert telemetry_item["name"]
+        assert telemetry_item["unit"]
+        assert telemetry_item["reference"].startswith(("AIU_", "DIU_", "DOU_", "AOU_"))

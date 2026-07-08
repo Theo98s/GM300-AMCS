@@ -62,3 +62,17 @@ class TestAuthLogin:
         assert response.status_code == 200
         csrf_token = auth_api.extract_csrf_token(response.text)
         assert csrf_token
+
+    @allure.title("AMCS wrong username login returns standard failure message")
+    def test_login_fail_with_wrong_username_returns_expected_message(self, auth_api, test_user):
+        """Verify an unknown account returns the standard login-failure contract."""
+        response = auth_api.login(
+            account=f"{test_user['username']}_bad",
+            password=test_user["password"],
+        )
+
+        assert response.status_code == 200
+        body = response.json()
+        assert body["status"] == 1
+        assert body["message"] == "用户名/密码错误"
+        assert body["data"] is None

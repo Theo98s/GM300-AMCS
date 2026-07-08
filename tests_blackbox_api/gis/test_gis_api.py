@@ -146,3 +146,18 @@ class TestGisApi:
         assert d3_body["creator"]
         assert d2_body["deleted"] == 0
         assert d3_body["deleted"] == 0
+
+    @allure.title("3D map path keeps cesium-data directory convention")
+    def test_d3_map_prop_path_uses_cesium_data_directory(self, auth_api, gis_api, test_user):
+        """Verify the 3D map resource path still follows the cesium-data deployment convention."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = gis_api.get_d3_map_prop()
+        body = response.json()["data"]
+
+        assert body["d3DataName"].startswith("3dtiles")
+        assert body["d3DataPath"].startswith("/cesium-data/")

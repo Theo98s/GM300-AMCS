@@ -98,3 +98,13 @@ class TestSystemContracts:
         names = [item["name"] for item in body["data"]]
         assert all(names)
         assert len(names) == len(set(names))
+
+    @allure.title("Health check contains core camera and media services")
+    def test_health_check_contains_expected_core_services(self, system_api):
+        """Verify the health list still exposes the core camera and streaming service names."""
+        response = system_api.get_health()
+        body = response.json()
+
+        names = {item["name"] for item in body["data"]}
+        assert "cameras" in names
+        assert "流媒体服务" in names

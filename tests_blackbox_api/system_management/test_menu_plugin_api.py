@@ -172,3 +172,20 @@ class TestMenuPluginApi:
         assert video_node["text"] == "视频监控"
         assert video_node["state"] == "closed"
         assert video_node["url"] is None
+
+    @allure.title("User menu realtime module stays as closed container")
+    def test_user_menu_tree_realtime_module_is_closed_container(self, auth_api, menu_api, test_user):
+        """Verify the realtime-monitor node in the user menu tree stays collapsed and route-less."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = menu_api.get_user_menu_tree()
+        body = response.json()
+        realtime_node = next(item for item in body[0]["children"] if item["id"] == "GM300-AMCS:amcs_das")
+
+        assert realtime_node["text"] == "实时监控"
+        assert realtime_node["state"] == "closed"
+        assert realtime_node["url"] is None

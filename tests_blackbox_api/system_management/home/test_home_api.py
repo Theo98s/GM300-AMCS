@@ -176,3 +176,22 @@ class TestHomeApi:
         assert set(first_item.keys()) >= {"id", "code", "name", "parentId", "text", "typekey"}
         assert first_item["typekey"] == "EQUIP_AREA"
         assert first_item["text"] == first_item["name"]
+
+    @allure.title("Init menu realtime module stays as open container")
+    def test_init_menu_realtime_module_is_open_container(self, auth_api, home_api, test_user):
+        """Verify the realtime-monitor top node remains an open container without a direct route."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = home_api.init_menu()
+        body = response.json()
+        host_leaf = body["data"]["hostMenuList"][0]["leaf"]
+        realtime_module = next(item for item in host_leaf if item["id"] == "GM300-AMCS:amcs_das")
+
+        assert realtime_module["text"] == "实时监控"
+        assert realtime_module["url"] is None
+        assert realtime_module["openClosed"] == "open"
+        assert realtime_module["state"] == 1

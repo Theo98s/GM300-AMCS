@@ -62,6 +62,18 @@ class TestAccessControlContracts:
         assert "text/html" in response.headers.get("Content-Type", "")
         assert "window.top" in response.text
 
+    @allure.title("Anonymous protected requests still expose login submit endpoint")
+    def test_default_anonymous_request_login_html_contains_submit_route(self, request_util, config):
+        """Verify the resolved login HTML still contains the ajax login submit route for user recovery."""
+        response = request_util.send_request(
+            "get",
+            config["menu"]["user_menu_tree_url"],
+        )
+
+        assert response.status_code == 200
+        assert "/sso/ajaxcheck" in response.text
+        assert 'name="password"' in response.text
+
     @allure.title("用户菜单树接口默认行为会落到登录页 HTML")
     def test_user_menu_tree_default_request_returns_login_html(self, request_util, config):
         """Verify getUserMenuTree without login resolves to the login page HTML."""

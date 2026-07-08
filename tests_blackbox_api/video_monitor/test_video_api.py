@@ -176,3 +176,35 @@ class TestVideoApi:
 
         assert first_item["id"]
         assert first_item["text"] == first_item["equipName"]
+
+    @allure.title("First camera tree node keeps checked flag and open state")
+    def test_camera_tree_first_node_checked_flag_and_state_are_stable(self, auth_api, video_api, test_user):
+        """Verify the first camera-tree node remains unchecked, open, and without a direct page route."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_camera_tree()
+        first_node = response.json()[0]
+
+        assert first_node["checked"] is False
+        assert first_node["state"] == "open"
+        assert first_node["url"] == ""
+
+    @allure.title("First camera tree model keeps checked flag and open state")
+    def test_camera_tree_first_model_checked_flag_and_state_are_stable(self, auth_api, video_api, test_user):
+        """Verify the embedded camera model remains unchecked and open for tree rendering."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_camera_tree()
+        first_model = response.json()[0]["model"]
+
+        assert first_model["checked"] is False
+        assert first_model["state"] == "open"
+        assert first_model["channelNum"] >= 1

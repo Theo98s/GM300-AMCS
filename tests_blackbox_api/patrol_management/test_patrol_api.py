@@ -136,3 +136,22 @@ class TestPatrolApi:
         card_names = [item["text"] for item in body]
         assert len(card_ids) == len(set(card_ids))
         assert all(card_names)
+
+    @allure.title("Patrol plan cycle fields keep expected types")
+    def test_patrol_plan_cycle_fields_use_expected_types(self, auth_api, patrol_api, test_user):
+        """Verify the plan cycle field exists and keeps an accepted nullable/string contract."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = patrol_api.list_patrol_plans()
+        body = response.json()
+        if not body:
+            pytest.skip("Current environment has no patrol plans.")
+
+        first_plan = body[0]
+        assert "weeks" in first_plan
+        assert first_plan["weeks"] is None or isinstance(first_plan["weeks"], str)
+        assert isinstance(first_plan["canBeStarted"], bool)
