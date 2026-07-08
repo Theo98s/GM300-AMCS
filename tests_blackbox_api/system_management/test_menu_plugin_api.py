@@ -155,3 +155,20 @@ class TestMenuPluginApi:
         assert "/monitor/index" in plugin["menuContent"]
         assert "/amcs/alarm/index" in plugin["menuContent"]
         assert "/amcs/video/preset" in plugin["menuContent"]
+
+    @allure.title("用户菜单树视频模块默认折叠且无直接路由")
+    def test_user_menu_tree_video_module_is_closed_container(self, auth_api, menu_api, test_user):
+        """校验用户菜单树中的视频监控一级节点是折叠容器节点而不是直接页面路由。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = menu_api.get_user_menu_tree()
+        body = response.json()
+        video_node = next(item for item in body[0]["children"] if item["id"] == "GM300-AMCS:video")
+
+        assert video_node["text"] == "视频监控"
+        assert video_node["state"] == "closed"
+        assert video_node["url"] is None

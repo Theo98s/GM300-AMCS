@@ -88,3 +88,13 @@ class TestSystemContracts:
         for item in body["data"]:
             assert set(item.keys()) == expected_keys
             assert isinstance(item["serviceUp"], bool)
+
+    @allure.title("健康检查服务名称非空且不重复")
+    def test_health_check_service_names_are_non_empty_and_unique(self, system_api):
+        """Verify health-check service names remain non-empty and unique in the response list."""
+        response = system_api.get_health()
+        body = response.json()
+
+        names = [item["name"] for item in body["data"]]
+        assert all(names)
+        assert len(names) == len(set(names))

@@ -129,3 +129,20 @@ class TestGisApi:
         assert body["status"] == 0
         assert body["data"]["typeCode"] == "2d"
         assert body["data"]["sourceCategory"] == "二维地图"
+
+    @allure.title("二维和三维地图属性包含创建人与未删除标记")
+    def test_map_props_contain_creator_and_deleted_flag(self, auth_api, gis_api, test_user):
+        """校验二维和三维地图属性都保留创建人字段和未删除标记。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        d2_body = gis_api.get_d2_map_prop().json()["data"]
+        d3_body = gis_api.get_d3_map_prop().json()["data"]
+
+        assert d2_body["creator"]
+        assert d3_body["creator"]
+        assert d2_body["deleted"] == 0
+        assert d3_body["deleted"] == 0

@@ -146,3 +146,33 @@ class TestVideoApi:
         assert isinstance(first_item["channelNo"], str)
         assert first_item["channelNo"].isdigit()
         assert isinstance(first_item["railMachine"], bool)
+
+    @allure.title("视频树节点 ID 与模型 ID 保持一致")
+    def test_camera_tree_node_id_matches_model_id(self, auth_api, video_api, test_user):
+        """校验视频树节点的显示 ID 与模型内部 ID 保持一致。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_camera_tree()
+        first_node = response.json()[0]
+
+        assert first_node["id"] == first_node["model"]["id"]
+        assert first_node["text"] == first_node["model"]["name"]
+
+    @allure.title("预置位摄像机列表文本与设备名称保持一致")
+    def test_preset_cameras_text_matches_equipment_name(self, auth_api, video_api, test_user):
+        """校验预置位摄像机列表里的展示文本与设备名称一致。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_preset_cameras()
+        first_item = response.json()["data"][0]
+
+        assert first_item["id"]
+        assert first_item["text"] == first_item["equipName"]

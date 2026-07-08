@@ -124,3 +124,19 @@ class TestRdacApi:
         }
         assert telemetry_items[0]["name"]
         assert telemetry_items[0]["reference"]
+
+    @allure.title("RDAC 站点列表所有状态值都在允许范围内")
+    def test_rdac_station_list_status_values_are_allowed(self, auth_api, rdac_api, test_user):
+        """校验 RDAC 站点列表中的所有状态值都在系统允许范围内。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = rdac_api.list_stations()
+        body = response.json()
+
+        for item in body:
+            assert item["status"] in {"REGISTERED", "UNREGISTERED"}
+            assert item["protocolName"]

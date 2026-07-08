@@ -143,6 +143,23 @@ class TestHomeApi:
 
         assert init_ids == tree_ids
 
+    @allure.title("首页欢迎菜单保持展开且启用状态")
+    def test_init_menu_welcome_leaf_has_open_state_and_enabled_flag(self, auth_api, home_api, test_user):
+        """校验首页欢迎菜单仍保持展开状态和启用标记。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = home_api.init_menu()
+        body = response.json()
+        welcome_leaf = body["data"]["hostMenuList"][0]["leaf"][0]
+
+        assert welcome_leaf["id"] == "GM300-AMCS:amcs_welcome"
+        assert welcome_leaf["openClosed"] == "open"
+        assert welcome_leaf["state"] == 1
+
     @allure.title("设备区域字典项包含编码层级与展示字段")
     def test_equip_area_dict_entries_contain_expected_keys(self, auth_api, home_api, test_user):
         """校验设备区域字典项包含编码、名称、层级父节点和展示字段。"""

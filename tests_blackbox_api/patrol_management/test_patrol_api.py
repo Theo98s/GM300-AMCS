@@ -119,3 +119,20 @@ class TestPatrolApi:
         first_detail = body[0]["details"][0]
         assert isinstance(first_detail["ext"], dict)
         assert isinstance(first_detail["seq"], str)
+
+    @allure.title("巡检卡片列表主键唯一且名称非空")
+    def test_patrol_card_ids_are_unique_and_names_non_empty(self, auth_api, patrol_api, test_user):
+        """校验巡检卡片列表中的卡片主键唯一，且名称字段非空。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = patrol_api.list_patrol_cards()
+        body = response.json()
+
+        card_ids = [item["id"] for item in body]
+        card_names = [item["text"] for item in body]
+        assert len(card_ids) == len(set(card_ids))
+        assert all(card_names)
