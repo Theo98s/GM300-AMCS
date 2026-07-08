@@ -51,6 +51,13 @@ class TestDatabaseApi:
         return json.loads(raw_value)
 
     @staticmethod
+    def _extract_hidden_value(html_text: str, field_id: str) -> str:
+        """从编辑页隐藏 input 中提取原始 value，便于校验空字符串场景。"""
+        match = re.search(rf'id="{field_id}" value="([^"]*)"', html_text)
+        assert match, f"编辑页未找到隐藏字段: {field_id}"
+        return html.unescape(match.group(1))
+
+    @staticmethod
     def _build_base_monitor_payload(database_api) -> dict:
         """基于现网已存在的遥信监控点复制一份最小可保存数据。"""
         rows = database_api.list_monitors().json()["rows"]
@@ -281,6 +288,60 @@ class TestDatabaseApi:
         assert first_row["id"]
         assert first_row["equipName"]
 
+    @allure.title("监控点列表可按唯一字段精确筛选新增记录")
+    def test_monitor_list_can_filter_by_unique_fields(self, auth_api, database_api, test_user):
+        """新增监控点后，校验列表接口可按业务唯一字段精确筛选出该记录。"""
+        self._login(auth_api, test_user)
+
+        alarm_datatype = self._build_unique_text("AUTO-筛选")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            response = database_api.list_monitors(
+                {
+                    "alarmDatatype": alarm_datatype,
+                    "scadaAddr10": scada_addr10,
+                }
+            )
+            assert response.status_code == 200
+
+            body = response.json()
+            assert body["total"] >= 1
+            assert len(body["rows"]) >= 1
+            assert any(
+                row.get("alarmDatatype") == alarm_datatype and row.get("scadaAddr10") == scada_addr10
+                for row in body["rows"]
+            )
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
+    @allure.title("监控点列表对不存在筛选条件返回空结果")
+    def test_monitor_list_returns_empty_rows_for_nonexistent_filter(self, auth_api, database_api, test_user):
+        """校验监控点列表在不存在的业务字段筛选下返回空列表而不是报错。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.list_monitors({"alarmDatatype": "NO_SUCH_AUTO_CASE_001"})
+        assert response.status_code == 200
+
+        body = response.json()
+        assert body["total"] == 0
+        assert body["rows"] == []
+
     @allure.title("监控点导入页包含三类导入导出配置")
     def test_monitor_import_page_contains_expected_sections(self, auth_api, database_api, test_user):
         """校验导入页已挂载监控点、报警配置和联动配置三类入口。"""
@@ -360,6 +421,38 @@ class TestDatabaseApi:
             assert monitor_json["scadaAddr10"] == scada_addr10
             assert monitor_json["equipId"] == payload["equipId"]
             assert monitor_json["alarmClass"] == payload["alarmClass"]
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
+    @allure.title("纯监控点编辑页条件联动隐藏字段为空字符串")
+    def test_monitor_edit_page_condition_linkage_field_is_empty_without_configs(self, auth_api, database_api, test_user):
+        """新建不带报警和联动配置的监控点后，校验条件联动隐藏字段为空字符串。"""
+        self._login(auth_api, test_user)
+
+        alarm_datatype = self._build_unique_text("AUTO-空配置")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            edit_response = database_api.get_monitor_edit_page(created_monitor_id)
+            assert edit_response.status_code == 200
+
+            raw_condition_linkage = self._extract_hidden_value(edit_response.text, "conditionLinkageJsonId")
+            assert raw_condition_linkage == ""
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
@@ -512,6 +605,18 @@ class TestDatabaseApi:
             assert isinstance(body["data"]["image"], list)
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
+    @allure.title("监控点删除接口对不存在 ID 返回幂等成功")
+    def test_monitor_delete_nonexistent_id_is_idempotent(self, auth_api, database_api, test_user):
+        """校验删除接口对不存在的监控点 ID 不报错，并保持幂等成功。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.delete_monitor_by_ids(["not-exists-id"])
+        assert response.status_code == 200
+
+        body = response.json()
+        assert body["status"] == 0
+        assert body["message"] == "操作成功!"
 
     @allure.title("报警配置模板导入接口返回结构化结果")
     def test_alarm_config_import(self, auth_api, database_api, test_user):
