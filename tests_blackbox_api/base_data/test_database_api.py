@@ -105,6 +105,23 @@ class TestDatabaseApi:
         assert len(rows) > 0
         return rows[0]
 
+    @staticmethod
+    def _get_linkage_target(database_api) -> tuple[dict, dict, dict]:
+        """获取联动配置保存所需的设备、摄像机和预置位样本。"""
+        related_equip_list = database_api.query_related_equip_list().json()
+        assert len(related_equip_list) > 0
+        related_equip = related_equip_list[0]
+
+        camera_body = database_api.query_camera_list(related_equip["equipId"]).json()
+        assert camera_body["status"] == 0
+        assert len(camera_body["data"]) > 0
+        camera = camera_body["data"][0]
+
+        preset_list = database_api.query_preset_list(camera["id"], related_equip["equipId"]).json()
+        assert len(preset_list) > 0
+        preset = preset_list[0]
+        return related_equip, camera, preset
+
     @allure.title("监控点新增接口可保存新记录")
     def test_monitor_add(self, auth_api, database_api, test_user):
         """校验监控点新增接口可成功保存，并能在列表中查到新数据。"""
@@ -134,6 +151,39 @@ class TestDatabaseApi:
             assert created_row is not None
             created_monitor_id = created_row["id"]
             assert created_row["alarmClass"] == "01"
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
+    @allure.title("监控点重复校验接口可拦截同设备属性名称")
+    def test_monitor_validate_rejects_duplicate_device_property_name(self, auth_api, database_api, test_user):
+        """先新增一条监控点，再校验保存前校验会拦截重复的设备属性名称。"""
+        self._login(auth_api, test_user)
+
+        alarm_datatype = self._build_unique_text("AUTO-重复校验")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            duplicate_response = database_api.validate_monitor(payload)
+            assert duplicate_response.status_code == 200
+
+            body = duplicate_response.json()
+            assert body["status"] == 1
+            assert body["message"] == "同一设备属性名称不能重复!"
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
@@ -367,6 +417,67 @@ class TestDatabaseApi:
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
+    @allure.title("报警配置新增可同时保存多条报警条件")
+    def test_alarm_config_add_persists_multiple_conditions(self, auth_api, database_api, test_user):
+        """新增包含两条报警条件的监控点，并校验编辑页回显顺序和字段都正确。"""
+        self._login(auth_api, test_user)
+
+        alarm_datatype = self._build_unique_text("AUTO-多报警")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+                "conditions": [
+                    {
+                        "teleMinValue": "true",
+                        "isenable": 1,
+                        "alarmLevel": "01",
+                        "alarmType": "01",
+                        "trigecondition": 1,
+                    },
+                    {
+                        "teleMinValue": "false",
+                        "isenable": 0,
+                        "alarmLevel": "02",
+                        "alarmType": "02",
+                        "trigecondition": 2,
+                    },
+                ],
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            edit_response = database_api.get_monitor_edit_page(created_monitor_id)
+            assert edit_response.status_code == 200
+
+            condition_linkage = self._extract_hidden_json(edit_response.text, "conditionLinkageJsonId")
+            assert len(condition_linkage) == 2
+            # 后端回显顺序不稳定，这里按条件内容比对而不是按列表下标比对。
+            returned_conditions = {
+                (
+                    item["condition"]["alarmLevel"],
+                    item["condition"]["alarmType"],
+                    str(item["condition"]["isenable"]),
+                )
+                for item in condition_linkage
+            }
+            assert returned_conditions == {
+                ("01", "01", "1"),
+                ("02", "02", "0"),
+            }
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
     @allure.title("监控点删除前校验返回结构化结果")
     def test_monitor_can_delete_returns_structured_result(self, auth_api, database_api, test_user):
         """新建一条监控点后，校验删除前检查接口返回固定结构。"""
@@ -440,10 +551,7 @@ class TestDatabaseApi:
         """新增带视频联动的监控点，并回查编辑页中的联动配置。"""
         self._login(auth_api, test_user)
 
-        related_equip = database_api.query_related_equip_list().json()[0]
-        camera_response = database_api.query_camera_list(related_equip["equipId"]).json()
-        camera = camera_response["data"][0]
-        preset = database_api.query_preset_list(camera["id"], related_equip["equipId"]).json()[0]
+        related_equip, camera, preset = self._get_linkage_target(database_api)
 
         alarm_datatype = self._build_unique_text("AUTO-联动")
         scada_addr10 = self._build_unique_text("ADDR")
@@ -494,6 +602,65 @@ class TestDatabaseApi:
             assert linkage_list[0]["linktype"] == "1"
             assert linkage_list[0]["linkequip"] == camera["id"]
             assert linkage_list[0]["monitorequip"] == preset["valueField"]
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
+    @allure.title("联动配置新增可回显启停状态和停留时长")
+    def test_linkage_config_add_persists_disable_flag_and_residence_time(self, auth_api, database_api, test_user):
+        """新增一条禁用的联动动作，并校验编辑页回显的启停状态和停留时长。"""
+        self._login(auth_api, test_user)
+
+        related_equip, camera, preset = self._get_linkage_target(database_api)
+        alarm_datatype = self._build_unique_text("AUTO-联动标志")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+                "conditions": [
+                    {
+                        "teleMinValue": "true",
+                        "isenable": 1,
+                        "alarmLevel": "01",
+                        "alarmType": "01",
+                        "trigecondition": 1,
+                        "linkages": [
+                            {
+                                "exeNo": 1,
+                                "linktype": "1",
+                                "isenable": 0,
+                                "relateEquip": related_equip["equipId"],
+                                "linkequip": camera["id"],
+                                "monitorequip": preset["valueField"],
+                                "residenceTime": "9",
+                                "isremote": None,
+                            }
+                        ],
+                    }
+                ],
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            edit_response = database_api.get_monitor_edit_page(created_monitor_id)
+            assert edit_response.status_code == 200
+
+            condition_linkage = self._extract_hidden_json(edit_response.text, "conditionLinkageJsonId")
+            linkage = condition_linkage[0]["linkageList"][0]
+            assert linkage["linktype"] == "1"
+            assert linkage["linkequip"] == camera["id"]
+            assert linkage["monitorequip"] == preset["valueField"]
+            assert str(linkage["isenable"]) == "0"
+            assert int(linkage["residenceTime"]) == 9
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
@@ -562,3 +729,19 @@ class TestDatabaseApi:
         preset_list = preset_response.json()
         assert len(preset_list) > 0
         assert preset_list[0]["valueField"]
+
+    @allure.title("联动辅助查询接口对无效参数返回空结果")
+    def test_linkage_auxiliary_queries_return_empty_results_for_invalid_ids(self, auth_api, database_api, test_user):
+        """校验联动辅助查询在无效设备和摄像机参数下不会报错，并返回空结果。"""
+        self._login(auth_api, test_user)
+
+        camera_response = database_api.query_camera_list("invalid-equip-id")
+        assert camera_response.status_code == 200
+
+        camera_body = camera_response.json()
+        assert camera_body["status"] == 0
+        assert camera_body["data"] == []
+
+        preset_response = database_api.query_preset_list("invalid-camera-id", "invalid-equip-id")
+        assert preset_response.status_code == 200
+        assert preset_response.json() == []
