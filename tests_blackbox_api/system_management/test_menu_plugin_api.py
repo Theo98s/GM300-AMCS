@@ -189,3 +189,42 @@ class TestMenuPluginApi:
         assert realtime_node["text"] == "实时监控"
         assert realtime_node["state"] == "closed"
         assert realtime_node["url"] is None
+
+    @allure.title("用户菜单树容器模块保持 closed 与空路由约定")
+    def test_user_menu_tree_container_modules_keep_closed_state_and_empty_route(self, auth_api, menu_api, test_user):
+        """校验历史、基础、配置和系统管理这类容器模块保持折叠状态与空字符串路由。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = menu_api.get_user_menu_tree()
+        body = response.json()
+        container_ids = {
+            "GM300-AMCS:history",
+            "GM300-AMCS:base",
+            "GM300-AMCS:config",
+            "GM300-AMCS:sys",
+        }
+
+        for item in body[0]["children"]:
+            if item["id"] in container_ids:
+                assert item["state"] == "closed"
+                assert item["url"] == ""
+
+    @allure.title("插件菜单定义包含首页和视频回放路由")
+    def test_plugin_menu_content_contains_home_and_playback_routes(self, auth_api, plugin_api, test_user):
+        """校验插件 XML 定义中仍然保留首页和视频回放等基础页面路由。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = plugin_api.find_plugin()
+        body = response.json()
+        plugin = next(item for item in body if item["pkey"] == "GM300-AMCS")
+
+        assert "/das/home" in plugin["menuContent"]
+        assert "/amcs/video/playback" in plugin["menuContent"]

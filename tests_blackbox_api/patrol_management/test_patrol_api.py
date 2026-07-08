@@ -155,3 +155,42 @@ class TestPatrolApi:
         assert "weeks" in first_plan
         assert first_plan["weeks"] is None or isinstance(first_plan["weeks"], str)
         assert isinstance(first_plan["canBeStarted"], bool)
+
+    @allure.title("巡检计划基础展示字段保持非空")
+    def test_patrol_plan_primary_display_fields_are_non_empty(self, auth_api, patrol_api, test_user):
+        """有巡检计划数据时校验卡片名和所属所亭等核心展示字段保持非空。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = patrol_api.list_patrol_plans()
+        body = response.json()
+        if not body:
+            pytest.skip("Current environment has no patrol plans.")
+
+        first_plan = body[0]
+        assert first_plan["cardName"]
+        assert first_plan["subName"]
+        assert isinstance(first_plan["details"], list)
+
+    @allure.title("巡检计划详情字段保持整数与数字字符串约定")
+    def test_patrol_plan_detail_numeric_fields_keep_expected_types(self, auth_api, patrol_api, test_user):
+        """有巡检计划详情时校验停留时长、抓拍数量和序号字段类型稳定。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = patrol_api.list_patrol_plans()
+        body = response.json()
+        if not body or not body[0]["details"]:
+            pytest.skip("Current environment has no patrol plan details.")
+
+        first_detail = body[0]["details"][0]
+        assert isinstance(first_detail["residenceTime"], int)
+        assert isinstance(first_detail["pictureCount"], int)
+        assert isinstance(first_detail["seq"], str)
+        assert first_detail["seq"].isdigit()

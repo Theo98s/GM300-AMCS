@@ -174,3 +174,70 @@ class TestRdacApi:
         assert telemetry_item["name"]
         assert telemetry_item["unit"]
         assert telemetry_item["reference"].startswith(("AIU_", "DIU_", "DOU_", "AOU_"))
+
+    @allure.title("RDAC 遥信点位保持布尔标签与存储字段结构")
+    def test_rdac_telesignal_item_contains_expected_fields(self, auth_api, rdac_api, test_user, target_config):
+        """校验 RDAC 遥信点位列表中的首条记录保留名称、引用、真假标签和存储字段。"""
+        target_sub_name, target_protocol = self._rdac_target(target_config)
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = rdac_api.list_station_items(target_sub_name, target_protocol)
+        telesignal_item = response.json()["data"]["telesignalItems"][0]
+
+        assert set(telesignal_item.keys()) >= {
+            "name",
+            "reference",
+            "type",
+            "trueLabel",
+            "falseLabel",
+            "store",
+            "cache",
+            "period",
+        }
+        assert telesignal_item["reference"].startswith("SCS_")
+        assert isinstance(telesignal_item["period"], int)
+
+    @allure.title("RDAC 遥控点位保持开合标签与选择字段")
+    def test_rdac_remote_control_item_contains_expected_fields(self, auth_api, rdac_api, test_user, target_config):
+        """校验 RDAC 遥控点位列表中的首条记录保留开关标签和选择控制字段。"""
+        target_sub_name, target_protocol = self._rdac_target(target_config)
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = rdac_api.list_station_items(target_sub_name, target_protocol)
+        remote_control_item = response.json()["data"]["remoteControlItems"][0]
+
+        assert set(remote_control_item.keys()) >= {
+            "name",
+            "reference",
+            "trueLabel",
+            "falseLabel",
+            "select",
+        }
+        assert remote_control_item["reference"].startswith("DOS_")
+        assert remote_control_item["select"] in {"0", "1"}
+
+    @allure.title("RDAC 遥调点位上下限与单位字段可用")
+    def test_rdac_remote_adjust_item_contains_range_and_unit(self, auth_api, rdac_api, test_user, target_config):
+        """校验 RDAC 遥调点位列表中的首条记录保留上下限范围和单位字段。"""
+        target_sub_name, target_protocol = self._rdac_target(target_config)
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = rdac_api.list_station_items(target_sub_name, target_protocol)
+        remote_adjust_item = response.json()["data"]["remoteAdjustItems"][0]
+
+        assert set(remote_adjust_item.keys()) >= {"name", "reference", "min", "max", "unit"}
+        assert remote_adjust_item["reference"].startswith(("SIP_", "AOP_"))
+        assert remote_adjust_item["min"] <= remote_adjust_item["max"]
+        assert remote_adjust_item["unit"]

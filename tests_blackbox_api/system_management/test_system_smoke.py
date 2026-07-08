@@ -104,3 +104,31 @@ class TestSystemSmoke:
         if body["data"]:
             first_item = body["data"][0]
             assert set(first_item.keys()) >= {"name", "serviceUp", "deviceList"}
+
+    @allure.title("时间戳接口连续请求保持非递减")
+    def test_timestamp_after_login_is_monotonic(self, auth_api, system_api, test_user):
+        """校验同一会话下连续两次获取时间戳时，后一次结果不小于前一次。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        first_response = system_api.get_timestamp()
+        second_response = system_api.get_timestamp()
+
+        first_value = first_response.json()
+        second_value = second_response.json()
+        assert isinstance(first_value, int)
+        assert isinstance(second_value, int)
+        assert second_value >= first_value
+
+    @allure.title("健康检查 deviceList 字段允许为空或列表")
+    def test_health_check_device_list_uses_nullable_list_contract(self, system_api):
+        """校验健康检查中的 deviceList 字段保持列表或空值契约，避免前端解析出错。"""
+        response = system_api.get_health()
+        body = response.json()
+
+        for item in body["data"]:
+            assert isinstance(item["serviceUp"], bool)
+            assert item["deviceList"] is None or isinstance(item["deviceList"], list)
