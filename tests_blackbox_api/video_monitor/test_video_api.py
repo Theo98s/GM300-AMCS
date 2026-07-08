@@ -114,3 +114,35 @@ class TestVideoApi:
         assert "channelNo" in first_item
         assert "nvrSerialNum" in first_item
         assert first_item["channelNo"]
+
+    @allure.title("视频树节点默认展开且模型类型非空")
+    def test_camera_tree_nodes_are_open_and_model_type_present(self, auth_api, video_api, test_user):
+        """校验视频树前几个节点默认展开，且模型类型字段非空。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_camera_tree()
+        body = response.json()
+
+        for node in body[:3]:
+            assert node["state"] == "open"
+            assert node["model"]["type"]
+
+    @allure.title("预置位摄像机列表通道号使用字符串且轨道机标记为布尔值")
+    def test_preset_cameras_channel_and_rail_machine_types_are_stable(self, auth_api, video_api, test_user):
+        """校验预置位摄像机列表中的通道号和轨道机标记字段类型稳定。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_preset_cameras()
+        first_item = response.json()["data"][0]
+
+        assert isinstance(first_item["channelNo"], str)
+        assert first_item["channelNo"].isdigit()
+        assert isinstance(first_item["railMachine"], bool)

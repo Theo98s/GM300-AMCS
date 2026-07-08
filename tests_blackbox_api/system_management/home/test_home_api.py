@@ -127,6 +127,22 @@ class TestHomeApi:
             "GM300-AMCS:sys",
         } <= top_ids
 
+    @allure.title("首页菜单一级模块顺序与用户菜单树保持一致")
+    def test_init_menu_top_level_ids_match_user_menu_tree(self, auth_api, home_api, menu_api, test_user):
+        """校验首页菜单和用户菜单树的一级模块顺序保持一致。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        init_menu_body = home_api.init_menu().json()
+        menu_tree_body = menu_api.get_user_menu_tree().json()
+        init_ids = [item["id"] for item in init_menu_body["data"]["hostMenuList"][0]["leaf"]]
+        tree_ids = [item["id"] for item in menu_tree_body[0]["children"]]
+
+        assert init_ids == tree_ids
+
     @allure.title("设备区域字典项包含编码层级与展示字段")
     def test_equip_area_dict_entries_contain_expected_keys(self, auth_api, home_api, test_user):
         """校验设备区域字典项包含编码、名称、层级父节点和展示字段。"""

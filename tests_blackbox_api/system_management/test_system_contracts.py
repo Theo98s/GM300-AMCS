@@ -74,3 +74,17 @@ class TestSystemContracts:
         assert isinstance(first_service["serviceUp"], bool)
         assert isinstance(first_service["deviceList"], list)
         assert first_service["name"]
+
+    @allure.title("健康检查所有服务项使用统一字段结构")
+    def test_health_check_all_services_share_same_keys(self, system_api):
+        """Verify every health-check service entry keeps the same response-key shape."""
+        response = system_api.get_health()
+        body = response.json()
+
+        if not body["data"]:
+            return
+
+        expected_keys = set(body["data"][0].keys())
+        for item in body["data"]:
+            assert set(item.keys()) == expected_keys
+            assert isinstance(item["serviceUp"], bool)

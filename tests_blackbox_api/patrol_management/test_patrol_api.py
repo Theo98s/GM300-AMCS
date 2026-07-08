@@ -101,3 +101,21 @@ class TestPatrolApi:
         assert first_detail["presetName"]
         assert first_detail["residenceTime"] >= 0
         assert first_detail["pictureCount"] >= 0
+
+    @allure.title("巡检计划详情扩展字段保持字典结构")
+    def test_patrol_plan_details_ext_field_is_dict(self, auth_api, patrol_api, test_user):
+        """有巡检计划数据时校验详情 ext 字段仍是对象结构。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = patrol_api.list_patrol_plans()
+        body = response.json()
+        if not body or not body[0]["details"]:
+            pytest.skip("当前环境没有巡检计划详情，跳过 ext 字段校验")
+
+        first_detail = body[0]["details"][0]
+        assert isinstance(first_detail["ext"], dict)
+        assert isinstance(first_detail["seq"], str)

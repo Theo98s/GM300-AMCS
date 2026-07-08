@@ -105,3 +105,19 @@ class TestHistoryApi:
         create_time = body["rows"][0]["createTime"]
         assert isinstance(create_time, int)
         assert create_time > 0
+
+    @allure.title("联动历史状态字段保持字符串类型")
+    def test_monitor_link_history_status_uses_string_type(self, auth_api, history_api, test_user):
+        """校验联动历史记录中的 status 字段保持字符串类型。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = history_api.find_monitor_link_history({"rows": 2})
+        body = response.json()
+        assert len(body["rows"]) >= 1
+
+        for row in body["rows"]:
+            assert isinstance(row["status"], str)

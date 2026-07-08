@@ -113,3 +113,19 @@ class TestGisApi:
 
         assert body["status"] == 0
         assert "地图类型参数" in body["message"]
+
+    @allure.title("二维地图属性返回二维地图来源分类")
+    def test_d2_map_prop_contains_source_category(self, auth_api, gis_api, test_user):
+        """校验二维地图属性中保留来源分类和二维类型标识。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = gis_api.get_d2_map_prop()
+        body = response.json()
+
+        assert body["status"] == 0
+        assert body["data"]["typeCode"] == "2d"
+        assert body["data"]["sourceCategory"] == "二维地图"
