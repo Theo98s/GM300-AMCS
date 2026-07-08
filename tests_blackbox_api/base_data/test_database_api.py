@@ -229,6 +229,81 @@ class TestDatabaseApi:
         deleted_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
         assert deleted_row is None
 
+    @allure.title("监控点删除前校验支持批量监控点 ID")
+    def test_monitor_can_delete_accepts_multiple_created_ids(self, auth_api, database_api, test_user):
+        """新建两条监控点后，校验删除前检查接口可一次处理多个监控点 ID。"""
+        self._login(auth_api, test_user)
+
+        created_monitor_ids = []
+        try:
+            for index in range(2):
+                alarm_datatype = self._build_unique_text(f"AUTO-批量校验{index}")
+                scada_addr10 = self._build_unique_text("ADDR")
+                payload = self._build_base_monitor_payload(database_api)
+                payload.update(
+                    {
+                        "alarmDatatype": alarm_datatype,
+                        "scadaAddr10": scada_addr10,
+                    }
+                )
+                assert database_api.validate_monitor(payload).json()["status"] == 0
+                assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+                created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+                assert created_row is not None
+                created_monitor_ids.append(created_row["id"])
+
+            response = database_api.can_delete_monitor(created_monitor_ids)
+            assert response.status_code == 200
+
+            body = response.json()
+            assert body["status"] == 0
+            assert body["message"] == "数据查询成功!"
+            assert body["data"]["image"] == []
+        finally:
+            for monitor_id in created_monitor_ids:
+                self._cleanup_monitor_if_exists(database_api, monitor_id)
+
+    @allure.title("监控点删除接口支持批量删除新增记录")
+    def test_monitor_delete_accepts_multiple_created_ids(self, auth_api, database_api, test_user):
+        """新建两条监控点后，校验批量删除接口可一次删除两条记录。"""
+        self._login(auth_api, test_user)
+
+        created_monitor_ids = []
+        created_fields = []
+        try:
+            for index in range(2):
+                alarm_datatype = self._build_unique_text(f"AUTO-批量删除{index}")
+                scada_addr10 = self._build_unique_text("ADDR")
+                payload = self._build_base_monitor_payload(database_api)
+                payload.update(
+                    {
+                        "alarmDatatype": alarm_datatype,
+                        "scadaAddr10": scada_addr10,
+                    }
+                )
+                assert database_api.validate_monitor(payload).json()["status"] == 0
+                assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+                created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+                assert created_row is not None
+                created_monitor_ids.append(created_row["id"])
+                created_fields.append((alarm_datatype, scada_addr10))
+
+            response = database_api.delete_monitor_by_ids(created_monitor_ids)
+            assert response.status_code == 200
+
+            body = response.json()
+            assert body["status"] == 0
+            assert body["message"] == "操作成功!"
+
+            for alarm_datatype, scada_addr10 in created_fields:
+                assert self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10) is None
+            created_monitor_ids.clear()
+        finally:
+            for monitor_id in created_monitor_ids:
+                self._cleanup_monitor_if_exists(database_api, monitor_id)
+
     @allure.title("监控点模板导入接口返回结构化结果")
     def test_monitor_import(self, auth_api, database_api, test_user):
         """先导出监控点数据，再回灌导入校验接口闭环可用。"""
@@ -261,6 +336,22 @@ class TestDatabaseApi:
         assert response.status_code == 200
         assert len(response.content) > 0
         assert "attachment" in response.headers.get("Content-Disposition", "")
+
+    @allure.title("三类基础数据库导出接口返回 Excel 内容类型")
+    def test_database_exports_use_excel_content_type(self, auth_api, database_api, test_user):
+        """依次校验监控点、报警配置和联动配置导出接口都返回 Excel 内容类型。"""
+        self._login(auth_api, test_user)
+
+        export_cases = [
+            ("monitorImport.xls", "监控点"),
+            ("alarmImport.xls", "报警配置"),
+            ("linkageImport.xls", "联动配置"),
+        ]
+        for template_name, download_name in export_cases:
+            response = database_api.export_excel(template_name, download_name)
+            assert response.status_code == 200
+            assert "application/vnd.ms-excel" in response.headers.get("Content-Type", "")
+            assert "attachment" in response.headers.get("Content-Disposition", "").lower()
 
     @allure.title("监控点列表接口返回标准字段")
     def test_monitor_list_returns_standard_fields(self, auth_api, database_api, test_user):
@@ -495,6 +586,39 @@ class TestDatabaseApi:
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
+    @allure.title("新建监控点编辑页保留默认存储标记和 yx 配置")
+    def test_monitor_edit_page_preserves_default_is_stored_and_yx_config(self, auth_api, database_api, test_user):
+        """新建监控点后回查编辑页，校验默认存储标记和 yx 标签配置被正确保留。"""
+        self._login(auth_api, test_user)
+
+        alarm_datatype = self._build_unique_text("AUTO-默认配置")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            edit_response = database_api.get_monitor_edit_page(created_monitor_id)
+            assert edit_response.status_code == 200
+
+            monitor_json = self._extract_hidden_json(edit_response.text, "monitorJsonId")
+            assert monitor_json["isStored"] == "0"
+            assert json.loads(monitor_json["yx"]) == json.loads(payload["yx"])
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
     @allure.title("纯监控点编辑页条件联动隐藏字段为空字符串")
     def test_monitor_edit_page_condition_linkage_field_is_empty_without_configs(self, auth_api, database_api, test_user):
         """新建不带报警和联动配置的监控点后，校验条件联动隐藏字段为空字符串。"""
@@ -568,6 +692,15 @@ class TestDatabaseApi:
         assert response.status_code == 200
         assert len(response.content) > 0
         assert "application/vnd.ms-excel" in response.headers.get("Content-Type", "")
+
+    @allure.title("监控点 XML 导出接口返回附件响应头")
+    def test_monitor_xml_export_includes_attachment_header(self, auth_api, database_api, test_user):
+        """校验 XML 点表导出接口通过附件头返回可下载文件。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.export_monitor_xml()
+        assert response.status_code == 200
+        assert "attachment" in response.headers.get("Content-Disposition", "").lower()
 
     @allure.title("报警配置新增可持久化到监控点条件配置")
     def test_alarm_config_add(self, auth_api, database_api, test_user):
