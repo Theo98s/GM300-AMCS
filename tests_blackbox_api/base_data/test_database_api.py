@@ -342,6 +342,18 @@ class TestDatabaseApi:
         assert body["total"] == 0
         assert body["rows"] == []
 
+    @allure.title("监控点列表分页参数可限制返回条数")
+    def test_monitor_list_respects_rows_pagination_parameter(self, auth_api, database_api, test_user):
+        """校验监控点列表在 rows=1 时最多只返回一条记录。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.list_monitors(page=1, rows=1)
+        assert response.status_code == 200
+
+        body = response.json()
+        assert body["total"] >= 1
+        assert len(body["rows"]) <= 1
+
     @allure.title("监控点导入页包含三类导入导出配置")
     def test_monitor_import_page_contains_expected_sections(self, auth_api, database_api, test_user):
         """校验导入页已挂载监控点、报警配置和联动配置三类入口。"""
@@ -453,6 +465,38 @@ class TestDatabaseApi:
 
             raw_condition_linkage = self._extract_hidden_value(edit_response.text, "conditionLinkageJsonId")
             assert raw_condition_linkage == ""
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
+    @allure.title("监控点编辑页隐藏编辑 ID 与新建记录 ID 一致")
+    def test_monitor_edit_page_edit_monitor_id_matches_created_monitor(self, auth_api, database_api, test_user):
+        """新建监控点后回查编辑页，校验隐藏的 editMonitorId 与列表中的监控点 ID 一致。"""
+        self._login(auth_api, test_user)
+
+        alarm_datatype = self._build_unique_text("AUTO-编辑ID")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            edit_response = database_api.get_monitor_edit_page(created_monitor_id)
+            assert edit_response.status_code == 200
+
+            edit_monitor_id = self._extract_hidden_value(edit_response.text, "editMonitorId")
+            assert edit_monitor_id == created_monitor_id
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
@@ -618,6 +662,19 @@ class TestDatabaseApi:
         assert body["status"] == 0
         assert body["message"] == "操作成功!"
 
+    @allure.title("监控点删除前校验对不存在 ID 返回空依赖列表")
+    def test_monitor_can_delete_nonexistent_ids_returns_empty_dependencies(self, auth_api, database_api, test_user):
+        """校验删除前校验接口对不存在的监控点 ID 返回空依赖列表而不是报错。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.can_delete_monitor(["not-exists-id-1", "not-exists-id-2"])
+        assert response.status_code == 200
+
+        body = response.json()
+        assert body["status"] == 0
+        assert body["message"] == "数据查询成功!"
+        assert body["data"]["image"] == []
+
     @allure.title("报警配置模板导入接口返回结构化结果")
     def test_alarm_config_import(self, auth_api, database_api, test_user):
         """先导出报警配置数据，再回灌导入校验接口闭环可用。"""
@@ -766,6 +823,69 @@ class TestDatabaseApi:
             assert linkage["monitorequip"] == preset["valueField"]
             assert str(linkage["isenable"]) == "0"
             assert int(linkage["residenceTime"]) == 9
+        finally:
+            self._cleanup_monitor_if_exists(database_api, created_monitor_id)
+
+    @allure.title("报警与联动配置可在同一条件下同时回显")
+    def test_alarm_and_linkage_config_can_coexist_in_single_condition(self, auth_api, database_api, test_user):
+        """新增同时包含报警字段和视频联动的条件，并校验编辑页两部分配置都被保留。"""
+        self._login(auth_api, test_user)
+
+        related_equip, camera, preset = self._get_linkage_target(database_api)
+        alarm_datatype = self._build_unique_text("AUTO-组合配置")
+        scada_addr10 = self._build_unique_text("ADDR")
+        payload = self._build_base_monitor_payload(database_api)
+        payload.update(
+            {
+                "alarmDatatype": alarm_datatype,
+                "scadaAddr10": scada_addr10,
+                "conditions": [
+                    {
+                        "teleMinValue": "true",
+                        "isenable": 1,
+                        "alarmLevel": "03",
+                        "alarmType": "02",
+                        "trigecondition": 1,
+                        "linkages": [
+                            {
+                                "exeNo": 1,
+                                "linktype": "1",
+                                "isenable": 1,
+                                "relateEquip": related_equip["equipId"],
+                                "linkequip": camera["id"],
+                                "monitorequip": preset["valueField"],
+                                "residenceTime": "6",
+                                "isremote": None,
+                            }
+                        ],
+                    }
+                ],
+            }
+        )
+
+        created_monitor_id = None
+        try:
+            assert database_api.validate_monitor(payload).json()["status"] == 0
+            assert database_api.save_or_update_monitor(payload).json()["status"] == 0
+
+            created_row = self._find_monitor_by_fields(database_api, alarm_datatype, scada_addr10)
+            assert created_row is not None
+            created_monitor_id = created_row["id"]
+
+            edit_response = database_api.get_monitor_edit_page(created_monitor_id)
+            assert edit_response.status_code == 200
+
+            condition_linkage = self._extract_hidden_json(edit_response.text, "conditionLinkageJsonId")
+            assert len(condition_linkage) == 1
+            assert condition_linkage[0]["condition"]["alarmLevel"] == "03"
+            assert condition_linkage[0]["condition"]["alarmType"] == "02"
+            assert condition_linkage[0]["condition"]["teleMinValue"] == "true"
+
+            linkage = condition_linkage[0]["linkageList"][0]
+            assert linkage["linktype"] == "1"
+            assert linkage["linkequip"] == camera["id"]
+            assert linkage["monitorequip"] == preset["valueField"]
+            assert int(linkage["residenceTime"]) == 6
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
