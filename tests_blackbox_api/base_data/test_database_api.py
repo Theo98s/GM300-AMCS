@@ -354,6 +354,23 @@ class TestDatabaseApi:
         assert body["total"] >= 1
         assert len(body["rows"]) <= 1
 
+    @allure.title("监控点列表翻页后返回不同记录")
+    def test_monitor_list_second_page_returns_different_record(self, auth_api, database_api, test_user):
+        """校验监控点列表在总数大于一条时，第二页能返回与第一页不同的记录。"""
+        self._login(auth_api, test_user)
+
+        first_page_response = database_api.list_monitors(page=1, rows=1)
+        second_page_response = database_api.list_monitors(page=2, rows=1)
+        assert first_page_response.status_code == 200
+        assert second_page_response.status_code == 200
+
+        first_page_body = first_page_response.json()
+        second_page_body = second_page_response.json()
+        assert first_page_body["total"] > 1
+        assert len(first_page_body["rows"]) == 1
+        assert len(second_page_body["rows"]) == 1
+        assert first_page_body["rows"][0]["id"] != second_page_body["rows"][0]["id"]
+
     @allure.title("监控点导入页包含三类导入导出配置")
     def test_monitor_import_page_contains_expected_sections(self, auth_api, database_api, test_user):
         """校验导入页已挂载监控点、报警配置和联动配置三类入口。"""
@@ -386,6 +403,21 @@ class TestDatabaseApi:
             assert len(response.content) > 0
             assert "application/vnd.ms-excel" in response.headers.get("Content-Type", "")
 
+    @allure.title("监控点三类模板下载响应包含附件头")
+    def test_monitor_template_downloads_include_attachment_headers(self, auth_api, database_api, test_user):
+        """校验三类模板下载接口都通过附件响应头返回可下载文件。"""
+        self._login(auth_api, test_user)
+
+        template_cases = [
+            ("monitorTemplate.xls", "监控点模板"),
+            ("alarmTemplate.xls", "报警配置模板"),
+            ("linkageTemplate.xls", "联动配置模板"),
+        ]
+        for template_name, download_name in template_cases:
+            response = database_api.download_template(template_name, download_name)
+            assert response.status_code == 200
+            assert "attachment" in response.headers.get("Content-Disposition", "").lower()
+
     @allure.title("监控点编辑页可返回隐藏配置字段")
     def test_monitor_edit_page_contains_hidden_json_fields(self, auth_api, database_api, test_user):
         """打开现有监控点编辑页，校验监控点和条件联动隐藏字段存在。"""
@@ -399,6 +431,33 @@ class TestDatabaseApi:
         assert 'id="monitorJsonId"' in page_text
         assert 'id="conditionLinkageJsonId"' in page_text
         assert 'id="editMonitorId"' in page_text
+
+    @allure.title("监控点编辑页监控点 JSON 与请求监控点 ID 一致")
+    def test_monitor_edit_page_monitor_json_id_matches_requested_monitor(self, auth_api, database_api, test_user):
+        """打开现有监控点编辑页，校验监控点隐藏 JSON 中的 id 与请求参数一致。"""
+        self._login(auth_api, test_user)
+
+        row = self._get_existing_monitor_row(database_api)
+        response = database_api.get_monitor_edit_page(row["id"])
+        assert response.status_code == 200
+
+        monitor_json = self._extract_hidden_json(response.text, "monitorJsonId")
+        assert monitor_json["id"] == row["id"]
+
+    @allure.title("监控点编辑页 yx 标签配置可反序列化")
+    def test_monitor_edit_page_yx_config_is_parseable_json(self, auth_api, database_api, test_user):
+        """打开现有遥信监控点编辑页，校验 yx 标签配置仍是可解析的 JSON 字符串。"""
+        self._login(auth_api, test_user)
+
+        row = self._get_existing_monitor_row(database_api)
+        response = database_api.get_monitor_edit_page(row["id"])
+        assert response.status_code == 200
+
+        monitor_json = self._extract_hidden_json(response.text, "monitorJsonId")
+        yx_config = json.loads(monitor_json["yx"])
+        assert set(yx_config.keys()) >= {"FALSE_LABEL", "TRUE_LABEL"}
+        assert yx_config["FALSE_LABEL"]
+        assert yx_config["TRUE_LABEL"]
 
     @allure.title("监控点编辑页监控点 JSON 与新建数据一致")
     def test_monitor_edit_page_monitor_json_matches_created_monitor(self, auth_api, database_api, test_user):
