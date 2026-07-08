@@ -462,6 +462,18 @@ class TestDatabaseApi:
         assert len(second_page_body["rows"]) == 1
         assert first_page_body["rows"][0]["id"] != second_page_body["rows"][0]["id"]
 
+    @allure.title("监控点列表在总数充足时返回指定页大小")
+    def test_monitor_list_returns_requested_page_size_when_total_allows(self, auth_api, database_api, test_user):
+        """校验监控点列表在总数大于页大小时，会按 rows 参数返回指定数量的记录。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.list_monitors(page=1, rows=2)
+        assert response.status_code == 200
+
+        body = response.json()
+        assert body["total"] >= 2
+        assert len(body["rows"]) == 2
+
     @allure.title("监控点导入页包含三类导入导出配置")
     def test_monitor_import_page_contains_expected_sections(self, auth_api, database_api, test_user):
         """校验导入页已挂载监控点、报警配置和联动配置三类入口。"""
@@ -549,6 +561,21 @@ class TestDatabaseApi:
         assert set(yx_config.keys()) >= {"FALSE_LABEL", "TRUE_LABEL"}
         assert yx_config["FALSE_LABEL"]
         assert yx_config["TRUE_LABEL"]
+
+    @allure.title("监控点编辑页监控点 JSON 保留可选设备字段")
+    def test_monitor_edit_page_monitor_json_preserves_optional_device_fields(self, auth_api, database_api, test_user):
+        """打开现有监控点编辑页，校验可选设备字段仍以字符串形式回显。"""
+        self._login(auth_api, test_user)
+
+        row = self._get_existing_monitor_row(database_api)
+        response = database_api.get_monitor_edit_page(row["id"])
+        assert response.status_code == 200
+
+        monitor_json = self._extract_hidden_json(response.text, "monitorJsonId")
+        assert isinstance(monitor_json["monitorDeviceId"], str)
+        assert isinstance(monitor_json["monitorDeviceName"], str)
+        assert isinstance(monitor_json["scadaAddr10"], str)
+        assert monitor_json["isStored"] in {"0", "1"}
 
     @allure.title("监控点编辑页监控点 JSON 与新建数据一致")
     def test_monitor_edit_page_monitor_json_matches_created_monitor(self, auth_api, database_api, test_user):
@@ -1146,6 +1173,69 @@ class TestDatabaseApi:
         preset_list = preset_response.json()
         assert len(preset_list) > 0
         assert preset_list[0]["valueField"]
+
+    @allure.title("联动关联设备列表返回标准视频字段")
+    def test_linkage_related_equip_entries_contain_expected_keys(self, auth_api, database_api, test_user):
+        """校验联动关联设备列表中的首条数据包含标准视频定位字段。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.query_related_equip_list()
+        assert response.status_code == 200
+
+        body = response.json()
+        assert len(body) > 0
+        assert set(body[0].keys()) >= {
+            "equipId",
+            "equipName",
+            "id",
+            "cameraName",
+            "channelNo",
+            "nvrSerialNum",
+            "valueField",
+        }
+
+    @allure.title("联动摄像机列表返回标准视频字段")
+    def test_linkage_camera_entries_contain_expected_keys(self, auth_api, database_api, test_user):
+        """校验联动摄像机列表中的首条数据包含标准视频定位字段。"""
+        self._login(auth_api, test_user)
+
+        related_equip, _, _ = self._get_linkage_target(database_api)
+        response = database_api.query_camera_list(related_equip["equipId"])
+        assert response.status_code == 200
+
+        body = response.json()
+        assert body["status"] == 0
+        assert len(body["data"]) > 0
+        assert set(body["data"][0].keys()) >= {
+            "equipId",
+            "equipName",
+            "id",
+            "cameraName",
+            "channelNo",
+            "nvrSerialNum",
+            "valueField",
+        }
+
+    @allure.title("联动预置位列表返回标准视频字段")
+    def test_linkage_preset_entries_contain_expected_keys(self, auth_api, database_api, test_user):
+        """校验联动预置位列表中的首条数据包含标准视频定位字段。"""
+        self._login(auth_api, test_user)
+
+        related_equip, camera, _ = self._get_linkage_target(database_api)
+        response = database_api.query_preset_list(camera["id"], related_equip["equipId"])
+        assert response.status_code == 200
+
+        body = response.json()
+        assert len(body) > 0
+        assert set(body[0].keys()) >= {
+            "equipId",
+            "equipName",
+            "id",
+            "cameraName",
+            "channelNo",
+            "nvrSerialNum",
+            "valueField",
+        }
 
     @allure.title("联动辅助查询接口对无效参数返回空结果")
     def test_linkage_auxiliary_queries_return_empty_results_for_invalid_ids(self, auth_api, database_api, test_user):
