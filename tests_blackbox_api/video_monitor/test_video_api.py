@@ -42,6 +42,37 @@ class TestVideoApi:
         assert "channelNum" in first_model
         assert "nvrSerialNum" in first_model
         assert first_model["channelNum"] >= 1
+
+    @allure.title("First camera tree node keeps icon style markers")
+    def test_camera_tree_first_node_icon_style_is_present(self, auth_api, video_api, test_user):
+        """Verify the first camera-tree node keeps a non-empty icon style string for frontend rendering."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_camera_tree()
+        first_node = response.json()[0]
+
+        assert isinstance(first_node["iconCls"], str)
+        assert first_node["iconCls"]
+        assert "iconfont" in first_node["iconCls"]
+
+    @allure.title("First camera tree model keeps extended rendering fields")
+    def test_camera_tree_first_model_contains_extended_rendering_fields(self, auth_api, video_api, test_user):
+        """Verify the embedded camera model keeps the extra fields required by the tree component."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_camera_tree()
+        first_model = response.json()[0]["model"]
+
+        assert set(first_model.keys()) >= {"cameraId", "subId", "openClosed", "text", "url"}
+        assert first_model["text"] == first_model["name"]
         assert first_model["nvrSerialNum"]
 
     @allure.title("预置位摄像机列表返回设备名称")

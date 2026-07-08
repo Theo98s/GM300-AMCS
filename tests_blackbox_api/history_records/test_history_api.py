@@ -121,3 +121,23 @@ class TestHistoryApi:
 
         for row in body["rows"]:
             assert isinstance(row["status"], str)
+
+    @allure.title("History nullable linkage fields keep accepted types")
+    def test_monitor_link_history_nullable_fields_keep_expected_types(self, auth_api, history_api, test_user):
+        """Verify nullable linkage fields remain nullable while core text fields stay populated."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = history_api.find_monitor_link_history({"rows": 3})
+        body = response.json()
+        assert len(body["rows"]) >= 1
+
+        for row in body["rows"]:
+            assert isinstance(row["alarmType"], str)
+            assert isinstance(row["description"], str)
+            assert row["description"]
+            assert row["linkage"] is None or isinstance(row["linkage"], str)
+            assert row["linkDt"] is None or isinstance(row["linkDt"], str)

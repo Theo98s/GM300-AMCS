@@ -92,3 +92,24 @@ class TestAlarmApi:
 
         alarm_dt = body[0]["alarmDt"]
         assert re.fullmatch(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}", alarm_dt)
+
+    @allure.title("Alarm record codes and flags keep string-code types")
+    def test_alarm_record_code_fields_use_string_types(self, auth_api, alarm_api, test_user):
+        """Verify alarm code and flag fields remain string-based codes for frontend rendering."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = alarm_api.get_alarm_record_page()
+        body = response.json()
+        if not body:
+            pytest.skip("Current environment has no alarm records.")
+
+        for row in body[:3]:
+            assert isinstance(row["alarmLevel"], str)
+            assert isinstance(row["status"], str)
+            assert isinstance(row["hasLink"], str)
+            assert isinstance(row["isPatrol"], str)
+            assert isinstance(row["alarmSource"], str)

@@ -161,3 +161,19 @@ class TestGisApi:
 
         assert body["d3DataName"].startswith("3dtiles")
         assert body["d3DataPath"].startswith("/cesium-data/")
+
+    @allure.title("GIS config keeps local server URL and d3 view coordinate format")
+    def test_d3_gis_config_view_and_server_fields_use_expected_formats(self, auth_api, gis_api, test_user):
+        """Verify the GIS config keeps an HTTP local-server URL and a two-segment coordinate view string."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = gis_api.get_d3_gis_config()
+        body = response.json()["data"]
+
+        assert body["localServerUrl"].startswith("http://")
+        assert "127.0.0.1" in body["localServerUrl"]
+        assert re.fullmatch(r"\[\[[^]]+\],\[[^]]+\]\]", body["d3View"])

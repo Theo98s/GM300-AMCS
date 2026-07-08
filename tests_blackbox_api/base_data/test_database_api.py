@@ -1440,3 +1440,60 @@ class TestDatabaseApi:
         preset_response = database_api.query_preset_list("invalid-camera-id", "invalid-equip-id")
         assert preset_response.status_code == 200
         assert preset_response.json() == []
+
+    @allure.title("Monitor import page exposes all three Excel template entries")
+    def test_monitor_import_page_contains_all_template_names(self, auth_api, database_api, test_user):
+        """Verify the base-data import page still exposes monitor, alarm, and linkage Excel templates."""
+        self._login(auth_api, test_user)
+
+        response = database_api.get_monitor_import_page()
+        assert response.status_code == 200
+
+        assert "monitorImport.xls" in response.text
+        assert "alarmImport.xls" in response.text
+        assert "linkageImport.xls" in response.text
+
+    @allure.title("Base-data Excel exports keep attachment headers and xls suffix")
+    def test_database_excel_exports_keep_attachment_headers_and_xls_suffix(self, auth_api, database_api, test_user):
+        """Verify monitor, alarm, and linkage exports all remain downloadable Excel attachments."""
+        self._login(auth_api, test_user)
+
+        export_pairs = [
+            ("monitorImport.xls", "监控点"),
+            ("alarmImport.xls", "报警配置"),
+            ("linkageImport.xls", "联动配置"),
+        ]
+        for template_name, download_name in export_pairs:
+            response = database_api.export_excel(template_name, download_name)
+            assert response.status_code == 200
+            assert "attachment" in response.headers.get("Content-Disposition", "")
+            assert ".xls" in response.headers.get("Content-Disposition", "")
+            assert "application/vnd.ms-excel" in response.headers.get("Content-Type", "")
+
+    @allure.title("Linkage auxiliary valueField uses pair-code format")
+    def test_linkage_auxiliary_value_field_uses_pair_format(self, auth_api, database_api, test_user):
+        """Verify related equipment, camera, and preset records keep the expected pair-code valueField format."""
+        self._login(auth_api, test_user)
+
+        related_equip, camera, preset = self._get_linkage_target(database_api)
+        related_entry = database_api.query_related_equip_list().json()[0]
+        camera_entry = database_api.query_camera_list(related_equip["equipId"]).json()["data"][0]
+
+        for entry in (related_entry, camera_entry, preset):
+            assert re.fullmatch(r"\d+-\d+", entry["valueField"])
+
+    @allure.title("Linkage auxiliary nullable video fields keep stable types")
+    def test_linkage_auxiliary_nullable_video_fields_keep_expected_types(self, auth_api, database_api, test_user):
+        """Verify nullable video-related fields stay nullable strings and channel numbers stay non-negative integers."""
+        self._login(auth_api, test_user)
+
+        related_equip, camera, preset = self._get_linkage_target(database_api)
+        related_entry = database_api.query_related_equip_list().json()[0]
+        camera_entry = database_api.query_camera_list(related_equip["equipId"]).json()["data"][0]
+        preset_entry = database_api.query_preset_list(camera["id"], related_equip["equipId"]).json()[0]
+
+        for entry in (related_entry, camera_entry, preset_entry):
+            assert entry["cameraName"] is None or isinstance(entry["cameraName"], str)
+            assert entry["nvrSerialNum"] is None or isinstance(entry["nvrSerialNum"], str)
+            assert isinstance(entry["channelNo"], int)
+            assert entry["channelNo"] >= 0

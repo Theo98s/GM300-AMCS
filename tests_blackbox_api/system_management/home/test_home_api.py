@@ -195,3 +195,20 @@ class TestHomeApi:
         assert realtime_module["url"] is None
         assert realtime_module["openClosed"] == "open"
         assert realtime_module["state"] == 1
+
+    @allure.title("Init menu top modules keep shared plugin key and open state")
+    def test_init_menu_top_modules_keep_shared_plugin_key_and_open_state(self, auth_api, home_api, test_user):
+        """Verify top-level home modules still belong to the same plugin and default to open nodes."""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = home_api.init_menu()
+        body = response.json()
+        top_modules = body["data"]["hostMenuList"][0]["leaf"][:8]
+
+        for item in top_modules:
+            assert item["pluginKey"] == "GM300-AMCS"
+            assert item["openClosed"] == "open"
