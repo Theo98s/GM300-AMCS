@@ -42,6 +42,24 @@ class TestRdacApi:
         )
         assert matched["status"] in {"REGISTERED", "UNREGISTERED"}
 
+    @allure.title("RDAC 站点列表返回标准字段结构")
+    def test_rdac_station_list_entries_contain_expected_keys(self, auth_api, rdac_api, test_user):
+        """校验 RDAC 站点列表中的首条数据包含站点名、协议和状态字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = rdac_api.list_stations()
+        body = response.json()
+
+        assert len(body) > 0
+        assert set(body[0].keys()) >= {"subName", "protocolName", "status"}
+        assert body[0]["subName"]
+        assert body[0]["protocolName"]
+        assert body[0]["status"] in {"REGISTERED", "UNREGISTERED"}
+
     @allure.title("RDAC 点位页面 HTML 包含当前站点和协议")
     def test_rdac_station_items_page_contains_context(self, auth_api, rdac_api, test_user, target_config):
         """校验站点点位页面能按外部配置中的站点和协议正常打开。"""
@@ -80,3 +98,29 @@ class TestRdacApi:
             "remoteAdjustItems",
             "partialDischargeItems",
         }
+
+    @allure.title("RDAC 遥测点位包含名称引用与精度字段")
+    def test_rdac_telemetry_item_contains_expected_fields(self, auth_api, rdac_api, test_user, target_config):
+        """校验 RDAC 遥测点位首条数据包含名称、引用号、精度和单位等字段。"""
+        target_sub_name, target_protocol = self._rdac_target(target_config)
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = rdac_api.list_station_items(target_sub_name, target_protocol)
+        body = response.json()
+        telemetry_items = body["data"]["telemetryItems"]
+
+        assert len(telemetry_items) > 0
+        assert set(telemetry_items[0].keys()) >= {
+            "name",
+            "reference",
+            "type",
+            "precision",
+            "unit",
+            "variation",
+        }
+        assert telemetry_items[0]["name"]
+        assert telemetry_items[0]["reference"]

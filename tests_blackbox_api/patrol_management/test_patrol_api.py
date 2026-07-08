@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import allure
+import pytest
 
 
 @allure.feature("巡检管理")
@@ -59,3 +60,44 @@ class TestPatrolApi:
 
         body = response.json()
         assert isinstance(body, list)
+
+    @allure.title("巡检计划列表项包含计划基础字段")
+    def test_patrol_plan_list_items_contain_plan_fields(self, auth_api, patrol_api, test_user):
+        """有巡检计划数据时校验首条记录包含计划名称、所亭和时间字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = patrol_api.list_patrol_plans()
+        body = response.json()
+        if not body:
+            pytest.skip("当前环境没有巡检计划，跳过计划字段校验")
+
+        first_plan = body[0]
+        assert set(first_plan.keys()) >= {"cardName", "subName", "beginTime", "canBeStarted", "details", "weeks"}
+        assert isinstance(first_plan["beginTime"], int)
+        assert isinstance(first_plan["canBeStarted"], bool)
+        assert isinstance(first_plan["details"], list)
+
+    @allure.title("巡检计划详情项包含点位与停留时长字段")
+    def test_patrol_plan_details_contain_point_fields(self, auth_api, patrol_api, test_user):
+        """有巡检计划数据时校验详情点位包含监控点名称、预置位和停留时长字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = patrol_api.list_patrol_plans()
+        body = response.json()
+        if not body or not body[0]["details"]:
+            pytest.skip("当前环境没有巡检计划详情，跳过详情字段校验")
+
+        first_detail = body[0]["details"][0]
+        assert set(first_detail.keys()) >= {"monitorName", "presetName", "residenceTime", "pictureCount", "seq"}
+        assert first_detail["monitorName"]
+        assert first_detail["presetName"]
+        assert first_detail["residenceTime"] >= 0
+        assert first_detail["pictureCount"] >= 0

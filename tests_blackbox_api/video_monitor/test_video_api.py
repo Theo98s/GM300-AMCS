@@ -61,3 +61,56 @@ class TestVideoApi:
         assert isinstance(body["data"], list)
         assert len(body["data"]) > 0
         assert "equipName" in body["data"][0]
+
+    @allure.title("视频树节点包含图标地址与访问路径")
+    def test_camera_tree_nodes_include_icon_and_url_fields(self, auth_api, video_api, test_user):
+        """校验视频树首节点保留图标样式、访问路径和子节点字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_camera_tree()
+        first_node = response.json()[0]
+
+        assert "iconCls" in first_node
+        assert "url" in first_node
+        assert "children" in first_node
+        assert isinstance(first_node["children"], list)
+
+    @allure.title("视频树模型包含摄像机标识与类型字段")
+    def test_camera_tree_model_contains_identity_fields(self, auth_api, video_api, test_user):
+        """校验视频树模型保留摄像机 ID、名称、类型和父节点信息。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_camera_tree()
+        first_model = response.json()[0]["model"]
+
+        assert first_model["id"]
+        assert first_model["name"]
+        assert first_model["type"] is not None
+        assert "pid" in first_model
+
+    @allure.title("预置位摄像机列表包含站点与通道字段")
+    def test_preset_cameras_contain_station_and_channel_fields(self, auth_api, video_api, test_user):
+        """校验预置位摄像机列表保留站点、通道号和 NVR 序列号字段。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.json()["status"] == 0
+
+        response = video_api.get_preset_cameras()
+        body = response.json()
+        first_item = body["data"][0]
+
+        assert "subId" in first_item
+        assert "subName" in first_item
+        assert "channelNo" in first_item
+        assert "nvrSerialNum" in first_item
+        assert first_item["channelNo"]
