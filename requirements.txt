@@ -5,3 +5,4 @@ requests
 requests==2.34.2
 urllib3==2.7.0
 PyYAML==6.0.3
+setuptools<82
