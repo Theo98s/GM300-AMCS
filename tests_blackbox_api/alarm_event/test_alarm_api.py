@@ -93,9 +93,9 @@ class TestAlarmApi:
         alarm_dt = body[0]["alarmDt"]
         assert re.fullmatch(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}", alarm_dt)
 
-    @allure.title("Alarm record codes and flags keep string-code types")
+    @allure.title("报警记录编码与标记字段保持字符串编码类型")
     def test_alarm_record_code_fields_use_string_types(self, auth_api, alarm_api, test_user):
-        """Verify alarm code and flag fields remain string-based codes for frontend rendering."""
+        """校验报警编码和标记字段保持字符串编码格式，便于前端展示。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],

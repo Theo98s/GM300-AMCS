@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Additional AMCS login-page contract tests."""
+"""AMCS 登录页面补充契约测试。"""
 from __future__ import annotations
 
 import re
@@ -9,11 +9,11 @@ import allure
 
 @allure.feature("认证")
 class TestAuthContractsExtra:
-    """Extra checks for stable login-page markup."""
+    """补充校验登录页面的稳定标记结构。"""
 
     @allure.title("登录页同时保留账号密码输入框 id 标记")
     def test_login_page_contains_account_and_password_ids(self, auth_api):
-        """Verify the login page keeps the account and password input ids used by automation scripts."""
+        """校验登录页仍保留自动化脚本使用的账号和密码输入框 id。"""
         response = auth_api.get_login_page()
 
         assert 'id="account"' in response.text
@@ -21,9 +21,8 @@ class TestAuthContractsExtra:
 
     @allure.title("登录页标题标签保持完整")
     def test_login_page_contains_single_title_block(self, auth_api):
-        """Verify the login page still contains a parseable title block."""
+        """校验登录页仍保留可解析的标题标签。"""
         response = auth_api.get_login_page()
 
         title_matches = re.findall(r"<title>.*?</title>", response.text, re.IGNORECASE | re.DOTALL)
         assert len(title_matches) == 1
-

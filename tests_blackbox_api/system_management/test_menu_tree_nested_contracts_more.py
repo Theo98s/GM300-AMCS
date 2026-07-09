@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""More AMCS nested menu-tree contract tests."""
+"""AMCS 菜单树嵌套层级更多契约测试。"""
 from __future__ import annotations
 
 import allure
@@ -7,11 +7,11 @@ import allure
 
 @allure.feature("Menu And Plugin")
 class TestMenuTreeNestedContractsMore:
-    """Extra checks for second- and third-level menu-tree nodes."""
+    """补充校验菜单树二级和三级节点。"""
 
     @staticmethod
     def _login(auth_api, test_user):
-        """Log in once per test and assert the session is ready."""
+        """每条用例先登录，并确认会话已建立。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -21,25 +21,25 @@ class TestMenuTreeNestedContractsMore:
 
     @staticmethod
     def _root(menu_api):
-        """Return the root user-menu node."""
+        """返回用户菜单树根节点。"""
         return menu_api.get_user_menu_tree().json()[0]
 
-    @allure.title("User menu root keeps exact top-level child count")
+    @allure.title("用户菜单树根节点保留精确的一层子节点数量")
     def test_user_menu_tree_root_keeps_exact_top_level_child_count(self, auth_api, menu_api, test_user):
-        """Verify the root menu still exposes exactly eight top-level business modules."""
+        """校验根菜单当前仍精确暴露八个一层业务模块。"""
         self._login(auth_api, test_user)
 
         root = self._root(menu_api)
         assert len(root["children"]) == 8
 
-    @allure.title("User menu video module keeps stable child order and counts")
+    @allure.title("用户菜单树视频模块保留稳定的子节点顺序与数量")
     def test_user_menu_tree_video_module_keeps_stable_child_order_and_counts(
         self,
         auth_api,
         menu_api,
         test_user,
     ):
-        """Verify the video module keeps the current three children and their nested permission counts."""
+        """校验视频模块仍保留当前三个子节点及其嵌套权限数量。"""
         self._login(auth_api, test_user)
 
         root = self._root(menu_api)
@@ -50,9 +50,9 @@ class TestMenuTreeNestedContractsMore:
             ("GM300-AMCS:video:realtime_thermometry", 0),
         ]
 
-    @allure.title("User menu video permission nodes keep expected routes")
+    @allure.title("用户菜单树视频权限节点保留预期路由")
     def test_user_menu_tree_video_permission_nodes_keep_expected_routes(self, auth_api, menu_api, test_user):
-        """Verify the nested video permission nodes still expose the current preview and playback permission routes."""
+        """校验嵌套视频权限节点仍暴露当前预览与回放权限路由。"""
         self._login(auth_api, test_user)
 
         root = self._root(menu_api)

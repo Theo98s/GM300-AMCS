@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Additional AMCS base-data import/export contract tests."""
+"""AMCS 基础数据库导入导出补充契约测试。"""
 from __future__ import annotations
 
 import xml.etree.ElementTree as element_tree
@@ -7,13 +7,13 @@ import xml.etree.ElementTree as element_tree
 import allure
 
 
-@allure.feature("Base Data")
+@allure.feature("基础数据")
 class TestDatabaseTemplateContractsExtra:
-    """Extra contract checks for base-data templates and export pages."""
+    """补充校验基础数据库模板与导出页面契约。"""
 
     @staticmethod
     def _login(auth_api, test_user):
-        """Log in once per test and assert the session is ready."""
+        """每条用例先登录，并确认会话已建立。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -23,21 +23,21 @@ class TestDatabaseTemplateContractsExtra:
 
     @staticmethod
     def _template_cases():
-        """Return the three template kinds supported by the import/export page."""
+        """返回导入导出页面支持的三类模板。"""
         return [
             ("monitorImport.xls", "monitor"),
             ("alarmImport.xls", "alarm"),
             ("linkageImport.xls", "linkage"),
         ]
 
-    @allure.title("Base-data template downloads keep Excel attachment headers")
+    @allure.title("基础数据模板下载保留 Excel 附件响应头")
     def test_database_template_downloads_keep_excel_attachment_contract(
         self,
         auth_api,
         database_api,
         test_user,
     ):
-        """Verify monitor, alarm, and linkage templates stay downloadable Excel files."""
+        """校验监控点、报警配置和联动配置模板仍可作为 Excel 文件下载。"""
         self._login(auth_api, test_user)
 
         for template_name, download_name in self._template_cases():
@@ -47,9 +47,9 @@ class TestDatabaseTemplateContractsExtra:
             assert "attachment" in response.headers.get("Content-Disposition", "").lower()
             assert len(response.content) > 10_000
 
-    @allure.title("Base-data exports keep template-prefixed attachment names")
+    @allure.title("基础数据导出文件保留模板前缀命名")
     def test_database_export_files_keep_expected_name_prefixes(self, auth_api, database_api, test_user):
-        """Verify exported files still use the monitor/alarm/linkage filename prefixes."""
+        """校验导出文件仍使用 monitor、alarm、linkage 作为文件名前缀。"""
         self._login(auth_api, test_user)
 
         for template_name, download_name in self._template_cases():
@@ -62,9 +62,9 @@ class TestDatabaseTemplateContractsExtra:
             assert f"filename={expected_prefix}" in content_disposition
             assert content_disposition.endswith(".xls")
 
-    @allure.title("Monitor XML export remains parseable UTF-8 config data")
+    @allure.title("监控点 XML 导出保持可解析的 UTF-8 配置数据")
     def test_monitor_xml_export_is_parseable_utf8_xml(self, auth_api, database_api, test_user):
-        """Verify the XML point-table export remains a valid UTF-8 document with RTU and Item nodes."""
+        """校验 XML 点表导出仍是包含 RTU 和 Item 节点的合法 UTF-8 文档。"""
         self._login(auth_api, test_user)
 
         response = database_api.export_monitor_xml()
@@ -72,7 +72,7 @@ class TestDatabaseTemplateContractsExtra:
         assert "attachment" in response.headers.get("Content-Disposition", "").lower()
         assert ".xml" in response.headers.get("Content-Disposition", "").lower()
 
-        # The endpoint declares a GB2312 content-type header, but the payload itself is UTF-8 XML.
+        # 接口响应头声明的是 GB2312，但实际 XML 载荷内容为 UTF-8 编码。
         root = element_tree.fromstring(response.content.decode("utf-8"))
         assert root.tag == "CONFIG"
 
@@ -85,9 +85,9 @@ class TestDatabaseTemplateContractsExtra:
         assert item_nodes[0].attrib["Name"]
         assert item_nodes[0].attrib["Reference"]
 
-    @allure.title("Base-data import page keeps stable template hooks")
+    @allure.title("基础数据导入页保留稳定的模板钩子")
     def test_monitor_import_page_exposes_stable_javascript_hooks(self, auth_api, database_api, test_user):
-        """Verify the import page still exposes the template names and JS entry points used by operators."""
+        """校验导入页仍暴露模板名称和操作页面依赖的脚本入口。"""
         self._login(auth_api, test_user)
 
         response = database_api.get_monitor_import_page()

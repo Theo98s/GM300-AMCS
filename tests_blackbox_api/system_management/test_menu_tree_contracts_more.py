@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""More AMCS user-menu-tree contract tests."""
+"""AMCS 用户菜单树更多契约测试。"""
 from __future__ import annotations
 
 import allure
@@ -7,11 +7,11 @@ import allure
 
 @allure.feature("菜单与插件")
 class TestMenuTreeContractsMore:
-    """Extra checks for user-menu-tree ordering and size."""
+    """补充校验用户菜单树的顺序与数量。"""
 
     @allure.title("用户菜单树顶层子模块顺序保持稳定")
     def test_user_menu_tree_top_child_order_is_stable(self, auth_api, menu_api, test_user):
-        """Verify the top-level child modules in the user menu tree keep the expected order."""
+        """校验用户菜单树的一层子模块保持预期顺序。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -33,7 +33,7 @@ class TestMenuTreeContractsMore:
 
     @allure.title("用户菜单树顶层子模块数量保持为八个")
     def test_user_menu_tree_top_child_count_is_stable(self, auth_api, menu_api, test_user):
-        """Verify the user menu tree currently exposes eight top-level child modules."""
+        """校验用户菜单树当前仍暴露八个一层子模块。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -42,4 +42,3 @@ class TestMenuTreeContractsMore:
 
         body = menu_api.get_user_menu_tree().json()
         assert len(body[0]["children"]) == 8
-

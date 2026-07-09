@@ -44,7 +44,7 @@ class RequestUtil:
         else:
             if not base_url:
                 raise ValueError("未配置 base_url，请在 AMCS_CONFIG_FILE 指向的外部测试配置中设置访问地址")
-            # 相对路径统一拼到配置中的 base_url 下，避免各接口类重复处理。
+            # 相对路径统一拼接到配置中的 base_url 下，避免各接口类重复处理。
             final_url = f"{base_url}/{url.lstrip('/')}"
 
         return self.session.request(method=method, url=final_url, **kwargs)

@@ -149,7 +149,7 @@ class TestGisApi:
 
     @allure.title("3D map path keeps cesium-data directory convention")
     def test_d3_map_prop_path_uses_cesium_data_directory(self, auth_api, gis_api, test_user):
-        """Verify the 3D map resource path still follows the cesium-data deployment convention."""
+        """校验三维地图资源路径仍遵循 cesium-data 部署约定。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -162,9 +162,9 @@ class TestGisApi:
         assert body["d3DataName"].startswith("3dtiles")
         assert body["d3DataPath"].startswith("/cesium-data/")
 
-    @allure.title("GIS config keeps local server URL and d3 view coordinate format")
+    @allure.title("GIS 配置保留本地服务地址与 d3 视角坐标格式")
     def test_d3_gis_config_view_and_server_fields_use_expected_formats(self, auth_api, gis_api, test_user):
-        """Verify the GIS config keeps an HTTP local-server URL and a two-segment coordinate view string."""
+        """校验 GIS 配置仍保留 HTTP 本地服务地址和双段坐标视角字符串。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],

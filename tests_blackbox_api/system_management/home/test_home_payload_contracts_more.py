@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-"""More AMCS home init-menu payload contract tests."""
+"""AMCS 首页 init-menu 返回体更多契约测试。"""
 from __future__ import annotations
 
 import allure
 
 
-@allure.feature("Home API")
+@allure.feature("首页接口")
 class TestHomePayloadContractsMore:
-    """Extra contract checks for the init-menu response envelope."""
+    """补充校验 init-menu 返回体外层结构。"""
 
     @staticmethod
     def _login(auth_api, test_user):
-        """Log in once per test and assert the session is ready."""
+        """每条用例先登录，并确认会话已建立。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -19,9 +19,9 @@ class TestHomePayloadContractsMore:
         assert login_response.status_code == 200
         assert login_response.json()["status"] == 0
 
-    @allure.title("Init menu response keeps stable envelope fields")
+    @allure.title("init-menu 返回体保留稳定的外层字段")
     def test_init_menu_response_keeps_stable_envelope_fields(self, auth_api, home_api, test_user):
-        """Verify the init-menu endpoint still returns status, message, and the expected nested data keys."""
+        """校验 init-menu 接口仍返回 status、message 以及预期的 data 子字段。"""
         self._login(auth_api, test_user)
 
         response = home_api.init_menu()
@@ -36,7 +36,7 @@ class TestHomePayloadContractsMore:
         assert isinstance(body["data"]["hostMenuList"], list)
         assert len(body["data"]["hostMenuList"]) >= 1
 
-    @allure.title("Init menu host plugin keeps welcome route and top-level count aligned")
+    @allure.title("init-menu 主插件保持欢迎页路由与一级数量对齐")
     def test_init_menu_host_plugin_keeps_basic_identity_and_child_count_alignment(
         self,
         auth_api,
@@ -44,7 +44,7 @@ class TestHomePayloadContractsMore:
         menu_api,
         test_user,
     ):
-        """Verify the host plugin in init-menu stays aligned with the user-menu root on id, route, and module count."""
+        """校验 init-menu 中的主插件在 id、路由和模块数量上与用户菜单树根节点保持对齐。"""
         self._login(auth_api, test_user)
 
         init_body = home_api.init_menu().json()

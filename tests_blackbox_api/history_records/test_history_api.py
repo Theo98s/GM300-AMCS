@@ -122,9 +122,9 @@ class TestHistoryApi:
         for row in body["rows"]:
             assert isinstance(row["status"], str)
 
-    @allure.title("History nullable linkage fields keep accepted types")
+    @allure.title("历史记录可空联动字段保持允许的类型")
     def test_monitor_link_history_nullable_fields_keep_expected_types(self, auth_api, history_api, test_user):
-        """Verify nullable linkage fields remain nullable while core text fields stay populated."""
+        """校验可空联动字段仍允许为空，同时核心文本字段保持有值。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],

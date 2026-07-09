@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Additional AMCS monitor-list contract tests."""
+"""AMCS 监控点列表补充契约测试。"""
 from __future__ import annotations
 
 import json
@@ -9,11 +9,11 @@ import allure
 
 @allure.feature("基础数据库")
 class TestMonitorListContractsExtra:
-    """Extra contract checks for the monitor-list payload."""
+    """补充校验监控点列表返回结构。"""
 
     @staticmethod
     def _login(auth_api, test_user):
-        """Log in once per test and assert the session is established."""
+        """每条用例先登录，并确认会话已建立。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -23,7 +23,7 @@ class TestMonitorListContractsExtra:
 
     @allure.title("监控点列表顶层结构保持 total 与 rows 契约")
     def test_monitor_list_top_level_contract_is_stable(self, auth_api, database_api, test_user):
-        """Verify the monitor list still returns integer total and list rows fields."""
+        """校验监控点列表仍返回整数 total 和列表 rows 字段。"""
         self._login(auth_api, test_user)
 
         response = database_api.list_monitors(rows=3)
@@ -36,7 +36,7 @@ class TestMonitorListContractsExtra:
 
     @allure.title("监控点列表首行基础标识字段保持字符串类型")
     def test_monitor_list_first_row_identity_fields_use_expected_types(self, auth_api, database_api, test_user):
-        """Verify the first monitor row keeps stable string-based identity and code fields."""
+        """校验首条监控点记录保持稳定的字符串标识和编码字段。"""
         self._login(auth_api, test_user)
 
         response = database_api.list_monitors(rows=1)
@@ -54,7 +54,7 @@ class TestMonitorListContractsExtra:
 
     @allure.title("监控点列表首行 yx 字段保持可解析 JSON")
     def test_monitor_list_first_row_yx_is_parseable_json(self, auth_api, database_api, test_user):
-        """Verify the yx field in the first monitor row remains JSON text with true/false labels."""
+        """校验首条监控点记录中的 yx 字段仍是包含真假标签的 JSON 文本。"""
         self._login(auth_api, test_user)
 
         response = database_api.list_monitors(rows=1)
@@ -66,4 +66,3 @@ class TestMonitorListContractsExtra:
         assert set(yx_config.keys()) >= {"TRUE_LABEL", "FALSE_LABEL"}
         assert isinstance(yx_config["TRUE_LABEL"], str)
         assert isinstance(yx_config["FALSE_LABEL"], str)
-

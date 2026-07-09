@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""AMCS system interface contract tests."""
+"""AMCS 系统接口契约测试。"""
 from __future__ import annotations
 
 import allure
@@ -7,11 +7,11 @@ import allure
 
 @allure.feature("系统管理")
 class TestSystemContracts:
-    """Contract checks for public and login-protected system endpoints."""
+    """校验公共接口与登录保护接口的系统契约。"""
 
     @allure.title("系统 logo 公共接口返回标准 Result 结构")
     def test_sys_logo_public_contract(self, system_api):
-        """Verify the public logo endpoint keeps the standard Result response shape."""
+        """校验公共 logo 接口保持标准 Result 返回结构。"""
         response = system_api.get_sys_logo()
         assert response.status_code == 200
 
@@ -24,7 +24,7 @@ class TestSystemContracts:
 
     @allure.title("时间戳接口未登录时跳转登录页")
     def test_timestamp_requires_login(self, system_api):
-        """Verify timestamp endpoint is protected when there is no login session."""
+        """校验未登录时，时间戳接口受登录保护。"""
         response = system_api.get_timestamp()
 
         assert response.status_code == 302
@@ -32,7 +32,7 @@ class TestSystemContracts:
 
     @allure.title("实时报警数量接口未登录时跳转登录页")
     def test_alarm_count_requires_login_contract(self, system_api):
-        """Verify alarm-count endpoint is protected when there is no login session."""
+        """校验未登录时，告警数量接口受登录保护。"""
         response = system_api.get_alarm_count()
 
         assert response.status_code == 302
@@ -40,7 +40,7 @@ class TestSystemContracts:
 
     @allure.title("健康检查公共接口返回列表结构")
     def test_health_check_public_contract(self, system_api):
-        """Verify health endpoint stays public and returns a list payload."""
+        """校验健康检查接口保持公共可访问，并返回列表载荷。"""
         response = system_api.get_health()
         assert response.status_code == 200
 
@@ -54,7 +54,7 @@ class TestSystemContracts:
 
     @allure.title("系统 logo 公共接口返回字符串类型字段")
     def test_sys_logo_public_data_uses_string_fields(self, system_api):
-        """Verify logo fields remain string values even when empty."""
+        """校验 logo 字段即使为空，也仍保持字符串类型。"""
         response = system_api.get_sys_logo()
         body = response.json()
 
@@ -63,7 +63,7 @@ class TestSystemContracts:
 
     @allure.title("健康检查首项服务结构包含设备列表布尔状态")
     def test_health_check_first_service_contains_device_list_and_flag(self, system_api):
-        """Verify the first health-check service item keeps a boolean service flag and list payload."""
+        """校验首个健康检查服务项保持布尔服务标记和列表载荷。"""
         response = system_api.get_health()
         body = response.json()
 
@@ -77,7 +77,7 @@ class TestSystemContracts:
 
     @allure.title("健康检查所有服务项使用统一字段结构")
     def test_health_check_all_services_share_same_keys(self, system_api):
-        """Verify every health-check service entry keeps the same response-key shape."""
+        """校验每条健康检查服务记录都保持相同的字段结构。"""
         response = system_api.get_health()
         body = response.json()
 
@@ -91,7 +91,7 @@ class TestSystemContracts:
 
     @allure.title("健康检查服务名称非空且不重复")
     def test_health_check_service_names_are_non_empty_and_unique(self, system_api):
-        """Verify health-check service names remain non-empty and unique in the response list."""
+        """校验健康检查服务名称在返回列表中保持非空且唯一。"""
         response = system_api.get_health()
         body = response.json()
 
@@ -99,9 +99,9 @@ class TestSystemContracts:
         assert all(names)
         assert len(names) == len(set(names))
 
-    @allure.title("Health check contains core camera and media services")
+    @allure.title("健康检查包含核心摄像机和流媒体服务")
     def test_health_check_contains_expected_core_services(self, system_api):
-        """Verify the health list still exposes the core camera and streaming service names."""
+        """校验健康检查列表仍暴露核心摄像机和流媒体服务名称。"""
         response = system_api.get_health()
         body = response.json()
 

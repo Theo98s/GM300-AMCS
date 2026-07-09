@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""More AMCS linkage-history contract tests."""
+"""AMCS 联动历史更多契约测试。"""
 from __future__ import annotations
 
 import re
@@ -9,11 +9,11 @@ import allure
 
 @allure.feature("History Records")
 class TestHistoryContractsMore:
-    """Extra contract checks for linkage-history rows."""
+    """补充校验联动历史记录行级契约。"""
 
     @staticmethod
     def _login(auth_api, test_user):
-        """Log in once per test and assert the session is ready."""
+        """每条用例先登录，并确认会话已建立。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -21,14 +21,14 @@ class TestHistoryContractsMore:
         assert login_response.status_code == 200
         assert login_response.json()["status"] == 0
 
-    @allure.title("History rows keep operation time and code formats")
+    @allure.title("历史记录行保持操作时间与编码格式")
     def test_monitor_link_history_rows_keep_operation_time_and_code_formats(
         self,
         auth_api,
         history_api,
         test_user,
     ):
-        """Verify the first page keeps millisecond datetime strings and digit-code status fields."""
+        """校验第一页记录保持毫秒级时间字符串和数字编码状态字段。"""
         self._login(auth_api, test_user)
 
         rows = history_api.find_monitor_link_history({"rows": 3}).json()["rows"]
@@ -41,14 +41,14 @@ class TestHistoryContractsMore:
             assert isinstance(row["creator"], str)
             assert row["creator"]
 
-    @allure.title("History first page keeps non-increasing createTime ordering")
+    @allure.title("历史记录第一页保持 createTime 非递增顺序")
     def test_monitor_link_history_first_page_create_time_is_non_increasing(
         self,
         auth_api,
         history_api,
         test_user,
     ):
-        """Verify the first page remains sorted by newest-first createTime values."""
+        """校验第一页记录仍按 createTime 倒序排列。"""
         self._login(auth_api, test_user)
 
         rows = history_api.find_monitor_link_history({"rows": 5}).json()["rows"]

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""More AMCS plugin XML contract tests."""
+"""AMCS 插件 XML 更多契约测试。"""
 from __future__ import annotations
 
 import xml.etree.ElementTree as element_tree
@@ -7,13 +7,13 @@ import xml.etree.ElementTree as element_tree
 import allure
 
 
-@allure.feature("Menu And Plugin")
+@allure.feature("菜单与插件")
 class TestPluginXmlContractsMore:
-    """Extra structural checks for plugin menuContent XML."""
+    """补充校验插件 menuContent XML 结构。"""
 
     @staticmethod
     def _login(auth_api, test_user):
-        """Log in once per test and assert the session is ready."""
+        """每条用例先登录，并确认会话已建立。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -23,19 +23,19 @@ class TestPluginXmlContractsMore:
 
     @staticmethod
     def _main_plugin(plugin_api) -> dict:
-        """Return the main AMCS plugin definition for XML parsing checks."""
+        """返回主 AMCS 插件定义，供 XML 解析断言使用。"""
         body = plugin_api.find_plugin().json()
         return next(item for item in body if item["pkey"] == "GM300-AMCS")
 
     @staticmethod
     def _menu_root(plugin_api):
-        """Parse the menuContent XML from the main plugin."""
+        """解析主插件的 menuContent XML。"""
         plugin = TestPluginXmlContractsMore._main_plugin(plugin_api)
         return element_tree.fromstring(plugin["menuContent"])
 
-    @allure.title("Plugin menuContent remains parseable resource XML")
+    @allure.title("插件 menuContent 保持可解析的 resource XML")
     def test_plugin_menu_content_remains_parseable_resource_xml(self, auth_api, plugin_api, test_user):
-        """Verify the plugin menu definition stays valid XML with the expected root tag and top groups."""
+        """校验插件菜单定义仍是带有预期根节点和顶层分组的合法 XML。"""
         self._login(auth_api, test_user)
 
         root = self._menu_root(plugin_api)
@@ -53,14 +53,14 @@ class TestPluginXmlContractsMore:
             "sys",
         ]
 
-    @allure.title("Plugin XML group page counts keep expected distribution")
+    @allure.title("插件 XML 分组页面数量保持预期分布")
     def test_plugin_menu_content_group_page_counts_keep_expected_distribution(
         self,
         auth_api,
         plugin_api,
         test_user,
     ):
-        """Verify the main menu groups still expose the current page-count layout used by navigation."""
+        """校验主菜单分组仍暴露导航所依赖的当前页面数量布局。"""
         self._login(auth_api, test_user)
 
         root = self._menu_root(plugin_api)
@@ -79,14 +79,14 @@ class TestPluginXmlContractsMore:
             "sys": 5,
         }
 
-    @allure.title("Plugin XML core group routes keep expected endpoint sets")
+    @allure.title("插件 XML 核心分组路由保持预期集合")
     def test_plugin_menu_content_core_group_routes_keep_expected_endpoint_sets(
         self,
         auth_api,
         plugin_api,
         test_user,
     ):
-        """Verify the video, patrol, history, base, config, and system groups keep their current page routes."""
+        """校验视频、巡检、历史、基础、配置和系统分组保持当前页面路由集合。"""
         self._login(auth_api, test_user)
 
         root = self._menu_root(plugin_api)

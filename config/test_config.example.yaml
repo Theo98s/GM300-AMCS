@@ -1,6 +1,6 @@
-# Copy this file to a local path, then point AMCS_CONFIG_FILE to it when testing
-# another environment. Keep environment addresses, accounts, line and station
-# data here instead of hard-coding them in test cases.
+# 复制本文件到本地路径后，可通过设置 AMCS_CONFIG_FILE 来切换测试环境。
+# 其他环境的访问地址、账号、线路和所亭等参数，统一放在这里维护，
+# 不要把这些环境相关数据直接写死在测试用例里。
 base_url: https://10.150.4.13:8443
 env: test
 username: gmservice

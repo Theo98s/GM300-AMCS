@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""More AMCS monitor-list format contract tests."""
+"""AMCS 监控点列表更多格式契约测试。"""
 from __future__ import annotations
 
 import json
@@ -10,11 +10,11 @@ import allure
 
 @allure.feature("基础数据库")
 class TestMonitorListFormatContractsMore:
-    """Extra checks for list-row formatting in the monitor table."""
+    """补充校验监控点列表表格中的行级格式。"""
 
     @staticmethod
     def _login(auth_api, test_user):
-        """Log in once per test and assert the session is established."""
+        """每条用例先登录，并确认会话已建立。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -24,7 +24,7 @@ class TestMonitorListFormatContractsMore:
 
     @allure.title("监控点列表前几行分类字段保持数字字符串")
     def test_monitor_list_first_rows_keep_code_field_patterns(self, auth_api, database_api, test_user):
-        """Verify alarm class and security-equipment type keep digit-string formats on the first rows."""
+        """校验前几条记录中的 alarmClass 和 securityequiptype 保持数字字符串格式。"""
         self._login(auth_api, test_user)
 
         rows = database_api.list_monitors(rows=5).json()["rows"]
@@ -34,10 +34,9 @@ class TestMonitorListFormatContractsMore:
 
     @allure.title("监控点列表前几行 yx 配置键集合保持一致")
     def test_monitor_list_first_rows_keep_consistent_yx_keys(self, auth_api, database_api, test_user):
-        """Verify the first few monitor rows keep the same parsed yx key set."""
+        """校验前几条监控点记录解析后的 yx 键集合保持一致。"""
         self._login(auth_api, test_user)
 
         rows = database_api.list_monitors(rows=5).json()["rows"]
         key_sets = [set(json.loads(row["yx"]).keys()) for row in rows]
         assert all(keys == {"TRUE_LABEL", "FALSE_LABEL"} for keys in key_sets)
-

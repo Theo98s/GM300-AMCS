@@ -173,9 +173,9 @@ class TestMenuPluginApi:
         assert video_node["state"] == "closed"
         assert video_node["url"] is None
 
-    @allure.title("User menu realtime module stays as closed container")
+    @allure.title("用户菜单树实时监控模块保持折叠容器形态")
     def test_user_menu_tree_realtime_module_is_closed_container(self, auth_api, menu_api, test_user):
-        """Verify the realtime-monitor node in the user menu tree stays collapsed and route-less."""
+        """校验用户菜单树中的实时监控节点保持折叠状态且没有直接路由。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -229,9 +229,9 @@ class TestMenuPluginApi:
         assert "/das/home" in plugin["menuContent"]
         assert "/amcs/video/playback" in plugin["menuContent"]
 
-    @allure.title("User menu root keeps closed state with expected child count")
+    @allure.title("用户菜单树根节点保持折叠状态与预期子节点数量")
     def test_user_menu_tree_root_keeps_closed_state_and_expected_size(self, auth_api, menu_api, test_user):
-        """Verify the root menu node stays collapsed by default and exposes the expected top-level module count."""
+        """校验根菜单节点默认保持折叠，并暴露预期的一层模块数量。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -245,9 +245,9 @@ class TestMenuPluginApi:
         assert root["state"] == "closed"
         assert len(root["children"]) >= 8
 
-    @allure.title("Plugin definition keeps nullable icon and menus fields")
+    @allure.title("插件定义保留可空的 icon 和 menus 字段")
     def test_plugin_definition_keeps_nullable_icon_and_menus_fields(self, auth_api, plugin_api, test_user):
-        """Verify the plugin definition still returns icon and menus fields even when they are null."""
+        """校验插件定义即使字段为空，也仍返回 icon 和 menus 字段。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],

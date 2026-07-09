@@ -177,9 +177,9 @@ class TestHomeApi:
         assert first_item["typekey"] == "EQUIP_AREA"
         assert first_item["text"] == first_item["name"]
 
-    @allure.title("Init menu realtime module stays as open container")
+    @allure.title("init-menu 实时监控模块保持展开容器形态")
     def test_init_menu_realtime_module_is_open_container(self, auth_api, home_api, test_user):
-        """Verify the realtime-monitor top node remains an open container without a direct route."""
+        """校验实时监控顶层节点仍保持展开容器形态，且没有直接路由。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -196,9 +196,9 @@ class TestHomeApi:
         assert realtime_module["openClosed"] == "open"
         assert realtime_module["state"] == 1
 
-    @allure.title("Init menu top modules keep shared plugin key and open state")
+    @allure.title("init-menu 一级模块保持共享插件键与展开状态")
     def test_init_menu_top_modules_keep_shared_plugin_key_and_open_state(self, auth_api, home_api, test_user):
-        """Verify top-level home modules still belong to the same plugin and default to open nodes."""
+        """校验首页一层模块仍属于同一插件，且默认保持展开。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -213,9 +213,9 @@ class TestHomeApi:
             assert item["pluginKey"] == "GM300-AMCS"
             assert item["openClosed"] == "open"
 
-    @allure.title("Init menu container modules keep empty routes")
+    @allure.title("init-menu 容器模块保持空路由")
     def test_init_menu_container_modules_keep_empty_route_strings(self, auth_api, home_api, test_user):
-        """Verify history, base, config, and system modules stay as open containers with empty-string routes."""
+        """校验历史、基础、配置和系统模块仍保持展开容器形态，并使用空字符串路由。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -238,9 +238,9 @@ class TestHomeApi:
                 assert item["openClosed"] == "open"
                 assert item["state"] == 1
 
-    @allure.title("Init menu patrol module stays as open container")
+    @allure.title("init-menu 巡检管理模块保持展开容器形态")
     def test_init_menu_patrol_module_is_open_container(self, auth_api, home_api, test_user):
-        """Verify the patrol-management top node remains an open container without a direct route."""
+        """校验巡检管理顶层节点仍保持展开容器形态，且没有直接路由。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],

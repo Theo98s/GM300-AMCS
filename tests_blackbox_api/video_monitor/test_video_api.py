@@ -45,7 +45,7 @@ class TestVideoApi:
 
     @allure.title("First camera tree node keeps icon style markers")
     def test_camera_tree_first_node_icon_style_is_present(self, auth_api, video_api, test_user):
-        """Verify the first camera-tree node keeps a non-empty icon style string for frontend rendering."""
+        """校验首个摄像机树节点保留非空图标样式字符串，便于前端渲染。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -61,7 +61,7 @@ class TestVideoApi:
 
     @allure.title("First camera tree model keeps extended rendering fields")
     def test_camera_tree_first_model_contains_extended_rendering_fields(self, auth_api, video_api, test_user):
-        """Verify the embedded camera model keeps the extra fields required by the tree component."""
+        """校验嵌套摄像机模型保留树组件依赖的扩展字段。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -210,7 +210,7 @@ class TestVideoApi:
 
     @allure.title("First camera tree node keeps checked flag and open state")
     def test_camera_tree_first_node_checked_flag_and_state_are_stable(self, auth_api, video_api, test_user):
-        """Verify the first camera-tree node remains unchecked, open, and without a direct page route."""
+        """校验首个摄像机树节点仍保持未勾选、展开且没有直接页面路由。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -226,7 +226,7 @@ class TestVideoApi:
 
     @allure.title("First camera tree model keeps checked flag and open state")
     def test_camera_tree_first_model_checked_flag_and_state_are_stable(self, auth_api, video_api, test_user):
-        """Verify the embedded camera model remains unchecked and open for tree rendering."""
+        """校验嵌套摄像机模型仍保持未勾选和展开状态，便于树渲染。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -242,7 +242,7 @@ class TestVideoApi:
 
     @allure.title("First camera tree model keeps openClosed and empty route contract")
     def test_camera_tree_first_model_open_closed_and_url_are_stable(self, auth_api, video_api, test_user):
-        """Verify the embedded camera model keeps openClosed and empty-route fields for tree rendering."""
+        """校验嵌套摄像机模型仍保留 openClosed 和空路由字段，便于树渲染。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -258,7 +258,7 @@ class TestVideoApi:
 
     @allure.title("First preset camera matches first camera tree node identity")
     def test_first_preset_camera_matches_first_camera_tree_node(self, auth_api, video_api, test_user):
-        """Verify the first preset entry stays aligned with the first camera-tree node on id, name, channel, and NVR."""
+        """校验首条预置位记录在 id、名称、通道和 NVR 上与首个摄像机树节点保持对齐。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],

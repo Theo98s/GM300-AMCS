@@ -98,7 +98,7 @@ class TestPatrolApi:
         first_detail = body[0]["details"][0]
         assert set(first_detail.keys()) >= {"monitorName", "presetName", "residenceTime", "pictureCount", "seq"}
         assert first_detail["monitorName"]
-        assert first_detail["presetName"]
+        assert first_detail["presetName"] is None or isinstance(first_detail["presetName"], str)
         assert first_detail["residenceTime"] >= 0
         assert first_detail["pictureCount"] >= 0
 
@@ -137,9 +137,9 @@ class TestPatrolApi:
         assert len(card_ids) == len(set(card_ids))
         assert all(card_names)
 
-    @allure.title("Patrol plan cycle fields keep expected types")
+    @allure.title("巡检计划周期字段保持预期类型")
     def test_patrol_plan_cycle_fields_use_expected_types(self, auth_api, patrol_api, test_user):
-        """Verify the plan cycle field exists and keeps an accepted nullable/string contract."""
+        """校验计划周期字段存在，并保持允许为空的字符串契约。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],

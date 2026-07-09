@@ -1441,9 +1441,9 @@ class TestDatabaseApi:
         assert preset_response.status_code == 200
         assert preset_response.json() == []
 
-    @allure.title("Monitor import page exposes all three Excel template entries")
+    @allure.title("监控点导入页暴露三类 Excel 模板入口")
     def test_monitor_import_page_contains_all_template_names(self, auth_api, database_api, test_user):
-        """Verify the base-data import page still exposes monitor, alarm, and linkage Excel templates."""
+        """校验基础数据导入页仍暴露监控点、报警配置和联动配置三类 Excel 模板。"""
         self._login(auth_api, test_user)
 
         response = database_api.get_monitor_import_page()
@@ -1453,9 +1453,9 @@ class TestDatabaseApi:
         assert "alarmImport.xls" in response.text
         assert "linkageImport.xls" in response.text
 
-    @allure.title("Base-data Excel exports keep attachment headers and xls suffix")
+    @allure.title("基础数据 Excel 导出保留附件响应头和 xls 后缀")
     def test_database_excel_exports_keep_attachment_headers_and_xls_suffix(self, auth_api, database_api, test_user):
-        """Verify monitor, alarm, and linkage exports all remain downloadable Excel attachments."""
+        """校验监控点、报警配置和联动配置导出结果仍都是可下载的 Excel 附件。"""
         self._login(auth_api, test_user)
 
         export_pairs = [
@@ -1470,9 +1470,9 @@ class TestDatabaseApi:
             assert ".xls" in response.headers.get("Content-Disposition", "")
             assert "application/vnd.ms-excel" in response.headers.get("Content-Type", "")
 
-    @allure.title("Linkage auxiliary valueField uses pair-code format")
+    @allure.title("联动辅助查询 valueField 使用成对编码格式")
     def test_linkage_auxiliary_value_field_uses_pair_format(self, auth_api, database_api, test_user):
-        """Verify related equipment, camera, and preset records keep the expected pair-code valueField format."""
+        """校验关联设备、摄像机和预置位记录仍保持预期的成对编码 valueField 格式。"""
         self._login(auth_api, test_user)
 
         related_equip, camera, preset = self._get_linkage_target(database_api)
@@ -1482,9 +1482,9 @@ class TestDatabaseApi:
         for entry in (related_entry, camera_entry, preset):
             assert re.fullmatch(r"\d+-\d+", entry["valueField"])
 
-    @allure.title("Linkage auxiliary nullable video fields keep stable types")
+    @allure.title("联动辅助查询可空视频字段保持稳定类型")
     def test_linkage_auxiliary_nullable_video_fields_keep_expected_types(self, auth_api, database_api, test_user):
-        """Verify nullable video-related fields stay nullable strings and channel numbers stay non-negative integers."""
+        """校验可空视频相关字段保持可空字符串，通道号保持非负整数。"""
         self._login(auth_api, test_user)
 
         related_equip, camera, preset = self._get_linkage_target(database_api)

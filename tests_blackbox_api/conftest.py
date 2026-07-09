@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""AMCS black-box API test fixtures.
+"""AMCS 黑盒接口测试夹具。
 
-Responsibilities:
-1. Load environment and account configuration.
-2. Build shared API clients.
-3. Add stable Allure case numbers during collection.
+职责说明：
+1. 加载环境与账号配置。
+2. 构建共享的接口客户端。
+3. 在收集阶段为用例补充稳定的 Allure 编号。
 """
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ CASE_INDEX_PREFIX = {
 
 
 def _case_index_prefix(item) -> str:
-    """Build the Allure case-number prefix from the test file name."""
+    """根据测试文件名生成 Allure 用例编号前缀。"""
     file_name = Path(str(item.fspath)).name
     if file_name in CASE_INDEX_PREFIX:
         return CASE_INDEX_PREFIX[file_name]
@@ -64,7 +64,7 @@ def _case_index_prefix(item) -> str:
 
 
 def pytest_collection_modifyitems(items):
-    """Attach a stable AMCS case number to every collected test item."""
+    """为每个收集到的测试项挂载稳定的 AMCS 用例编号。"""
     counters = {}
     for item in items:
         prefix = _case_index_prefix(item)
@@ -83,7 +83,7 @@ def pytest_collection_modifyitems(items):
 
 @pytest.fixture(autouse=True)
 def allure_case_index(request):
-    """Sync the collected AMCS case number into Allure metadata."""
+    """把收集阶段生成的 AMCS 用例编号同步到 Allure 元数据。"""
     case_index = getattr(request.node, "_amcs_case_index", None)
     if not case_index:
         return
@@ -96,11 +96,11 @@ def allure_case_index(request):
 
 
 def _resolve_external_config_path() -> Path:
-    """Resolve the environment-specific AMCS config file.
+    """解析当前环境要使用的 AMCS 配置文件。
 
-    By default the project uses config/test_config.example.yaml so the current
-    test environment still works out of the box. Other environments can set
-    AMCS_CONFIG_FILE to point at their own local YAML file without changing code.
+    项目默认使用 config/test_config.example.yaml，因此当前环境开箱即用。
+    如果要切换到其他环境，可通过设置 AMCS_CONFIG_FILE 指向本地 YAML 文件，
+    无需修改测试代码。
     """
     override_path = os.environ.get(TEST_CONFIG_ENV)
     if override_path:
@@ -109,20 +109,20 @@ def _resolve_external_config_path() -> Path:
 
 
 def load_yaml(path: Path):
-    """Read a YAML file and always return a dictionary."""
+    """读取 YAML 文件，并始终返回字典对象。"""
     with open(path, "r", encoding="utf-8") as file:
         return yaml.safe_load(file) or {}
 
 
 @pytest.fixture(scope="session")
 def test_config():
-    """Provide externally switchable account, address, line and station config."""
+    """提供可由外部配置切换的账号、地址、线路和所亭参数。"""
     return load_yaml(_resolve_external_config_path())
 
 
 @pytest.fixture(scope="session")
 def config(test_config):
-    """Merge stable endpoint paths with external environment runtime settings."""
+    """把稳定接口路径与外部环境运行参数合并成最终配置。"""
     merged_config = deepcopy(load_yaml(PROJECT_ROOT / "config" / "config.yaml"))
     for key in ("env", "base_url", "timeout", "verify_ssl"):
         if key in test_config:
@@ -132,7 +132,7 @@ def config(test_config):
 
 @pytest.fixture(scope="session")
 def test_user(test_config):
-    """Return the default test account."""
+    """返回默认测试账号。"""
     return {
         "username": test_config["username"],
         "password": test_config["password"],
@@ -141,83 +141,83 @@ def test_user(test_config):
 
 @pytest.fixture(scope="session")
 def target_config(test_config):
-    """Return line, station and protocol values for environment-sensitive cases."""
+    """返回供环境敏感用例使用的线路、所亭和协议配置。"""
     return test_config.get("targets", {})
 
 
 @pytest.fixture
 def request_util(config):
-    """Create an isolated RequestUtil per test to avoid session leakage."""
+    """为每条用例创建独立的 RequestUtil，避免会话串用。"""
     return RequestUtil(config)
 
 
 @pytest.fixture
 def auth_api(request_util, config):
-    """Provide the authentication API client."""
+    """提供认证接口客户端。"""
     return AuthApi(request_util, config)
 
 
 @pytest.fixture
 def system_api(request_util, config):
-    """Provide the system API client."""
+    """提供系统接口客户端。"""
     return SystemApi(request_util, config)
 
 
 @pytest.fixture
 def home_api(request_util, config):
-    """Provide the home and dictionary API client."""
+    """提供首页与字典接口客户端。"""
     return HomeApi(request_util, config)
 
 
 @pytest.fixture
 def menu_api(request_util, config):
-    """Provide the menu API client."""
+    """提供菜单接口客户端。"""
     return MenuApi(request_util, config)
 
 
 @pytest.fixture
 def plugin_api(request_util, config):
-    """Provide the plugin API client."""
+    """提供插件接口客户端。"""
     return PluginApi(request_util, config)
 
 
 @pytest.fixture
 def patrol_api(request_util, config):
-    """Provide the patrol-management API client."""
+    """提供巡检管理接口客户端。"""
     return PatrolApi(request_util, config)
 
 
 @pytest.fixture
 def history_api(request_util, config):
-    """Provide the history-record API client."""
+    """提供历史记录接口客户端。"""
     return HistoryApi(request_util, config)
 
 
 @pytest.fixture
 def rdac_api(request_util, config):
-    """Provide the RDAC API client."""
+    """提供 RDAC 接口客户端。"""
     return RdacApi(request_util, config)
 
 
 @pytest.fixture
 def video_api(request_util, config):
-    """Provide the video-monitoring API client."""
+    """提供视频监控接口客户端。"""
     return VideoApi(request_util, config)
 
 
 @pytest.fixture
 def alarm_api(request_util, config):
-    """Provide the alarm API client."""
+    """提供报警接口客户端。"""
     return AlarmApi(request_util, config)
 
 
 @pytest.fixture
 def gis_api(request_util, config):
-    """Provide the GIS API client."""
+    """提供 GIS 接口客户端。"""
     return GisApi(request_util, config)
 
 
 @pytest.fixture
 def database_api(request_util, config):
-    """Provide the base-data API client."""
+    """提供基础数据库接口客户端。"""
     return DatabaseApi(request_util, config)

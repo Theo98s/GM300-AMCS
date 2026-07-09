@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Additional AMCS patrol-management contract tests."""
+"""AMCS 巡检管理补充契约测试。"""
 from __future__ import annotations
 
 import allure
@@ -8,11 +8,11 @@ import pytest
 
 @allure.feature("巡检管理")
 class TestPatrolContractsExtra:
-    """Extra contract checks for patrol plans and details."""
+    """补充校验巡检计划与详情契约。"""
 
     @allure.title("巡检计划开始时间保持毫秒时间戳")
     def test_patrol_plan_begin_time_uses_millisecond_timestamp(self, auth_api, patrol_api, test_user):
-        """Verify beginTime stays a positive millisecond timestamp when patrol plans exist."""
+        """校验巡检计划存在时，beginTime 仍为正整数毫秒时间戳。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],

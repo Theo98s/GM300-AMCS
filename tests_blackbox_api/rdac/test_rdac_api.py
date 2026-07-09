@@ -143,7 +143,7 @@ class TestRdacApi:
 
     @allure.title("RDAC telemetry precision and variation stay numeric")
     def test_rdac_telemetry_item_precision_and_variation_are_numeric(self, auth_api, rdac_api, test_user, target_config):
-        """Verify telemetry precision and variation fields stay numeric for downstream formatting."""
+        """校验遥测点的精度和变化量字段保持数值类型，便于下游格式化。"""
         target_sub_name, target_protocol = self._rdac_target(target_config)
         login_response = auth_api.login(
             account=test_user["username"],
@@ -160,7 +160,7 @@ class TestRdacApi:
 
     @allure.title("RDAC telemetry unit and reference stay populated")
     def test_rdac_telemetry_item_unit_and_reference_are_non_empty(self, auth_api, rdac_api, test_user, target_config):
-        """Verify telemetry preview rows keep non-empty unit and reference metadata."""
+        """校验遥测预览记录保持非空的单位和引用号元数据。"""
         target_sub_name, target_protocol = self._rdac_target(target_config)
         login_response = auth_api.login(
             account=test_user["username"],

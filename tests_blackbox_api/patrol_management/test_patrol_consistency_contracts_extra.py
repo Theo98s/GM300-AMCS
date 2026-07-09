@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Additional AMCS patrol consistency contract tests."""
+"""AMCS 巡检一致性补充契约测试。"""
 from __future__ import annotations
 
 import allure
@@ -8,11 +8,11 @@ import pytest
 
 @allure.feature("Patrol Management")
 class TestPatrolConsistencyContractsExtra:
-    """Extra consistency checks for patrol-plan rows and nested details."""
+    """补充校验巡检计划与其嵌套详情的一致性。"""
 
     @staticmethod
     def _login(auth_api, test_user):
-        """Log in once per test and assert the session is ready."""
+        """每条用例先登录，并确认会话已建立。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
@@ -22,15 +22,15 @@ class TestPatrolConsistencyContractsExtra:
 
     @staticmethod
     def _plans_or_skip(patrol_api):
-        """Return patrol plans or skip when the environment currently has none."""
+        """返回巡检计划；如果当前环境没有数据则跳过。"""
         plans = patrol_api.list_patrol_plans().json()
         if not plans:
             pytest.skip("Current environment has no patrol plans.")
         return plans
 
-    @allure.title("Patrol plan multi field keeps card name and code alignment")
+    @allure.title("巡检计划 multi 字段保持卡片名称与编码对齐")
     def test_patrol_plan_multi_field_keeps_card_name_and_code_alignment(self, auth_api, patrol_api, test_user):
-        """Verify each patrol plan keeps its card name and card code embedded in the multi field."""
+        """校验每条巡检计划的 multi 字段都包含卡片名称和卡片编码。"""
         self._login(auth_api, test_user)
 
         for plan in self._plans_or_skip(patrol_api):
@@ -38,9 +38,9 @@ class TestPatrolConsistencyContractsExtra:
             assert plan["cardName"] in plan["multi"]
             assert plan["cardCode"] in plan["multi"]
 
-    @allure.title("Patrol plan times keep nullable end-time ordering contract")
+    @allure.title("巡检计划时间字段保持可空结束时间顺序契约")
     def test_patrol_plan_times_keep_nullable_end_time_ordering_contract(self, auth_api, patrol_api, test_user):
-        """Verify patrol plans keep millisecond begin times and optional end times that do not precede beginTime."""
+        """校验巡检计划保持毫秒 beginTime，且 endTime 为空或不早于 beginTime。"""
         self._login(auth_api, test_user)
 
         for plan in self._plans_or_skip(patrol_api):
@@ -50,9 +50,9 @@ class TestPatrolConsistencyContractsExtra:
             if plan["endTime"] is not None:
                 assert plan["endTime"] >= plan["beginTime"]
 
-    @allure.title("Patrol detail rows keep parent recordId and sequential seq values")
+    @allure.title("巡检详情行保持父级 recordId 和顺序 seq 值")
     def test_patrol_plan_details_keep_parent_recordid_and_sequential_seq(self, auth_api, patrol_api, test_user):
-        """Verify nested patrol details keep the parent recordId contract and sequential string seq values."""
+        """校验嵌套巡检详情保持父级 recordId 契约和顺序递增的字符串 seq。"""
         self._login(auth_api, test_user)
 
         for plan in self._plans_or_skip(patrol_api)[:3]:
