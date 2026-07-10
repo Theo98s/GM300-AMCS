@@ -96,3 +96,16 @@ database:
   monitor_related_equip_url: /amcs/monitorArea/queryEquipPresetList
   monitor_camera_list_url: /amcs/monitorArea/queryCameraList
   monitor_preset_list_url: /amcs/monitorArea/preset/list
+
+equipment:
+  index_url: /poms/equip/
+  page_url: /poms/equip/equipmentPageList
+  type_tree_url: /poms/equip/buildEquipTypeTree
+  edit_page_url: /poms/equip/editEquipment
+  save_url: /poms/equip/save
+  can_delete_url: /poms/equip/couldDelete
+  delete_url: /poms/equip/deletebatch
+  import_url: /poms/equip/doImport
+  template_name: equip.xls
+  download_name: 设备管理
+  export_name: 设备

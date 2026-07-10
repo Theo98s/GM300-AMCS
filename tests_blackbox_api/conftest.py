@@ -28,6 +28,7 @@ if str(SRC_ROOT) not in sys.path:
 from amcs.api.core.auth_api import AuthApi
 from amcs.api.modules.alarm_api import AlarmApi
 from amcs.api.modules.database_api import DatabaseApi
+from amcs.api.modules.equipment_api import EquipmentApi
 from amcs.api.modules.history_api import HistoryApi
 from amcs.api.modules.image_recognition_api import ImageRecognitionApi
 from amcs.api.modules.patrol_api import PatrolApi
@@ -235,3 +236,9 @@ def gis_api(request_util, config):
 def database_api(request_util, config):
     """提供基础数据库接口客户端。"""
     return DatabaseApi(request_util, config)
+
+
+@pytest.fixture
+def equipment_api(request_util, config):
+    """提供基础数据设备管理接口客户端。"""
+    return EquipmentApi(request_util, config)
