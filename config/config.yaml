@@ -48,6 +48,9 @@ image_recognition:
   recognition_item_url: /imageRecognition/findRecognitionItemListByEquip
   recognition_type_by_preset_url: /imageRecognition/findTypeByEquipIdAndPresetNum
   import_export_page_url: /imageRecognition/importOrExport
+  import_template_name: imageRecognitionConfigDemo.xls
+  export_template_name: imageRecognitionConfig.xls
+  download_name: 图像识别配置
 
 alarm:
   alarm_record_page_url: /alarmRecord/getPageData2

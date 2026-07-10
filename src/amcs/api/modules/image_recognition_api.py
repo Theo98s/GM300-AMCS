@@ -2,6 +2,7 @@
 """AMCS 图像识别配置接口封装。"""
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 
@@ -114,3 +115,39 @@ class ImageRecognitionApi:
     def get_import_export_page(self):
         """打开图像识别配置导入导出页面。"""
         return self.request_util.send_request("get", self.import_export_page_url)
+
+    def download_import_template(self):
+        """下载图像识别配置 Excel 导入模板。"""
+        return self.request_util.send_request(
+            "get",
+            self.config["database"]["monitor_template_download_url"],
+            params={
+                "templateName": self.import_template_name,
+                "downloadName": self.download_name,
+            },
+        )
+
+    def export_configs(self, filters: dict[str, Any] | None = None):
+        """按当前筛选条件导出图像识别配置。"""
+        params = {
+            "templateName": self.export_template_name,
+            "downloadName": self.download_name,
+        }
+        if filters:
+            params.update(filters)
+        return self.request_util.send_request(
+            "get",
+            self.config["database"]["monitor_excel_export_url"],
+            params=params,
+        )
+
+    def import_configs(self, file_path: str):
+        """上传图像识别配置 Excel 文件并执行导入。"""
+        path = Path(file_path)
+        with path.open("rb") as file:
+            return self.request_util.send_request(
+                "post",
+                self.config["database"]["monitor_excel_import_url"],
+                params={"templateName": self.export_template_name},
+                files={"file": (path.name, file, "application/vnd.ms-excel")},
+            )
