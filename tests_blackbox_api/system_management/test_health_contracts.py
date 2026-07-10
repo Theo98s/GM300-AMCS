@@ -1,0 +1,214 @@
+# -*- coding: utf-8 -*-
+"""系统健康检查、设备明细、顺序与拓扑契约测试。"""
+from __future__ import annotations
+
+import re
+import allure
+
+
+class TestHealthCameraRuntimeContractsMore:
+    """补充校验健康检查中摄像机设备明细的稳定字段。"""
+
+    @staticmethod
+    def _camera_rows(system_api) -> list[dict]:
+        """返回健康检查中的 cameras 明细列表。"""
+        rows = system_api.get_health().json()["data"]
+        cameras = next(row for row in rows if row["name"] == "cameras")
+        assert isinstance(cameras["deviceList"], list)
+        return cameras["deviceList"]
+
+    @allure.title("健康检查 cameras 前十条记录保持实时视频设备契约")
+    def test_health_camera_rows_keep_live_video_contract(self, system_api):
+        """校验前十条摄像机记录仍保持在线视频设备的字段模式。"""
+        rows = self._camera_rows(system_api)
+        assert len(rows) >= 10
+
+        for row in rows[:10]:
+            assert isinstance(row["name"], str) and row["name"]
+            assert row["serviceUp"] is True
+            assert row["value"] == "1"
+            assert row["signalTypeCode"] == "3"
+            assert re.fullmatch(r"\d+\.\d+\.\d+\.\d+", row["ip"])
+            assert row["desc"] == ""
+            assert row.get("alarmClass") is None
+
+    @allure.title("健康检查 cameras 前十条记录保持区域和视频厂家字段")
+    def test_health_camera_rows_keep_area_and_nvr_fields(self, system_api):
+        """校验前十条摄像机记录仍保留区域编码和视频厂家字段。"""
+        rows = self._camera_rows(system_api)
+        assert len(rows) >= 10
+
+        for row in rows[:10]:
+            assert row["areaCode"] == "00"
+            assert row["areaName"] is None
+            assert isinstance(row["customCode"], str) and row["customCode"].startswith("GM300_CAMS_")
+            assert row["nvr"] in {"DH", "HIK"}
+            assert row["parentName"] is None
+
+
+class TestHealthContractsMore:
+    """补充校验健康检查服务组成。"""
+
+    @allure.title("健康检查服务名集合保持稳定")
+    def test_health_check_service_name_set_is_stable(self, system_api):
+        """校验当前环境仍暴露预期的六个健康检查服务名称。"""
+        body = system_api.get_health().json()
+        names = {item["name"] for item in body["data"]}
+        assert names == {
+            "移动巡检设备",
+            "cameras",
+            "局级主站",
+            "段级主站",
+            "流媒体服务",
+            "device",
+        }
+
+    @allure.title("健康检查不同服务的 deviceList 可空模式保持稳定")
+    def test_health_check_device_list_nullability_pattern_is_stable(self, system_api):
+        """校验列表型和空值型服务仍保持当前 deviceList 可空模式。"""
+        body = system_api.get_health().json()["data"]
+        service_map = {item["name"]: item["deviceList"] for item in body}
+
+        assert isinstance(service_map["移动巡检设备"], list)
+        assert isinstance(service_map["cameras"], list)
+        assert isinstance(service_map["device"], list)
+        assert service_map["局级主站"] is None
+        assert service_map["段级主站"] is None
+        assert service_map["流媒体服务"] is None
+
+
+class TestHealthDeviceContractsExtra:
+    """补充校验健康检查返回中嵌套设备行的契约。"""
+
+    @staticmethod
+    def _health_map(system_api) -> dict:
+        """按名称索引健康检查条目，便于针对嵌套记录做断言。"""
+        body = system_api.get_health().json()["data"]
+        return {item["name"]: item for item in body}
+
+    @allure.title("健康检查 cameras 列表保留稳定的嵌套设备行契约")
+    def test_health_camera_device_rows_keep_expected_nested_contracts(self, system_api):
+        """校验摄像机设备行保持稳定的标记、编码和 IP 字段契约。"""
+        cameras = self._health_map(system_api)["cameras"]
+        assert isinstance(cameras["deviceList"], list)
+        assert len(cameras["deviceList"]) > 0
+
+        for row in cameras["deviceList"][:5]:
+            assert isinstance(row["name"], str) and row["name"]
+            assert isinstance(row["serviceUp"], bool)
+            assert row["value"] in {"1", "异常"}
+            assert re.fullmatch(r"\d+", row["signalTypeCode"])
+            assert row["ip"] is None or re.fullmatch(r"\d+\.\d+\.\d+\.\d+", row["ip"])
+            assert row["customCode"] is None or isinstance(row["customCode"], str)
+
+    @allure.title("健康检查 device 列表保留预期的 NVR 与通信设备契约")
+    def test_health_device_group_keeps_expected_device_row_contracts(self, system_api):
+        """校验 device 健康分组仍保留基于 IP 的 NVR 和通信设备记录。"""
+        device_group = self._health_map(system_api)["device"]
+        assert isinstance(device_group["deviceList"], list)
+        assert len(device_group["deviceList"]) >= 4
+
+        names = [row["name"] for row in device_group["deviceList"]]
+        assert "NVR" in names
+        assert "通信管理机" in names
+        for row in device_group["deviceList"]:
+            assert isinstance(row["serviceUp"], bool)
+            assert row["value"] in {"1", "异常"}
+            assert re.fullmatch(r"\d+\.\d+\.\d+\.\d+", row["ip"])
+            assert row["signalTypeCode"] is None or re.fullmatch(r"\d+", row["signalTypeCode"])
+
+
+class TestHealthOrderContracts:
+    """补充校验健康检查服务顺序。"""
+
+    @allure.title("健康检查服务顺序保持稳定")
+    def test_health_check_service_order_is_stable(self, system_api):
+        """校验当前健康检查服务顺序保持稳定，避免影响首页看板渲染。"""
+        body = system_api.get_health().json()["data"]
+        names = [item["name"] for item in body]
+        assert names == [
+            "移动巡检设备",
+            "cameras",
+            "局级主站",
+            "段级主站",
+            "流媒体服务",
+            "device",
+        ]
+
+
+class TestHealthRuntimeStatusContractsMore:
+    """补充校验健康检查各服务当前运行状态模式。"""
+
+    @staticmethod
+    def _health_map(system_api) -> dict:
+        """按名称索引健康检查服务，便于逐项断言。"""
+        rows = system_api.get_health().json()["data"]
+        return {row["name"]: row for row in rows}
+
+    @allure.title("健康检查各服务保持当前 serviceUp 分布模式")
+    def test_health_check_keeps_current_service_up_pattern(self, system_api):
+        """校验当前环境各服务仍保持稳定的 serviceUp 分布模式。"""
+        health_map = self._health_map(system_api)
+
+        assert health_map["移动巡检设备"]["serviceUp"] is True
+        assert health_map["cameras"]["serviceUp"] is False
+        assert health_map["局级主站"]["serviceUp"] is True
+        assert health_map["段级主站"]["serviceUp"] is True
+        assert health_map["流媒体服务"]["serviceUp"] is True
+        assert health_map["device"]["serviceUp"] is False
+
+    @allure.title("健康检查顶层服务保持空 signalTypeCode 模式")
+    def test_health_check_top_level_services_keep_null_signal_type_code(self, system_api):
+        """校验健康检查顶层服务仍统一保持空 signalTypeCode。"""
+        health_map = self._health_map(system_api)
+
+        for row in health_map.values():
+            assert row["signalTypeCode"] is None
+
+
+class TestHealthTopologyContractsExtra:
+    """补充校验健康检查分组类型、主机信息和设备行默认值。"""
+
+    @staticmethod
+    def _health_map(system_api) -> dict:
+        """按名称索引健康检查分组，便于分别断言不同服务类型。"""
+        rows = system_api.get_health().json()["data"]
+        return {row["name"]: row for row in rows}
+
+    @allure.title("健康检查主机型服务保持非空 IP 和类型字段")
+    def test_health_host_services_keep_ip_and_type_fields(self, system_api):
+        """校验主机型服务仍使用非空 IP 和明确类型字段。"""
+        health_map = self._health_map(system_api)
+
+        for service_name in ("局级主站", "段级主站", "流媒体服务"):
+            row = health_map[service_name]
+            assert row["deviceList"] is None
+            assert isinstance(row["type"], str) and row["type"]
+            assert re.fullmatch(r"\d+\.\d+\.\d+\.\d+", row["ip"])
+            assert isinstance(row["serviceUp"], bool)
+
+    @allure.title("健康检查列表型服务保持空主机信息字段")
+    def test_health_list_services_keep_null_host_fields(self, system_api):
+        """校验列表型服务仍把 IP 和类型放空，并通过 deviceList 承载明细。"""
+        health_map = self._health_map(system_api)
+
+        for service_name in ("移动巡检设备", "cameras", "device"):
+            row = health_map[service_name]
+            assert row["type"] is None
+            assert row["ip"] is None
+            assert isinstance(row["deviceList"], list)
+            assert isinstance(row["serviceUp"], bool)
+
+    @allure.title("健康检查 device 分组前几条记录保持网关类默认空业务字段")
+    def test_health_device_group_rows_keep_null_business_fields(self, system_api):
+        """校验 device 分组前几条记录仍保持空业务编码字段和合法 IP 格式。"""
+        device_rows = self._health_map(system_api)["device"]["deviceList"]
+        assert len(device_rows) > 0
+
+        for row in device_rows[:4]:
+            assert isinstance(row["name"], str) and row["name"]
+            assert re.fullmatch(r"\d+\.\d+\.\d+\.\d+", row["ip"])
+            assert row["customCode"] is None
+            assert row["areaCode"] is None
+            assert row["areaName"] is None
+            assert row["nvr"] is None
