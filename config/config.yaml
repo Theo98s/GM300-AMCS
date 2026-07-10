@@ -75,6 +75,16 @@ alarm:
 history:
   monitor_link_history_url: /amcs/monitorLink/findHistoryPage
 
+history_trend:
+  index_url: /amcs/trend/index
+  tree_url: /amcs/trend/getTree
+  trend_page_url: /amcs/trend/historicalTrend
+  attribute_url: /amcs/trend/ycDataTypeAttr
+  compare_equipment_url: /amcs/trend/chooseEquip
+  condition_url_prefix: /amcs/trend/ycDataTypeAttrCondition
+  condition_data_url: /amcs/trend/ycDataTypeAttrConditionAndData
+  online_data_url: /amcs/trend/onlineMonitorData
+
 gis:
   d2_data_path_url: /amcs/gis2d/getD2DataPath
   d2_map_prop_url: /amcs/gis3d/getMapProp

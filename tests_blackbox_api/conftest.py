@@ -30,6 +30,7 @@ from amcs.api.modules.alarm_api import AlarmApi
 from amcs.api.modules.database_api import DatabaseApi
 from amcs.api.modules.equipment_api import EquipmentApi
 from amcs.api.modules.history_api import HistoryApi
+from amcs.api.modules.history_trend_api import HistoryTrendApi
 from amcs.api.modules.image_recognition_api import ImageRecognitionApi
 from amcs.api.modules.patrol_api import PatrolApi
 from amcs.api.modules.patrol_point_api import PatrolPointApi
@@ -213,6 +214,12 @@ def image_recognition_api(request_util, config):
 def history_api(request_util, config):
     """提供历史记录接口客户端。"""
     return HistoryApi(request_util, config)
+
+
+@pytest.fixture
+def history_trend_api(request_util, config):
+    """提供历史趋势接口客户端。"""
+    return HistoryTrendApi(request_util, config)
 
 
 @pytest.fixture
