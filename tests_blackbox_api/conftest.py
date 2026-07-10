@@ -48,14 +48,14 @@ from amcs.common.request_util import RequestUtil
 CASE_INDEX_PREFIX = {
     "test_alarm_api.py": "ALARM",
     "test_auth_login.py": "AUTH-LOGIN",
-    "test_database_api.py": "DATABASE",
+    "test_monitor_api.py": "DATABASE",
     "test_gis_api.py": "GIS",
     "test_home_api.py": "HOME",
     "test_history_api.py": "HISTORY",
     "test_patrol_api.py": "PATROL",
     "test_rdac_api.py": "RDAC",
-    "test_menu_plugin_api.py": "MENU-PLUGIN",
-    "test_system_smoke.py": "SYSTEM-SMOKE",
+    "test_menu_api.py": "MENU-PLUGIN",
+    "test_system_api.py": "SYSTEM-SMOKE",
     "test_video_api.py": "VIDEO",
 }
 

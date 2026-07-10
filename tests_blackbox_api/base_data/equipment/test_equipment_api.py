@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-"""基础数据设备管理接口功能测试。"""
+"""设备管理基础接口测试。"""
 from __future__ import annotations
 
 import allure
 import pytest
 
 
-@allure.feature("设备管理")
 class TestEquipmentApi:
     """覆盖设备管理首页、列表、筛选、类型树、编辑页和文件导出。"""
 

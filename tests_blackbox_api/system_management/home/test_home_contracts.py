@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""首页菜单、字典、子节点与响应结构契约测试。"""
+"""首页菜单、字典接口的响应结构与异常访问契约测试。"""
 from __future__ import annotations
 
 import allure
-
 
 class TestHomeChildContractsExtra:
     """补充校验首页子菜单和设备区域字典的细节字段。"""
@@ -61,7 +60,6 @@ class TestHomeChildContractsExtra:
         assert len(realtime_children) == 4
         assert len(patrol_children) == 3
 
-
 class TestHomeDictContractsExtra:
     """补充校验首页模块使用的公共字典返回契约。"""
 
@@ -97,7 +95,6 @@ class TestHomeDictContractsExtra:
             assert item["typekey"] == "EQUIP_AREA"
             assert item["name"]
 
-
 class TestHomeDictReferenceContracts:
     """补充校验稳定的 EQUIP_AREA 参考数据。"""
 
@@ -128,7 +125,6 @@ class TestHomeDictReferenceContracts:
         assert area_map["04"] == "控制室"
         assert area_map["10"] == "屋顶"
         assert area_map["12"] == "其他"
-
 
 class TestHomeDictRuntimeContractsMore:
     """补充校验设备区域字典中的默认值和编码分布。"""
@@ -178,7 +174,6 @@ class TestHomeDictRuntimeContractsMore:
             "其他",
         }
 
-
 class TestHomeMenuContractsMore:
     """补充校验首页菜单顺序与模块形态。"""
 
@@ -217,7 +212,6 @@ class TestHomeMenuContractsMore:
         top_modules = body["data"]["hostMenuList"][0]["leaf"]
         assert len(top_modules) == 8
 
-
 class TestHomeMenuShapeContracts:
     """补充校验首页菜单的路由与状态模式。"""
 
@@ -246,7 +240,6 @@ class TestHomeMenuShapeContracts:
         top_modules = home_api.init_menu().json()["data"]["hostMenuList"][0]["leaf"]
         states = [item["state"] for item in top_modules]
         assert states == [1, 1, 1, 1, 1, 1, 1, 1]
-
 
 class TestHomePayloadContractsMore:
     """补充校验 init-menu 返回体外层结构。"""
@@ -299,3 +292,77 @@ class TestHomePayloadContractsMore:
         assert host_plugin["pluginKey"] == "GM300-AMCS"
         assert host_plugin["text"] == host_plugin["name"]
         assert len(host_plugin["leaf"]) == len(root_node["children"])
+
+@allure.feature("系统管理-首页")
+class TestHomeAbnormalContractsMore:
+    """补充首页菜单和字典接口在异常参数下的稳定性校验。"""
+
+    @staticmethod
+    def _login(auth_api, test_user):
+        """每条用例先登录，保证校验的是业务接口返回。"""
+        login_response = auth_api.login(
+            account=test_user["username"],
+            password=test_user["password"],
+        )
+        assert login_response.status_code == 200
+        assert login_response.json()["status"] == 0
+
+    @staticmethod
+    def _assert_init_menu_success(response):
+        """统一校验首页菜单初始化接口的成功结构。"""
+        assert response.status_code == 200
+        assert "application/json" in response.headers.get("Content-Type", "")
+        body = response.json()
+        assert body["status"] == 0
+        assert body["message"] == "数据查询成功!"
+        assert set(body["data"].keys()) >= {"moduleMenu", "otherMenuList", "hostMenuList"}
+
+    @allure.title("首页菜单初始化接口使用 GET 方法时仍返回菜单结构")
+    def test_init_menu_get_method_keeps_success_contract(self, auth_api, request_util, config, test_user):
+        """校验首页菜单接口对 GET 方式保持兼容，避免前端调用方式变化导致失败。"""
+        self._login(auth_api, test_user)
+
+        response = request_util.send_request("get", config["home"]["init_menu_url"])
+
+        self._assert_init_menu_success(response)
+
+    @allure.title("首页菜单初始化接口接收无关 JSON 时仍返回菜单结构")
+    def test_init_menu_unknown_json_keeps_success_contract(self, auth_api, request_util, config, test_user):
+        """校验无关 JSON 字段不会影响首页菜单初始化结果。"""
+        self._login(auth_api, test_user)
+
+        response = request_util.send_request(
+            "post",
+            config["home"]["init_menu_url"],
+            json={"unexpected": "NO_SUCH_VALUE"},
+        )
+
+        self._assert_init_menu_success(response)
+
+    @allure.title("字典接口查询不存在类型时返回空列表")
+    def test_dict_unknown_type_returns_empty_list(self, auth_api, request_util, config, test_user):
+        """校验不存在的字典类型不会报错，而是返回空列表。"""
+        self._login(auth_api, test_user)
+
+        response = request_util.send_request(
+            "get",
+            f"{config['home']['dict_list_url_prefix']}/NO_SUCH_DICT_001",
+        )
+
+        assert response.status_code == 200
+        assert "application/json" in response.headers.get("Content-Type", "")
+        assert response.json() == []
+
+    @allure.title("字典接口缺少类型路径时返回 404")
+    def test_dict_missing_type_path_returns_404(self, auth_api, request_util, config, test_user):
+        """校验缺少字典类型路径时服务端明确返回 404。"""
+        self._login(auth_api, test_user)
+
+        response = request_util.send_request(
+            "get",
+            f"{config['home']['dict_list_url_prefix']}/",
+            allow_redirects=False,
+        )
+
+        assert response.status_code == 404
+        assert "No message available" in response.text

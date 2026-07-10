@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""AMCS 基础数据库接口自动化用例。"""
+"""监控点、报警配置和联动配置基础接口测试。"""
 from __future__ import annotations
 
 import html
@@ -9,11 +9,9 @@ import tempfile
 import time
 import uuid
 from pathlib import Path
-
 import allure
 
 
-@allure.feature("基础数据库")
 class TestDatabaseApi:
     """覆盖监控点、报警配置、联动配置的核心接口场景。"""
 

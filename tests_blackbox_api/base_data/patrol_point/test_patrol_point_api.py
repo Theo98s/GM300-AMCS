@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-"""巡检点位管理接口功能测试。"""
+"""巡检点位基础接口测试。"""
 from __future__ import annotations
 
 import re
-
 import allure
 
 
-@allure.feature("巡检点位管理")
 class TestPatrolPointApi:
     """覆盖巡检点位首页、分页列表、编辑页和设备级联查询。"""
 

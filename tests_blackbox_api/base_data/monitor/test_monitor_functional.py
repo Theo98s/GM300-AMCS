@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""基础数据库监控点、报警、联动与批量功能流程测试。"""
+"""监控点、报警配置、联动配置和批量操作功能流程测试。"""
 from __future__ import annotations
 
-from .test_database_api import TestDatabaseApi as DatabaseApiHelper
+from .test_monitor_api import TestDatabaseApi as DatabaseApiHelper
 import allure
 from pathlib import Path
 
