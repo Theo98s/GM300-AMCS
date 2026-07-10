@@ -36,6 +36,17 @@ patrol_point:
   export_url: /amcs/monitorArea/export
   import_template_name: monitorArea_amcs.xls
 
+patrol_record:
+  index_url: /amcs/patrol/record
+  page_url: /amcs/patrol/record/findPatrolRecordList
+  detail_page_url: /amcs/patrol/record/detail
+  record_url: /amcs/patrol/record/findPatrolRecordById
+  detail_list_url: /amcs/patrol/record/findRecordDetailList
+  attaches_url: /amcs/patrol/record/attaches
+  can_export_url: /amcs/patrol/record/canExportPatrolDetail
+  export_dialog_url: /amcs/patrol/exportDialog
+  export_page_url: /amcs/patrol/record/exportRecord
+
 image_recognition:
   config_page_url: /imageRecognition/config
   page_url: /imageRecognition/findPage
