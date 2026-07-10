@@ -30,7 +30,11 @@ patrol_point:
   equip_list_url: /amcs/monitorArea/equip
   existing_preset_url: /amcs/monitorArea/getExistPreset
   can_delete_url: /amcs/monitorArea/couldDelete
+  save_url: /amcs/monitorArea/save
+  delete_url: /amcs/monitorArea/delete
+  import_url: /amcs/monitorArea/import
   export_url: /amcs/monitorArea/export
+  import_template_name: monitorArea_amcs.xls
 
 image_recognition:
   config_page_url: /imageRecognition/config
@@ -38,6 +42,8 @@ image_recognition:
   edit_page_url: /imageRecognition/edit
   detail_url: /imageRecognition/findConfigById
   validate_url: /imageRecognition/validate
+  save_url: /imageRecognition/saveOrUpdate
+  delete_url: /imageRecognition/batchDelete
   recognition_type_url: /imageRecognition/findRecognitionTypeList
   configured_equip_url: /imageRecognition/findConfiguredEquipList
   configured_camera_url: /imageRecognition/findConfiguredCameraList

@@ -55,6 +55,18 @@ class ImageRecognitionApi:
         """保存前校验图像识别配置中的识别项和参数。"""
         return self.request_util.send_request("post", self.validate_url, json=payload)
 
+    def save_config(self, payload: dict[str, Any]):
+        """保存图像识别配置，供完整流程和异常场景复用。"""
+        return self.request_util.send_request("post", self.save_url, json=payload)
+
+    def delete_by_ids(self, config_ids: list[str]):
+        """按配置标识批量删除图像识别配置。"""
+        return self.request_util.send_request(
+            "get",
+            self.delete_url,
+            params={"ids": ",".join(config_ids)} if config_ids else {},
+        )
+
     def list_recognition_types(self):
         """查询系统支持的图像识别类型字典。"""
         return self.request_util.send_request("get", self.recognition_type_url)

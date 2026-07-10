@@ -57,3 +57,18 @@ class TestPatrolPointAbnormalContracts:
         assert response.status_code == 400
         assert "Required request body is missing" in response.text
         assert "couldDelete" in response.text
+
+    @allure.title("删除不存在的巡检点位保持幂等成功")
+    def test_patrol_point_delete_unknown_id_is_idempotent(
+        self,
+        auth_api,
+        patrol_point_api,
+        test_user,
+    ):
+        """校验重复清理或无效标识不会导致接口报错。"""
+        self._login(auth_api, test_user)
+
+        response = patrol_point_api.delete_by_ids(["NO_SUCH_POINT_ID"])
+
+        assert response.status_code == 200
+        assert response.json() == {"status": 0, "message": "", "data": None}
