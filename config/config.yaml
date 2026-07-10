@@ -23,6 +23,32 @@ patrol:
   patrol_card_list_url: /amcs/patrol/card/list
   patrol_plan_list_url: /amcs/patrol/plan/findPatrolPlanVoList
 
+patrol_point:
+  index_url: /amcs/monitorArea/index
+  page_url: /amcs/monitorArea/findPage
+  edit_page_url: /amcs/monitorArea/editPage
+  equip_list_url: /amcs/monitorArea/equip
+  existing_preset_url: /amcs/monitorArea/getExistPreset
+  can_delete_url: /amcs/monitorArea/couldDelete
+  export_url: /amcs/monitorArea/export
+
+image_recognition:
+  config_page_url: /imageRecognition/config
+  page_url: /imageRecognition/findPage
+  edit_page_url: /imageRecognition/edit
+  detail_url: /imageRecognition/findConfigById
+  validate_url: /imageRecognition/validate
+  recognition_type_url: /imageRecognition/findRecognitionTypeList
+  configured_equip_url: /imageRecognition/findConfiguredEquipList
+  configured_camera_url: /imageRecognition/findConfiguredCameraList
+  configured_preset_url: /imageRecognition/findConfiguredPresetList
+  monitored_equip_url: /imageRecognition/findMonitoredEquipList
+  equip_camera_url: /imageRecognition/findEquipCameraList
+  preset_url: /imageRecognition/findPresetList
+  recognition_item_url: /imageRecognition/findRecognitionItemListByEquip
+  recognition_type_by_preset_url: /imageRecognition/findTypeByEquipIdAndPresetNum
+  import_export_page_url: /imageRecognition/importOrExport
+
 alarm:
   alarm_record_page_url: /alarmRecord/getPageData2
 

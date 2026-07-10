@@ -29,7 +29,9 @@ from amcs.api.core.auth_api import AuthApi
 from amcs.api.modules.alarm_api import AlarmApi
 from amcs.api.modules.database_api import DatabaseApi
 from amcs.api.modules.history_api import HistoryApi
+from amcs.api.modules.image_recognition_api import ImageRecognitionApi
 from amcs.api.modules.patrol_api import PatrolApi
+from amcs.api.modules.patrol_point_api import PatrolPointApi
 from amcs.api.modules.rdac_api import RdacApi
 from amcs.api.modules.video_api import VideoApi
 from amcs.api.platform.gis_api import GisApi
@@ -185,6 +187,18 @@ def plugin_api(request_util, config):
 def patrol_api(request_util, config):
     """提供巡检管理接口客户端。"""
     return PatrolApi(request_util, config)
+
+
+@pytest.fixture
+def patrol_point_api(request_util, config):
+    """提供巡检点位管理接口客户端。"""
+    return PatrolPointApi(request_util, config)
+
+
+@pytest.fixture
+def image_recognition_api(request_util, config):
+    """提供图像识别配置接口客户端。"""
+    return ImageRecognitionApi(request_util, config)
 
 
 @pytest.fixture
