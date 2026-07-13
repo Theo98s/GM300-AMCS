@@ -127,6 +127,14 @@ class TestDatabaseApi:
         preset = preset_list[0]
         return related_equip, camera, preset
 
+    @staticmethod
+    def _assert_rows_match_filters(rows: list[dict], **expected_fields):
+        """统一校验筛选结果中的每一条记录都满足目标字段条件。"""
+        assert rows
+        for row in rows:
+            for field, expected_value in expected_fields.items():
+                assert row.get(field) == expected_value
+
     @allure.title("监控点新增接口可保存新记录")
     def test_monitor_add(self, auth_api, database_api, test_user):
         """校验监控点新增接口可成功保存，并能在列表中查到新数据。"""
@@ -411,11 +419,12 @@ class TestDatabaseApi:
 
             body = response.json()
             assert body["total"] >= 1
-            assert len(body["rows"]) >= 1
-            assert any(
-                row.get("alarmDatatype") == alarm_datatype and row.get("scadaAddr10") == scada_addr10
-                for row in body["rows"]
+            self._assert_rows_match_filters(
+                body["rows"],
+                alarmDatatype=alarm_datatype,
+                scadaAddr10=scada_addr10,
             )
+            assert any(row["id"] == created_monitor_id for row in body["rows"])
         finally:
             self._cleanup_monitor_if_exists(database_api, created_monitor_id)
 
@@ -425,6 +434,56 @@ class TestDatabaseApi:
         self._login(auth_api, test_user)
 
         response = database_api.list_monitors({"alarmDatatype": "NO_SUCH_AUTO_CASE_001"})
+        assert response.status_code == 200
+
+        body = response.json()
+        assert body["total"] == 0
+        assert body["rows"] == []
+
+    @allure.title("设备大类筛选后监控点结果全集保持一致")
+    def test_monitor_list_filters_by_security_type(self, auth_api, database_api, test_user):
+        """校验监控点设备大类筛选不会混入其他类型记录。"""
+        self._login(auth_api, test_user)
+
+        row = self._get_existing_monitor_row(database_api)
+        response = database_api.list_monitors({"securityequiptype": row["securityequiptype"]}, rows=100)
+        assert response.status_code == 200
+
+        body = response.json()
+        self._assert_rows_match_filters(body["rows"], securityequiptype=row["securityequiptype"])
+        assert any(item["id"] == row["id"] for item in body["rows"])
+
+    @allure.title("不存在的设备大类筛选返回空监控点结果")
+    def test_monitor_list_returns_empty_rows_for_unknown_security_type(self, auth_api, database_api, test_user):
+        """校验无效设备大类不会退化成默认全量列表。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.list_monitors({"securityequiptype": "99"})
+        assert response.status_code == 200
+
+        body = response.json()
+        assert body["total"] == 0
+        assert body["rows"] == []
+
+    @allure.title("设备标识筛选后监控点结果全集保持一致")
+    def test_monitor_list_filters_by_existing_equipment_id(self, auth_api, database_api, test_user):
+        """校验设备标识筛选只返回对应设备下的监控点。"""
+        self._login(auth_api, test_user)
+
+        row = self._get_existing_monitor_row(database_api)
+        response = database_api.list_monitors({"equipId": row["equipId"]}, rows=100)
+        assert response.status_code == 200
+
+        body = response.json()
+        self._assert_rows_match_filters(body["rows"], equipId=row["equipId"])
+        assert any(item["id"] == row["id"] for item in body["rows"])
+
+    @allure.title("不存在的设备标识筛选返回空监控点结果")
+    def test_monitor_list_returns_empty_rows_for_unknown_equipment_id(self, auth_api, database_api, test_user):
+        """校验无效设备标识不会命中其他设备的监控点。"""
+        self._login(auth_api, test_user)
+
+        response = database_api.list_monitors({"equipId": "NO_SUCH_MONITOR_EQUIP_ID"})
         assert response.status_code == 200
 
         body = response.json()

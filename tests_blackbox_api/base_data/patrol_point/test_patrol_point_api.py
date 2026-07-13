@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import re
+
 import allure
+import pytest
 
 
 class TestPatrolPointApi:
@@ -15,6 +17,14 @@ class TestPatrolPointApi:
         response = auth_api.login(test_user["username"], test_user["password"])
         assert response.status_code == 200
         assert response.json()["status"] == 0
+
+    @staticmethod
+    def _first_row(patrol_point_api):
+        """获取首条巡检点位作为筛选样本。"""
+        rows = patrol_point_api.list_points(rows=1).json()["rows"]
+        if not rows:
+            pytest.skip("当前环境没有巡检点位数据。")
+        return rows[0]
 
     @allure.title("巡检点位管理首页返回完整页面")
     def test_patrol_point_index_page(self, auth_api, patrol_point_api, test_user):
@@ -110,6 +120,50 @@ class TestPatrolPointApi:
         self._login(auth_api, test_user)
 
         body = patrol_point_api.list_points({"keyword": "NO_SUCH_POINT_KEYWORD_9F7A"}).json()
+
+        assert body["total"] == 0
+        assert body["rows"] == []
+
+    @allure.title("巡检点位按设备名称筛选后结果全集保持一致")
+    def test_patrol_point_filter_by_existing_equipment_name(self, auth_api, patrol_point_api, test_user):
+        """校验设备名称筛选不会混入其他设备的点位。"""
+        self._login(auth_api, test_user)
+        row = self._first_row(patrol_point_api)
+
+        body = patrol_point_api.list_points({"equipName": row["equipName"]}, rows=50).json()
+
+        assert body["rows"]
+        assert all(item["equipName"] == row["equipName"] for item in body["rows"])
+        assert any(item["id"] == row["id"] for item in body["rows"])
+
+    @allure.title("巡检点位按不存在设备名称筛选返回空分页")
+    def test_patrol_point_unknown_equipment_name_returns_empty_rows(self, auth_api, patrol_point_api, test_user):
+        """校验无效设备名称不会退化成默认全量查询。"""
+        self._login(auth_api, test_user)
+
+        body = patrol_point_api.list_points({"equipName": "NO_SUCH_PATROL_POINT_EQUIP"}).json()
+
+        assert body["total"] == 0
+        assert body["rows"] == []
+
+    @allure.title("巡检点位按摄像机名称筛选后结果全集保持一致")
+    def test_patrol_point_filter_by_existing_camera_name(self, auth_api, patrol_point_api, test_user):
+        """校验摄像机名称筛选只返回对应摄像机下的点位。"""
+        self._login(auth_api, test_user)
+        row = self._first_row(patrol_point_api)
+
+        body = patrol_point_api.list_points({"cameraName": row["cameraName"]}, rows=50).json()
+
+        assert body["rows"]
+        assert all(item["cameraName"] == row["cameraName"] for item in body["rows"])
+        assert any(item["id"] == row["id"] for item in body["rows"])
+
+    @allure.title("巡检点位按不存在摄像机名称筛选返回空分页")
+    def test_patrol_point_unknown_camera_name_returns_empty_rows(self, auth_api, patrol_point_api, test_user):
+        """校验无效摄像机名称不会命中其他点位。"""
+        self._login(auth_api, test_user)
+
+        body = patrol_point_api.list_points({"cameraName": "NO_SUCH_PATROL_POINT_CAMERA"}).json()
 
         assert body["total"] == 0
         assert body["rows"] == []

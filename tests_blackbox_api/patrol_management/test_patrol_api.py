@@ -2,6 +2,8 @@
 """巡检卡片、计划与巡检记录基础接口测试。"""
 from __future__ import annotations
 
+from datetime import datetime
+
 import allure
 import pytest
 
@@ -213,6 +215,17 @@ class TestPatrolRecordApi:
             pytest.skip("当前环境没有巡检记录。")
         return rows[0]
 
+    @staticmethod
+    def _assert_all_rows_match(body: dict, field: str, expected_value):
+        """统一校验筛选结果中的每一条记录都满足目标条件。"""
+        assert body["rows"]
+        assert all(item[field] == expected_value for item in body["rows"])
+
+    @staticmethod
+    def _format_record_time(timestamp_ms: int) -> str:
+        """把巡检记录毫秒时间戳转换为查询接口使用的日期时间字符串。"""
+        return datetime.fromtimestamp(timestamp_ms / 1000).strftime("%Y-%m-%d %H:%M:%S")
+
     @allure.title("巡检记录首页包含列表、详情和下载入口")
     def test_patrol_record_index_page(self, auth_api, patrol_record_api, test_user):
         """校验首页标题及三个核心业务地址均存在。"""
@@ -279,7 +292,7 @@ class TestPatrolRecordApi:
 
         body = patrol_record_api.list_records({"cardName": row["cardName"]}, rows=50).json()
 
-        assert body["rows"]
+        self._assert_all_rows_match(body, "cardName", row["cardName"])
         assert any(item["id"] == row["id"] for item in body["rows"])
 
     @allure.title("不存在的巡检卡片名称返回空分页")
@@ -293,6 +306,42 @@ class TestPatrolRecordApi:
         self._login(auth_api, test_user)
 
         body = patrol_record_api.list_records({"cardName": "NO_SUCH_CARD_8D7F"}).json()
+
+        assert body == {"total": 0, "rows": []}
+
+    @allure.title("巡检记录按开始时间范围筛选后结果全集保持在区间内")
+    def test_patrol_record_filter_by_start_time_range(self, auth_api, patrol_record_api, test_user):
+        """校验时间范围查询不会混入区间外的巡检记录。"""
+        self._login(auth_api, test_user)
+        row = self._first_record(patrol_record_api)
+
+        begin_time = self._format_record_time(row["beginTime"])
+        end_time = self._format_record_time(row["endTime"])
+        body = patrol_record_api.list_records(
+            {
+                "startDate": begin_time,
+                "endDate": end_time,
+            },
+            rows=50,
+        ).json()
+
+        assert body["rows"]
+        assert any(item["id"] == row["id"] for item in body["rows"])
+        for item in body["rows"]:
+            assert begin_time <= self._format_record_time(item["beginTime"]) <= end_time
+
+    @allure.title("巡检记录按不存在时间范围筛选返回空分页")
+    def test_patrol_record_unknown_time_range_returns_empty_page(self, auth_api, patrol_record_api, test_user):
+        """校验不存在业务数据的时间范围不会退化成默认全量查询。"""
+        self._login(auth_api, test_user)
+
+        body = patrol_record_api.list_records(
+            {
+                "startDate": "2000-01-01 00:00:00",
+                "endDate": "2000-01-01 00:01:00",
+            },
+            rows=50,
+        ).json()
 
         assert body == {"total": 0, "rows": []}
 

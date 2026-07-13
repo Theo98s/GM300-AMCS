@@ -2,13 +2,35 @@
 """历史记录与历史趋势基础接口测试。"""
 from __future__ import annotations
 
+from datetime import datetime, timedelta
+
 import allure
 import json
 import pytest
 
 
 class TestHistoryApi:
-    """联动历史查询 smoke 用例。"""
+    @staticmethod
+    def _login(auth_api, test_user):
+        """统一执行登录，避免查询断言被登录态干扰。"""
+        response = auth_api.login(test_user["username"], test_user["password"])
+        assert response.status_code == 200
+        assert response.json()["status"] == 0
+
+    @staticmethod
+    def _first_row(history_api) -> dict:
+        """获取首条历史记录作为筛选样本。"""
+        rows = history_api.find_monitor_link_history({"rows": 1}).json()["rows"]
+        if not rows:
+            pytest.skip("当前环境没有联动历史记录。")
+        return rows[0]
+
+    @staticmethod
+    def _format_operation_time(value: str) -> datetime:
+        """解析历史记录中的操作时间字符串。"""
+        return datetime.strptime(value, "%Y-%m-%d %H:%M:%S.%f")
+
+    # 联动历史查询基础用例。
 
     @allure.title("联动历史分页接口返回总数与列表")
     def test_monitor_link_history_returns_total_and_rows(self, auth_api, history_api, test_user):
@@ -142,6 +164,88 @@ class TestHistoryApi:
             assert row["description"]
             assert row["linkage"] is None or isinstance(row["linkage"], str)
             assert row["linkDt"] is None or isinstance(row["linkDt"], str)
+
+    @allure.title("历史记录按设备名称筛选后结果全集保持一致")
+    def test_monitor_link_history_filter_by_existing_equipment_name(self, auth_api, history_api, test_user):
+        """校验设备名称筛选不会混入其他设备的联动历史。"""
+        self._login(auth_api, test_user)
+        row = self._first_row(history_api)
+
+        body = history_api.find_monitor_link_history({"equipName": row["equipName"], "rows": 200}).json()
+
+        assert body["rows"]
+        assert all(item["equipName"] == row["equipName"] for item in body["rows"])
+        assert any(item["id"] == row["id"] for item in body["rows"])
+
+    @allure.title("历史记录按不存在设备名称筛选返回空分页")
+    def test_monitor_link_history_unknown_equipment_name_returns_empty_page(self, auth_api, history_api, test_user):
+        """校验无效设备名称不会退化成默认全量查询。"""
+        self._login(auth_api, test_user)
+
+        body = history_api.find_monitor_link_history({"equipName": "NO_SUCH_HISTORY_EQUIP", "rows": 200}).json()
+
+        assert body == {"total": 0, "rows": []}
+
+    @allure.title("历史记录按设备大类筛选后结果全集保持一致")
+    def test_monitor_link_history_filter_by_security_type(self, auth_api, history_api, test_user):
+        """校验设备大类筛选只返回目标类型的联动历史。"""
+        self._login(auth_api, test_user)
+        row = self._first_row(history_api)
+
+        body = history_api.find_monitor_link_history(
+            {"securityequiptype": row["securityequiptype"], "rows": 200}
+        ).json()
+
+        assert body["rows"]
+        assert all(item["securityequiptype"] == row["securityequiptype"] for item in body["rows"])
+        assert any(item["id"] == row["id"] for item in body["rows"])
+
+    @allure.title("历史记录按不存在设备大类筛选返回空分页")
+    def test_monitor_link_history_unknown_security_type_returns_empty_page(self, auth_api, history_api, test_user):
+        """校验无效设备大类不会命中其他联动历史记录。"""
+        self._login(auth_api, test_user)
+
+        body = history_api.find_monitor_link_history({"securityequiptype": "99", "rows": 200}).json()
+
+        assert body == {"total": 0, "rows": []}
+
+    @allure.title("历史记录按时间范围筛选后结果全集保持在区间内")
+    def test_monitor_link_history_filter_by_time_range(self, auth_api, history_api, test_user):
+        """校验时间范围筛选不会返回区间外的联动历史。"""
+        self._login(auth_api, test_user)
+        row = self._first_row(history_api)
+
+        operation_time = self._format_operation_time(row["operationDt"])
+        start_time = (operation_time - timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M:%S")
+        end_time = (operation_time + timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M:%S")
+        body = history_api.find_monitor_link_history(
+            {
+                "startTime": start_time,
+                "endTime": end_time,
+                "rows": 200,
+            }
+        ).json()
+
+        assert body["rows"]
+        assert any(item["id"] == row["id"] for item in body["rows"])
+        for item in body["rows"]:
+            item_time = self._format_operation_time(item["operationDt"])
+            assert start_time <= item_time.strftime("%Y-%m-%d %H:%M:%S") <= end_time
+
+    @allure.title("历史记录按不存在时间范围筛选返回空分页")
+    def test_monitor_link_history_unknown_time_range_returns_empty_page(self, auth_api, history_api, test_user):
+        """校验不存在业务数据的时间范围不会回退成默认查询。"""
+        self._login(auth_api, test_user)
+
+        body = history_api.find_monitor_link_history(
+            {
+                "startTime": "2000-01-01 00:00:00",
+                "endTime": "2000-01-01 00:01:00",
+                "rows": 200,
+            }
+        ).json()
+
+        assert body == {"total": 0, "rows": []}
 
 
 class TestHistoryTrendApi:

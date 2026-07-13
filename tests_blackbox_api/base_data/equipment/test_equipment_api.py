@@ -33,6 +33,12 @@ class TestEquipmentApi:
         assert response.content.startswith(bytes.fromhex("D0CF11E0A1B11AE1"))
         assert len(response.content) > 1024
 
+    @staticmethod
+    def _assert_all_rows_match(body: dict, field: str, expected_value: str):
+        """统一校验筛选结果中的每一条记录都满足目标条件。"""
+        assert body["rows"]
+        assert all(item[field] == expected_value for item in body["rows"])
+
     @allure.title("设备管理首页包含列表和导入导出入口")
     def test_equipment_index_page(self, auth_api, equipment_api, test_user):
         """校验首页可加载设备列表、模板下载、导入和导出脚本。"""
@@ -94,7 +100,7 @@ class TestEquipmentApi:
 
         body = equipment_api.list_equipment({"equipName": row["equipName"]}, rows=50).json()
 
-        assert body["rows"]
+        self._assert_all_rows_match(body, "equipName", row["equipName"])
         assert any(item["id"] == row["id"] for item in body["rows"])
 
     @allure.title("不存在的设备名称筛选返回空分页")
@@ -103,6 +109,26 @@ class TestEquipmentApi:
         self._login(auth_api, test_user)
 
         body = equipment_api.list_equipment({"equipName": "NO_SUCH_EQUIPMENT_8D7F"}).json()
+
+        assert body == {"total": 0, "rows": []}
+
+    @allure.title("设备类型编码筛选后每条记录都属于目标类型")
+    def test_equipment_filter_by_existing_type_code(self, auth_api, equipment_api, test_user):
+        """校验设备类型编码筛选不会混入其他类型数据。"""
+        self._login(auth_api, test_user)
+        row = self._first_row(equipment_api)
+
+        body = equipment_api.list_equipment({"equiptypecode": row["equiptypecode"]}, rows=50).json()
+
+        self._assert_all_rows_match(body, "equiptypecode", row["equiptypecode"])
+        assert any(item["id"] == row["id"] for item in body["rows"])
+
+    @allure.title("不存在的设备类型编码筛选返回空分页")
+    def test_equipment_unknown_type_code_returns_empty_page(self, auth_api, equipment_api, test_user):
+        """校验无效设备类型编码不会退化成默认全量查询。"""
+        self._login(auth_api, test_user)
+
+        body = equipment_api.list_equipment({"equiptypecode": "NO_SUCH_TYPE_CODE_8D7F"}).json()
 
         assert body == {"total": 0, "rows": []}
 
