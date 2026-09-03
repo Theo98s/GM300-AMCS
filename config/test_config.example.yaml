@@ -1,7 +1,7 @@
 # 复制本文件到本地路径后，可通过设置 AMCS_CONFIG_FILE 来切换测试环境。
 # 其他环境的访问地址、账号、线路和所亭等参数，统一放在这里维护，
 # 不要把这些环境相关数据直接写死在测试用例里。
-base_url: https://10.150.4.13:8443
+base_url: https://192.168.180.90:443
 env: test
 username: gmservice
 password: "123456"
@@ -10,5 +10,5 @@ targets:
   line_id: ""
   line_name: ""
   substation_id: ""
-  substation_name: 青花牵引变电所
+  substation_name: 西乡牵引变电所
   rdac_protocol: "104"
