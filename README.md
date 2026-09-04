@@ -1,6 +1,6 @@
 # GM300-AMCS 自动化
 
-本项目参考 `D:\gm\GM300-CAMS` 的目录方式整理，当前主要维护黑盒接口自动化用例，UI / E2E 目录作为后续扩展预留。
+本项目参考 `D:\gm\GM300-CAMS` 的目录方式整理，维护黑盒接口自动化及独立的浏览器 UI 测试。
 
 ## 目录结构
 
@@ -29,7 +29,7 @@ tests_blackbox_api/                # 黑盒接口测试
   system_management/
   video_monitor/
 
-tests_blackbox_ui/                 # 黑盒 UI / E2E 测试预留目录
+tests_blackbox_ui/                 # 黑盒 UI 测试：登录、巡检点位查询
   conftest.py
   pages/
 
@@ -74,6 +74,34 @@ pytest tests_blackbox_api
 - 基础数据库
 
 ## 运行方式
+
+UI 测试单独安装并运行，默认 `pytest` 仍只运行接口用例：
+
+```powershell
+.env\Scripts\python.exe -m pip install -r requirements-ui.txt
+.env\Scripts\python.exe -m playwright install chromium
+.env\Scripts\python.exe -m pytest tests_blackbox_ui --alluredir reports/ui-results
+```
+
+已有 Edge 时可跳过 Chromium 下载，直接执行：
+
+```powershell
+.env\Scripts\python.exe -m pytest tests_blackbox_ui --ui-channel msedge --alluredir reports/ui-results
+```
+
+UI 同样读取 `AMCS_CONFIG_FILE` 指定的环境文件。可在该文件添加以下可选配置：
+
+```yaml
+ui:
+  headless: false  # 显示浏览器窗口；不配置时默认无界面运行
+  timeout_ms: 15000  # 页面操作与响应等待超时
+  # channel: msedge  # 可选：使用已安装的 Edge 浏览器
+```
+
+首批 UI 用例通过真实登录和可见输入框操作，覆盖巡检点位设备名称、摄像机名称、
+预置位名称筛选、空结果、组合查询和清空恢复；同时核对响应中的每条记录与页面展示。
+当前列表校验覆盖返回的首页，尚未覆盖全部分页；列表恢复用例需在数据稳定的环境运行。
+失败截图附加到 Allure 结果，可能包含业务数据，请按测试环境权限管理报告。
 
 ```powershell
 cd D:\gm\GM300-AMCS

@@ -1,0 +1,3 @@
+# 浏览器依赖单独安装，保留默认接口运行入口。
+-r requirements.txt
+playwright==1.62.0
