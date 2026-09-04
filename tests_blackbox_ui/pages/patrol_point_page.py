@@ -1,5 +1,6 @@
 """巡检点位列表的可见控件操作及逐行展示校验。"""
 from urllib.parse import urlsplit
+import re
 from playwright.sync_api import expect
 
 
@@ -12,6 +13,44 @@ class PatrolPointPage:
         """绑定当前页面和表格数据行。"""
         self.page = page
         self.rows = page.locator(".datagrid-view2 .datagrid-body tr.datagrid-row")
+
+    def change_page(self, action):
+        """点击主表分页按钮，并等待对应请求及表格更新。"""
+        button = self.page.locator(f'.datagrid-pager a:has(.pagination-{action})')
+        expect(button).not_to_have_class(re.compile(r".*l-btn-disabled.*"))
+        with self.page.expect_response(self.is_list_response) as pending:
+            button.click()
+        return self.assert_table(pending.value)
+
+    def change_page_size(self, size):
+        """通过可见下拉框切换每页条数。"""
+        with self.page.expect_response(self.is_list_response) as pending:
+            self.page.locator(".datagrid-pager select.pagination-page-list").select_option(str(size))
+        return self.assert_table(pending.value)
+
+    def all_filtered_rows(self, first_page):
+        """遍历筛选结果全部分页，校验记录无重复且条数与总数一致。"""
+        result = list(first_page["rows"])
+        expected_total = first_page["total"]
+        seen = {row["id"] for row in result}
+        assert len(seen) == len(result), "首页出现重复记录"
+        while len(result) < expected_total:
+            body = self.change_page("next")
+            assert body["total"] == expected_total, "遍历期间总数发生变化，请在稳定环境复测"
+            assert body["rows"], "尚有未读取数据但下一页为空"
+            ids = [row["id"] for row in body["rows"]]
+            assert len(set(ids)) == len(ids) and not seen.intersection(ids), "分页返回重复记录"
+            seen.update(ids)
+            result.extend(body["rows"])
+        assert len(result) == expected_total
+        return result
+
+    def open_import(self):
+        """通过工具栏打开导入弹窗，不选择或上传文件。"""
+        self.page.locator('#areaToolbar a[onclick="showImportDialog();"]').click()
+        dialog = self.page.locator("#import_dialog")
+        expect(dialog).to_be_visible()
+        return dialog
 
     @staticmethod
     def is_list_response(response):
@@ -42,7 +81,12 @@ class PatrolPointPage:
         for index, row in enumerate(body["rows"]):
             for field in ("equipName", "cameraName", "presetName"):
                 cell = self.rows.nth(index).locator(f'td[field="{field}"] .datagrid-cell')
-                expect(cell).to_have_text(str(row.get(field) or ""))
+                # 设备名称缺失时，页面格式化函数会显示占位符。
+                value = row.get(field) or ("--" if field == "equipName" else "")
+                expect(cell).to_have_text(str(value))
         if not body["rows"]:
-            assert body["total"] == 0, "空首页与总数不一致"
+            assert body["total"] == 0, (
+                f"查询返回空页但总数为 {body['total']}，请检查是否沿用旧页码；"
+                f"请求参数：{response.request.post_data}"
+            )
         return body
