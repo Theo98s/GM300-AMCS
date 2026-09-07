@@ -4,6 +4,13 @@ from __future__ import annotations
 
 import allure
 
+from tests_blackbox_api.system_management.home.menu_helpers import (
+    amcs_host,
+    amcs_top_modules,
+    amcs_tree_root,
+    find_node,
+)
+
 
 @allure.feature("首页接口")
 class TestHomeApi:
@@ -29,8 +36,7 @@ class TestHomeApi:
         host_menu_list = body["data"]["hostMenuList"]
         assert len(host_menu_list) >= 1
 
-        first_plugin = host_menu_list[0]
-        top_names = [item["name"] for item in first_plugin["leaf"]]
+        top_names = [item["name"] for item in amcs_host(body)["leaf"]]
         assert "首页" in top_names
         assert "视频监控" in top_names
         assert "系统管理" in top_names
@@ -46,7 +52,7 @@ class TestHomeApi:
 
         response = home_api.init_menu()
         body = response.json()
-        welcome_menu = body["data"]["hostMenuList"][0]["leaf"][0]
+        welcome_menu = find_node(amcs_top_modules(body), "GM300-AMCS:amcs_welcome")
 
         assert welcome_menu["id"] == "GM300-AMCS:amcs_welcome"
         assert welcome_menu["url"] == "/das/home"
@@ -80,7 +86,7 @@ class TestHomeApi:
 
         response = home_api.init_menu()
         body = response.json()
-        first_leaf = body["data"]["hostMenuList"][0]["leaf"][0]
+        first_leaf = find_node(amcs_top_modules(body), "GM300-AMCS:amcs_welcome")
 
         assert set(first_leaf.keys()) >= {"id", "name", "text", "url", "openClosed", "pluginKey"}
         assert first_leaf["id"]
@@ -98,7 +104,7 @@ class TestHomeApi:
 
         response = home_api.init_menu()
         body = response.json()
-        host_leaf = body["data"]["hostMenuList"][0]["leaf"]
+        host_leaf = amcs_top_modules(body)
         video_module = next(item for item in host_leaf if item["id"] == "GM300-AMCS:video")
         child_routes = {item["id"]: item["url"] for item in video_module["leaf"]}
 
@@ -116,7 +122,7 @@ class TestHomeApi:
 
         response = home_api.init_menu()
         body = response.json()
-        top_ids = {item["id"] for item in body["data"]["hostMenuList"][0]["leaf"]}
+        top_ids = {item["id"] for item in amcs_top_modules(body)}
 
         assert {
             "GM300-AMCS:amcs_welcome",
@@ -138,8 +144,8 @@ class TestHomeApi:
 
         init_menu_body = home_api.init_menu().json()
         menu_tree_body = menu_api.get_user_menu_tree().json()
-        init_ids = [item["id"] for item in init_menu_body["data"]["hostMenuList"][0]["leaf"]]
-        tree_ids = [item["id"] for item in menu_tree_body[0]["children"]]
+        init_ids = [item["id"] for item in amcs_top_modules(init_menu_body)]
+        tree_ids = [item["id"] for item in amcs_tree_root(menu_tree_body)["children"]]
 
         assert init_ids == tree_ids
 
@@ -154,7 +160,7 @@ class TestHomeApi:
 
         response = home_api.init_menu()
         body = response.json()
-        welcome_leaf = body["data"]["hostMenuList"][0]["leaf"][0]
+        welcome_leaf = find_node(amcs_top_modules(body), "GM300-AMCS:amcs_welcome")
 
         assert welcome_leaf["id"] == "GM300-AMCS:amcs_welcome"
         assert welcome_leaf["openClosed"] == "open"
@@ -188,7 +194,7 @@ class TestHomeApi:
 
         response = home_api.init_menu()
         body = response.json()
-        host_leaf = body["data"]["hostMenuList"][0]["leaf"]
+        host_leaf = amcs_top_modules(body)
         realtime_module = next(item for item in host_leaf if item["id"] == "GM300-AMCS:amcs_das")
 
         assert realtime_module["text"] == "实时监控"
@@ -207,7 +213,7 @@ class TestHomeApi:
 
         response = home_api.init_menu()
         body = response.json()
-        top_modules = body["data"]["hostMenuList"][0]["leaf"][:8]
+        top_modules = amcs_top_modules(body)
 
         for item in top_modules:
             assert item["pluginKey"] == "GM300-AMCS"
@@ -224,7 +230,7 @@ class TestHomeApi:
 
         response = home_api.init_menu()
         body = response.json()
-        host_leaf = body["data"]["hostMenuList"][0]["leaf"]
+        host_leaf = amcs_top_modules(body)
         container_ids = {
             "GM300-AMCS:history",
             "GM300-AMCS:base",
@@ -249,7 +255,7 @@ class TestHomeApi:
 
         response = home_api.init_menu()
         body = response.json()
-        host_leaf = body["data"]["hostMenuList"][0]["leaf"]
+        host_leaf = amcs_top_modules(body)
         patrol_module = next(item for item in host_leaf if item["id"] == "GM300-AMCS:amcs_patrol")
 
         assert patrol_module["text"] == "巡检管理"

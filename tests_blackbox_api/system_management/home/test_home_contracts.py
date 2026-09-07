@@ -4,6 +4,12 @@ from __future__ import annotations
 
 import allure
 
+from tests_blackbox_api.system_management.home.menu_helpers import (
+    amcs_host,
+    amcs_top_modules,
+    amcs_tree_root,
+)
+
 class TestHomeChildContractsExtra:
     """补充校验首页子菜单和设备区域字典的细节字段。"""
 
@@ -36,7 +42,7 @@ class TestHomeChildContractsExtra:
         """校验视频子菜单仍保留 pageurl、url、类型和默认状态对齐关系。"""
         self._login(auth_api, test_user)
 
-        host_leaf = home_api.init_menu().json()["data"]["hostMenuList"][0]["leaf"]
+        host_leaf = amcs_top_modules(home_api.init_menu().json())
         video_children = next(item for item in host_leaf if item["id"] == "GM300-AMCS:video")["leaf"]
         assert len(video_children) == 3
 
@@ -48,17 +54,31 @@ class TestHomeChildContractsExtra:
             assert row["checked"] is False
             assert row["pluginKey"] == "GM300-AMCS"
 
-    @allure.title("首页实时监控与巡检管理子菜单保持稳定数量")
+    @allure.title("首页实时监控与巡检管理保留核心子菜单")
     def test_init_menu_realtime_and_patrol_children_keep_expected_counts(self, auth_api, home_api, test_user):
-        """校验实时监控和巡检管理模块仍保留当前稳定子菜单数量。"""
+        """校验两个模块保留核心入口，并允许后续增加新的业务菜单。"""
         self._login(auth_api, test_user)
 
-        host_leaf = home_api.init_menu().json()["data"]["hostMenuList"][0]["leaf"]
+        host_leaf = amcs_top_modules(home_api.init_menu().json())
         realtime_children = next(item for item in host_leaf if item["id"] == "GM300-AMCS:amcs_das")["leaf"]
         patrol_children = next(item for item in host_leaf if item["id"] == "GM300-AMCS:amcs_patrol")["leaf"]
 
-        assert len(realtime_children) == 4
-        assert len(patrol_children) == 3
+        realtime_ids = {item["id"] for item in realtime_children}
+        patrol_ids = {item["id"] for item in patrol_children}
+        assert {
+            "GM300-AMCS:amcs_das:panorama_equip",
+            "GM300-AMCS:amcs_das:amcs_das_item",
+            "GM300-AMCS:amcs_das:amcs_das_online",
+            "GM300-AMCS:amcs_das:amcs_thermal",
+        } <= realtime_ids
+        assert {
+            "GM300-AMCS:amcs_patrol:amcs_patrol_plan",
+            "GM300-AMCS:amcs_patrol:amcs_patrol_card",
+            "GM300-AMCS:amcs_patrol:amcs_patrol_record",
+        } <= patrol_ids
+        for item in realtime_children + patrol_children:
+            assert item["pluginKey"] == "GM300-AMCS"
+            assert isinstance(item["url"], str) and item["url"].startswith("/")
 
 class TestHomeDictContractsExtra:
     """补充校验首页模块使用的公共字典返回契约。"""
@@ -187,7 +207,7 @@ class TestHomeMenuContractsMore:
         assert login_response.json()["status"] == 0
 
         body = home_api.init_menu().json()
-        top_texts = [item["text"] for item in body["data"]["hostMenuList"][0]["leaf"]]
+        top_texts = [item["text"] for item in amcs_top_modules(body)]
         assert top_texts == [
             "首页",
             "视频监控",
@@ -209,7 +229,7 @@ class TestHomeMenuContractsMore:
         assert login_response.json()["status"] == 0
 
         body = home_api.init_menu().json()
-        top_modules = body["data"]["hostMenuList"][0]["leaf"]
+        top_modules = amcs_top_modules(body)
         assert len(top_modules) == 8
 
 class TestHomeMenuShapeContracts:
@@ -224,7 +244,7 @@ class TestHomeMenuShapeContracts:
         )
         assert login_response.json()["status"] == 0
 
-        top_modules = home_api.init_menu().json()["data"]["hostMenuList"][0]["leaf"]
+        top_modules = amcs_top_modules(home_api.init_menu().json())
         urls = [item["url"] for item in top_modules]
         assert urls == ["/das/home", None, None, None, "", "", "", ""]
 
@@ -237,7 +257,7 @@ class TestHomeMenuShapeContracts:
         )
         assert login_response.json()["status"] == 0
 
-        top_modules = home_api.init_menu().json()["data"]["hostMenuList"][0]["leaf"]
+        top_modules = amcs_top_modules(home_api.init_menu().json())
         states = [item["state"] for item in top_modules]
         assert states == [1, 1, 1, 1, 1, 1, 1, 1]
 
@@ -285,8 +305,8 @@ class TestHomePayloadContractsMore:
         init_body = home_api.init_menu().json()
         menu_tree = menu_api.get_user_menu_tree().json()
 
-        host_plugin = init_body["data"]["hostMenuList"][0]
-        root_node = menu_tree[0]
+        host_plugin = amcs_host(init_body)
+        root_node = amcs_tree_root(menu_tree)
         assert host_plugin["id"] == "GM300-AMCS"
         assert host_plugin["pageurl"] == "/amcs/index"
         assert host_plugin["pluginKey"] == "GM300-AMCS"
