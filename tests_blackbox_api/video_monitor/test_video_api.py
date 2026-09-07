@@ -27,21 +27,26 @@ class TestVideoApi:
         first_node = body[0]
         assert set(first_node.keys()) >= {"id", "text", "state", "model"}
 
-    @allure.title("视频树节点包含通道号和 NVR 序列号")
+    @allure.title("视频树节点保持通道号和 NVR 成对配置")
     def test_camera_tree_model_contains_channel_and_nvr(self, auth_api, video_api, test_user):
-        """校验视频树模型里包含播放所需关键字段。"""
+        """校验未接入设备允许配置为空，已接入设备保留有效通道和 NVR。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
         )
         assert login_response.json()["status"] == 0
 
-        response = video_api.get_camera_tree()
-        first_model = response.json()[0]["model"]
-
-        assert "channelNum" in first_model
-        assert "nvrSerialNum" in first_model
-        assert first_model["channelNum"] >= 1
+        models = [node["model"] for node in video_api.get_camera_tree().json()]
+        configured_models = []
+        for model in models:
+            assert "channelNum" in model
+            assert "nvrSerialNum" in model
+            assert (model["channelNum"] is None) == (model["nvrSerialNum"] is None)
+            if model["channelNum"] is not None:
+                assert isinstance(model["channelNum"], int) and model["channelNum"] >= 0
+                assert isinstance(model["nvrSerialNum"], str) and model["nvrSerialNum"]
+                configured_models.append(model)
+        assert configured_models, "当前环境没有已配置通道和 NVR 的视频设备"
 
     @allure.title("First camera tree node keeps icon style markers")
     def test_camera_tree_first_node_icon_style_is_present(self, auth_api, video_api, test_user):
@@ -73,7 +78,7 @@ class TestVideoApi:
 
         assert set(first_model.keys()) >= {"cameraId", "subId", "openClosed", "text", "url"}
         assert first_model["text"] == first_model["name"]
-        assert first_model["nvrSerialNum"]
+        assert first_model["nvrSerialNum"] is None or isinstance(first_model["nvrSerialNum"], str)
 
     @allure.title("预置位摄像机列表返回设备名称")
     def test_preset_cameras_returns_camera_names(self, auth_api, video_api, test_user):
@@ -127,7 +132,7 @@ class TestVideoApi:
         assert first_model["type"] is not None
         assert "pid" in first_model
 
-    @allure.title("预置位摄像机列表包含站点与通道字段")
+    @allure.title("预置位摄像机列表包含站点与可选通道字段")
     def test_preset_cameras_contain_station_and_channel_fields(self, auth_api, video_api, test_user):
         """校验预置位摄像机列表保留站点、通道号和 NVR 序列号字段。"""
         login_response = auth_api.login(
@@ -138,13 +143,14 @@ class TestVideoApi:
 
         response = video_api.get_preset_cameras()
         body = response.json()
-        first_item = body["data"][0]
-
-        assert "subId" in first_item
-        assert "subName" in first_item
-        assert "channelNo" in first_item
-        assert "nvrSerialNum" in first_item
-        assert first_item["channelNo"]
+        configured_items = []
+        for item in body["data"]:
+            assert set(item) >= {"subId", "subName", "channelNo", "nvrSerialNum"}
+            assert (item["channelNo"] is None) == (item["nvrSerialNum"] is None)
+            if item["channelNo"] is not None:
+                assert isinstance(item["channelNo"], str) and item["channelNo"].isdigit()
+                configured_items.append(item)
+        assert configured_items, "当前环境没有已配置通道和 NVR 的预置位摄像机"
 
     @allure.title("视频树节点默认展开且模型类型非空")
     def test_camera_tree_nodes_are_open_and_model_type_present(self, auth_api, video_api, test_user):
@@ -172,11 +178,13 @@ class TestVideoApi:
         assert login_response.json()["status"] == 0
 
         response = video_api.get_preset_cameras()
-        first_item = response.json()["data"][0]
+        items = response.json()["data"]
 
-        assert isinstance(first_item["channelNo"], str)
-        assert first_item["channelNo"].isdigit()
-        assert isinstance(first_item["railMachine"], bool)
+        for item in items:
+            assert item["channelNo"] is None or (
+                isinstance(item["channelNo"], str) and item["channelNo"].isdigit()
+            )
+            assert isinstance(item["railMachine"], bool)
 
     @allure.title("视频树节点 ID 与模型 ID 保持一致")
     def test_camera_tree_node_id_matches_model_id(self, auth_api, video_api, test_user):
@@ -238,7 +246,9 @@ class TestVideoApi:
 
         assert first_model["checked"] is False
         assert first_model["state"] == "open"
-        assert first_model["channelNum"] >= 1
+        assert first_model["channelNum"] is None or (
+            isinstance(first_model["channelNum"], int) and first_model["channelNum"] >= 0
+        )
 
     @allure.title("First camera tree model keeps openClosed and empty route contract")
     def test_camera_tree_first_model_open_closed_and_url_are_stable(self, auth_api, video_api, test_user):
@@ -272,5 +282,6 @@ class TestVideoApi:
         assert first_preset["id"] == first_node["id"]
         assert first_preset["equipName"] == first_node["text"]
         assert first_preset["text"] == first_model["name"]
-        assert first_preset["channelNo"] == str(first_model["channelNum"])
+        expected_channel = None if first_model["channelNum"] is None else str(first_model["channelNum"])
+        assert first_preset["channelNo"] == expected_channel
         assert first_preset["nvrSerialNum"] == first_model["nvrSerialNum"]

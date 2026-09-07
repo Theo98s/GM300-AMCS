@@ -32,11 +32,23 @@ class TestVideoFunctionalFlowsMore:
         return camera_tree, preset_body["data"]
 
     @staticmethod
-    def _pick_common_camera(camera_tree: list[dict], preset_rows: list[dict]) -> tuple[dict, dict]:
-        """在视频树和预置位摄像机列表之间挑一条共同摄像机数据做对齐校验。"""
+    def _pick_common_camera(
+        camera_tree: list[dict],
+        preset_rows: list[dict],
+        *,
+        require_channel: bool = False,
+    ) -> tuple[dict, dict]:
+        """挑选两套视频视图共有的设备，可按需限定为已配置通道的设备。"""
         tree_map = {node["id"]: node for node in camera_tree}
         preset_map = {row["id"]: row for row in preset_rows}
         common_ids = [camera_id for camera_id in preset_map if camera_id in tree_map]
+        if require_channel:
+            common_ids = [
+                camera_id
+                for camera_id in common_ids
+                if tree_map[camera_id]["model"]["channelNum"] is not None
+                and preset_map[camera_id]["channelNo"] is not None
+            ]
 
         assert len(common_ids) > 0
         camera_id = common_ids[0]
@@ -70,7 +82,11 @@ class TestVideoFunctionalFlowsMore:
         self._login(auth_api, test_user)
 
         camera_tree, preset_rows = self._load_video_views(video_api)
-        tree_node, preset_row = self._pick_common_camera(camera_tree, preset_rows)
+        tree_node, preset_row = self._pick_common_camera(
+            camera_tree,
+            preset_rows,
+            require_channel=True,
+        )
         tree_model = tree_node["model"]
 
         assert preset_row["channelNo"] == str(tree_model["channelNum"])

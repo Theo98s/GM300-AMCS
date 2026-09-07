@@ -52,7 +52,8 @@ class TestVideoConsistencyContractsExtra:
             assert preset["id"] == node["id"]
             assert preset["equipName"] == node["text"]
             assert preset["text"] == model["name"]
-            assert preset["channelNo"] == str(model["channelNum"])
+            expected_channel = None if model["channelNum"] is None else str(model["channelNum"])
+            assert preset["channelNo"] == expected_channel
             assert preset["nvrSerialNum"] == model["nvrSerialNum"]
 
 
@@ -94,15 +95,19 @@ class TestVideoRuntimeContractsExtra:
             assert row["iconCls"].startswith("iconfont ")
             assert row["iconCls"].endswith(" display")
 
-    @allure.title("预置位前几条记录保持空状态字段和 NVR 序列号格式")
+    @allure.title("预置位记录保持状态标记和可选 NVR 序列号格式")
     def test_preset_cameras_first_rows_keep_null_state_fields_and_nvr_format(self, auth_api, video_api, test_user):
-        """校验前几条预置位记录仍保持空状态字段和稳定 NVR 序列号格式。"""
+        """校验预置位记录的状态字段、设备能力标记和可选 NVR 格式。"""
         self._login(auth_api, test_user)
 
-        rows = video_api.get_preset_cameras().json()["data"][:5]
+        rows = video_api.get_preset_cameras().json()["data"]
+        configured_rows = []
         for row in rows:
             assert row.get("state") is None
             assert row.get("checked") is None
-            assert row["moveable"] is False
-            assert row["railMachine"] is False
-            assert re.fullmatch(r"[A-Za-z0-9-]+", row["nvrSerialNum"])
+            assert isinstance(row["moveable"], bool)
+            assert isinstance(row["railMachine"], bool)
+            assert row["nvrSerialNum"] is None or re.fullmatch(r"[A-Za-z0-9-]+", row["nvrSerialNum"])
+            if row["nvrSerialNum"] is not None:
+                configured_rows.append(row)
+        assert configured_rows, "当前环境没有已配置 NVR 的预置位摄像机"

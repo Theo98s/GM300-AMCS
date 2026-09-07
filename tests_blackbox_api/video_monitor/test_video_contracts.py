@@ -153,19 +153,24 @@ class TestVideoPresetContractsMore:
         for row in rows:
             assert row["text"] == row["equipName"]
 
-    @allure.title("预置位前五项通道号保持数字字符串")
+    @allure.title("预置位通道号为空或保持数字字符串")
     def test_preset_camera_first_rows_keep_digit_channel_numbers(self, auth_api, video_api, test_user):
-        """校验前几条预置位记录的通道号保持数字字符串格式。"""
+        """校验未配置设备允许通道为空，已配置设备使用数字字符串。"""
         login_response = auth_api.login(
             account=test_user["username"],
             password=test_user["password"],
         )
         assert login_response.json()["status"] == 0
 
-        rows = video_api.get_preset_cameras().json()["data"][:5]
+        rows = video_api.get_preset_cameras().json()["data"]
+        configured_rows = []
         for row in rows:
-            assert isinstance(row["channelNo"], str)
-            assert row["channelNo"].isdigit()
+            assert row["channelNo"] is None or (
+                isinstance(row["channelNo"], str) and row["channelNo"].isdigit()
+            )
+            if row["channelNo"] is not None:
+                configured_rows.append(row)
+        assert configured_rows, "当前环境没有已配置通道的预置位摄像机"
 
 
 class TestVideoRowContractsMore:
@@ -187,7 +192,7 @@ class TestVideoRowContractsMore:
             assert item["checked"] is False
             assert item["state"] == "open"
 
-    @allure.title("预置位前五项通道号与视频树模型通道号保持一致")
+    @allure.title("预置位通道号与同一视频树模型保持一致")
     def test_first_preset_rows_keep_channel_alignment_with_camera_tree(self, auth_api, video_api, test_user):
         """校验前几条预置位记录在通道号上与前几条摄像机树模型保持对齐。"""
         login_response = auth_api.login(
@@ -196,11 +201,16 @@ class TestVideoRowContractsMore:
         )
         assert login_response.json()["status"] == 0
 
-        camera_rows = video_api.get_camera_tree().json()[:5]
-        preset_rows = video_api.get_preset_cameras().json()["data"][:5]
-        for camera_row, preset_row in zip(camera_rows, preset_rows):
-            assert preset_row["channelNo"] == str(camera_row["model"]["channelNum"])
-            assert preset_row["channelNo"].isdigit()
+        camera_rows = video_api.get_camera_tree().json()
+        preset_rows = video_api.get_preset_cameras().json()["data"]
+        preset_map = {row["id"]: row for row in preset_rows}
+        assert preset_map
+        for camera_row in camera_rows:
+            assert camera_row["id"] in preset_map
+            preset_row = preset_map[camera_row["id"]]
+            channel_num = camera_row["model"]["channelNum"]
+            expected_channel = None if channel_num is None else str(channel_num)
+            assert preset_row["channelNo"] == expected_channel
 
 
 class TestVideoTreeContractsMore:
