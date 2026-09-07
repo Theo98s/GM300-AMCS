@@ -52,6 +52,41 @@ class PatrolPointPage:
         expect(dialog).to_be_visible()
         return dialog
 
+    def open_form(self, mode, index=0):
+        """通过工具栏或行内操作打开表单，并返回对应 iframe。"""
+        titles = {"view": "查看巡检点位", "edit": "编辑巡检点位", "add": "新增巡检点位"}
+        if mode == "add":
+            self.page.locator("#areaToolbar a").filter(has_text="新增").click()
+        else:
+            self.rows.nth(index).get_by_text("查看" if mode == "view" else "编辑", exact=True).click()
+        expect(self.page.locator(".window:visible .panel-title")).to_have_text(titles[mode])
+        iframe = self.page.locator('iframe[src*="/amcs/monitorArea/editPage"]')
+        expect(iframe).to_be_visible()
+        frame = self.page.frame_locator('iframe[src*="/amcs/monitorArea/editPage"]')
+        expect(frame.locator("#editForm")).to_be_visible()
+        return frame, iframe
+
+    @staticmethod
+    def form_input(frame, field_id):
+        """定位 EasyUI 隐藏原始元素旁的可见输入框。"""
+        return frame.locator(f"#{field_id} + .textbox input.textbox-text")
+
+    def close_form(self):
+        """点击标题栏关闭按钮，不触发表单保存操作。"""
+        window = self.page.locator(".window:visible").filter(
+            has=self.page.locator('iframe[src*="/amcs/monitorArea/editPage"]')
+        )
+        window.locator(".panel-tool .icon-guanbi3").click()
+        expect(self.page.locator('iframe[src*="/amcs/monitorArea/editPage"]')).not_to_be_visible()
+
+    def download_export(self):
+        """通过页面导出按钮触发浏览器下载，不直接请求导出接口。"""
+        with self.page.expect_download() as pending:
+            self.page.locator('#areaToolbar a[onclick="exportPoint();"]').click()
+        download = pending.value
+        assert download.failure() is None, "浏览器下载失败"
+        return download
+
     @staticmethod
     def is_list_response(response):
         """只捕获目标分页请求，排除后台轮询。"""

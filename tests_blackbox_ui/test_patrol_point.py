@@ -1,5 +1,7 @@
 """巡检点位 UI 筛选正反例及查询条件恢复。"""
 from uuid import uuid4
+from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 import allure
 import pytest
 from playwright.sync_api import expect
@@ -136,3 +138,102 @@ def test_import_without_file(point_page):
     dialog.locator('a[onclick="importMonitorArea();"]').click()
     expect(view.page.get_by_text("请选择需要导入的文件！", exact=True)).to_be_visible()
     expect(dialog).to_be_visible()
+
+
+@pytest.fixture
+def prevent_point_writes(point_page):
+    """取消编辑用例禁止保存、删除和导入请求，意外写入会被阻断并判失败。"""
+    view, _ = point_page
+    attempts = []
+
+    def guard(route):
+        """保留真实只读请求，阻止点位写接口访问现场。"""
+        path = urlsplit(route.request.url).path
+        if path in {"/amcs/monitorArea/save", "/amcs/monitorArea/delete", "/amcs/monitorArea/import"}:
+            attempts.append(path)
+            route.abort()
+        else:
+            route.continue_()
+
+    view.page.route("**/amcs/monitorArea/**", guard)
+    yield
+    view.page.unroute("**/amcs/monitorArea/**", guard)
+    assert not attempts, f"只读操作意外触发写请求：{attempts}"
+
+
+@allure.title("UI 查看巡检点位时详情字段与列表一致")
+@pytest.mark.parametrize("field,control", [("equipName", "mainEquipId"), ("cameraName", "monitorequipId"), ("presetName", "presetName")])
+def test_view_detail_matches_list(point_page, prevent_point_writes, field, control):
+    """检查打开的记录标识、只读参数及用户实际看到的字段值。"""
+    view, baseline = point_page
+    if not baseline["rows"]:
+        pytest.skip("没有可查看的巡检点位")
+    sample = baseline["rows"][0]
+    frame, iframe = view.open_form("view")
+    query = parse_qs(urlsplit(iframe.get_attribute("src")).query)
+    assert query["id"] == [sample["id"]]
+    assert query["readonly"] == ["1"]
+    expect(view.form_input(frame, control)).to_have_value(sample.get(field) or "")
+
+
+@allure.title("UI 查看巡检点位时核心字段只读且无可用保存入口")
+def test_view_is_readonly(point_page, prevent_point_writes):
+    """验证核心字段不能编辑，查看页不应提供可用的保存或下发按钮。"""
+    view, baseline = point_page
+    if not baseline["rows"]:
+        pytest.skip("没有可查看的巡检点位")
+    frame, _ = view.open_form("view")
+    for control in ("mainEquipId", "monitorequipId", "mainPresetNum", "presetName"):
+        expect(view.form_input(frame, control)).not_to_be_editable()
+    # 允许模板保留隐藏或禁用按钮，但查看页不能提供可用写入入口。
+    buttons = frame.locator('a[onclick^="saveMonitorArea"]:visible:not(.l-btn-disabled):not([disabled]):not([aria-disabled="true"])')
+    expect(buttons).to_have_count(0)
+    view.close_form()
+    expect(view.rows).to_have_count(len(baseline["rows"]))
+
+
+@allure.title("UI 编辑点位关闭不保存时原名称保持不变")
+def test_edit_cancel_preserves_name(point_page, prevent_point_writes):
+    """仅在浏览器中修改名称，关闭后重新查看应仍为原值。"""
+    view, baseline = point_page
+    if not baseline["rows"]:
+        pytest.skip("没有可编辑的巡检点位")
+    sample = baseline["rows"][0]
+    frame, iframe = view.open_form("edit")
+    assert parse_qs(urlsplit(iframe.get_attribute("src")).query)["id"] == [sample["id"]]
+    name = view.form_input(frame, "presetName")
+    expect(name).to_have_value(sample["presetName"])
+    name.fill(f"UI_CANCEL_{uuid4().hex[:8]}")
+    view.close_form()
+    restored = view.search()
+    assert restored["total"] == baseline["total"]
+    row = next(row for row in restored["rows"] if row["id"] == sample["id"])
+    assert row["presetName"] == sample["presetName"]
+    frame, _ = view.open_form("view")
+    expect(view.form_input(frame, "presetName")).to_have_value(sample["presetName"])
+
+
+@allure.title("UI 新增点位关闭后不新增记录且再次打开为空表单")
+def test_add_cancel_leaves_no_record(point_page, prevent_point_writes):
+    """打开未填写的新增表单并关闭，验证列表不变及再次打开无旧记录残留。"""
+    view, baseline = point_page
+    frame, iframe = view.open_form("add")
+    query = parse_qs(urlsplit(iframe.get_attribute("src")).query, keep_blank_values=True)
+    assert query["id"] == [""]
+    expect(view.form_input(frame, "presetName")).to_have_value("")
+    expect(frame.locator('a[onclick="saveMonitorArea(0,false);"]')).to_be_visible()
+    view.close_form()
+    restored = view.search()
+    assert restored == baseline
+    frame, _ = view.open_form("add")
+    expect(view.form_input(frame, "presetName")).to_have_value("")
+
+
+@allure.title("UI 巡检点位导出按钮下载有效格式文件")
+def test_export_download(point_page):
+    """验证浏览器下载完成及真实 XLS 文件头，不将格式校验当成内容校验。"""
+    view, _ = point_page
+    download = view.download_export()
+    assert download.suggested_filename.lower().endswith(".xls")
+    with Path(download.path()).open("rb") as stream:
+        assert stream.read(8) == bytes.fromhex("D0CF11E0A1B11AE1"), "下载内容不是预期 XLS 文件"
