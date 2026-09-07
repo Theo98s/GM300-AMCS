@@ -164,14 +164,20 @@ class TestPatrolRuntimeContractsExtra:
             pytest.skip("当前环境没有巡检计划。")
         return plans
 
-    @allure.title("巡检计划前几条记录保持 cron 与 weeks 调度字段格式")
+    @allure.title("巡检计划前几条记录按执行状态保持调度字段格式")
     def test_patrol_plan_first_rows_keep_schedule_field_formats(self, auth_api, patrol_api, test_user):
-        """校验前几条巡检计划仍保留调度表达式和周配置格式。"""
+        """校验待执行计划保留调度表达式，已结束计划清空调度字段。"""
         self._login(auth_api, test_user)
 
         for plan in self._plans_or_skip(patrol_api)[:3]:
-            assert isinstance(plan["cron"], str) and plan["cron"]
-            assert plan["weeks"] is None or re.fullmatch(r"\d+(,\d+)*", plan["weeks"])
+            if plan["executeState"] is None:
+                assert isinstance(plan["cron"], str) and plan["cron"]
+                assert isinstance(plan["weeks"], str)
+                assert re.fullmatch(r"\d+(,\d+)*", plan["weeks"])
+            else:
+                assert plan["executeState"] == "END"
+                assert plan["cron"] is None
+                assert plan["weeks"] is None
             assert isinstance(plan["residenceTime"], int)
             assert plan["residenceTime"] >= 0
 

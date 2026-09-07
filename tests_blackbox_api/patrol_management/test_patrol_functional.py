@@ -52,24 +52,29 @@ class TestPatrolFunctionalFlowsMore:
         assert len(card_rows) > 0
         assert isinstance(plan_rows, list)
 
-    @allure.title("巡检计划中的卡片名称可在巡检卡片列表中回查到")
+    @allure.title("上级下发巡检计划保留完整卡片快照")
     def test_patrol_plan_card_name_can_be_resolved_from_patrol_card_list(
         self,
         auth_api,
         patrol_api,
         test_user,
     ):
-        """如果当前环境存在巡检计划，则校验计划关联的卡片名称能在卡片列表中找到。"""
+        """校验下发计划自带卡片信息，不依赖 AMCS 当前本地卡片列表。"""
         self._login(auth_api, test_user)
 
         card_rows = patrol_api.list_patrol_cards().json()
         plan_rows = self._plans_or_skip(patrol_api)
-        card_names = {row["text"] for row in card_rows}
-        first_plan = plan_rows[0]
-
-        assert first_plan["cardName"] in card_names
-        assert first_plan["subName"]
-        assert isinstance(first_plan["canBeStarted"], bool)
+        assert isinstance(card_rows, list)
+        for plan in plan_rows:
+            assert isinstance(plan["cardName"], str) and plan["cardName"]
+            assert isinstance(plan["cardCode"], str) and plan["cardCode"]
+            identity_prefix = f"{plan['cardName']}_{plan['cardCode']}"
+            assert plan["multi"] == identity_prefix or plan["multi"].startswith(f"{identity_prefix}_")
+            if plan["multi"] != identity_prefix:
+                instance_suffix = plan["multi"].removeprefix(f"{identity_prefix}_")
+                assert instance_suffix.isdigit(), "计划实例后缀应为下发时间戳"
+            assert plan["subName"]
+            assert isinstance(plan["canBeStarted"], bool)
 
     @allure.title("巡检计划详情可在同一会话内完成明细初始化")
     def test_patrol_plan_detail_can_bootstrap_in_same_session(
