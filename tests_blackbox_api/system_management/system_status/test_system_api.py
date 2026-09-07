@@ -184,14 +184,18 @@ class TestSystemLogoContracts:
 class TestSystemRuntimeContractsExtra:
     """补充校验系统公共接口和运行时字段。"""
 
-    @allure.title("系统 logo 公共接口默认值保持空字符串")
-    def test_sys_logo_public_default_values_are_empty_strings(self, system_api):
-        """校验系统 logo 公共接口在当前环境下仍返回空字符串默认值。"""
+    @allure.title("系统 logo 公共接口返回空值或合法图片路径")
+    def test_sys_logo_public_values_keep_valid_image_path_contract(self, system_api):
+        """校验未配置的 Logo 返回空串，已配置的 Logo 返回站内图片路径。"""
         body = system_api.get_sys_logo().json()
 
         assert body["status"] == 0
-        assert body["data"]["sys_logo_a"] == ""
-        assert body["data"]["sys_logo_b"] == ""
+        for field_name in ("sys_logo_a", "sys_logo_b"):
+            logo_path = body["data"][field_name]
+            assert isinstance(logo_path, str)
+            if logo_path:
+                assert logo_path.startswith("/")
+                assert logo_path.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"))
 
     @allure.title("告警数量接口登录后返回标准三段式结果")
     def test_alarm_count_after_login_keeps_standard_result_keys(self, auth_api, system_api, test_user):

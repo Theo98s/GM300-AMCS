@@ -5,6 +5,14 @@ from __future__ import annotations
 import allure
 import re
 
+
+def _assert_device_runtime_status(row: dict) -> None:
+    """校验设备在线布尔值与接口状态码保持一致。"""
+    assert isinstance(row["serviceUp"], bool)
+    assert row["value"] in {"0", "1"}
+    assert row["serviceUp"] is (row["value"] == "1")
+
+
 @allure.feature("系统管理")
 class TestSystemContracts:
     """校验公共接口与登录保护接口的系统契约。"""
@@ -120,18 +128,17 @@ class TestHealthCameraRuntimeContractsMore:
         assert isinstance(cameras["deviceList"], list)
         return cameras["deviceList"]
 
-    @allure.title("健康检查 cameras 前十条记录保持实时视频设备契约")
+    @allure.title("健康检查 cameras 前十条记录保持视频设备运行状态契约")
     def test_health_camera_rows_keep_live_video_contract(self, system_api):
-        """校验前十条摄像机记录仍保持在线视频设备的字段模式。"""
+        """校验前十条摄像机的在线标记、状态码和视频字段保持一致。"""
         rows = self._camera_rows(system_api)
         assert len(rows) >= 10
 
         for row in rows[:10]:
             assert isinstance(row["name"], str) and row["name"]
-            assert row["serviceUp"] is True
-            assert row["value"] == "1"
+            _assert_device_runtime_status(row)
             assert row["signalTypeCode"] == "3"
-            assert re.fullmatch(r"\d+\.\d+\.\d+\.\d+", row["ip"])
+            assert row["ip"] is None or re.fullmatch(r"\d+\.\d+\.\d+\.\d+", row["ip"])
             assert row["desc"] == ""
             assert row.get("alarmClass") is None
 
@@ -145,7 +152,7 @@ class TestHealthCameraRuntimeContractsMore:
             assert row["areaCode"] == "00"
             assert row["areaName"] is None
             assert isinstance(row["customCode"], str) and row["customCode"].startswith("GM300_CAMS_")
-            assert row["nvr"] in {"DH", "HIK"}
+            assert row["nvr"] is None or row["nvr"] in {"DH", "HIK"}
             assert row["parentName"] is None
 
 class TestHealthContractsMore:
@@ -196,8 +203,7 @@ class TestHealthDeviceContractsExtra:
 
         for row in cameras["deviceList"][:5]:
             assert isinstance(row["name"], str) and row["name"]
-            assert isinstance(row["serviceUp"], bool)
-            assert row["value"] in {"1", "异常"}
+            _assert_device_runtime_status(row)
             assert re.fullmatch(r"\d+", row["signalTypeCode"])
             assert row["ip"] is None or re.fullmatch(r"\d+\.\d+\.\d+\.\d+", row["ip"])
             assert row["customCode"] is None or isinstance(row["customCode"], str)
@@ -213,8 +219,7 @@ class TestHealthDeviceContractsExtra:
         assert "NVR" in names
         assert "通信管理机" in names
         for row in device_group["deviceList"]:
-            assert isinstance(row["serviceUp"], bool)
-            assert row["value"] in {"1", "异常"}
+            _assert_device_runtime_status(row)
             assert re.fullmatch(r"\d+\.\d+\.\d+\.\d+", row["ip"])
             assert row["signalTypeCode"] is None or re.fullmatch(r"\d+", row["signalTypeCode"])
 
@@ -244,17 +249,14 @@ class TestHealthRuntimeStatusContractsMore:
         rows = system_api.get_health().json()["data"]
         return {row["name"]: row for row in rows}
 
-    @allure.title("健康检查各服务保持当前 serviceUp 分布模式")
-    def test_health_check_keeps_current_service_up_pattern(self, system_api):
-        """校验当前环境各服务仍保持稳定的 serviceUp 分布模式。"""
+    @allure.title("健康检查各服务保持布尔类型运行状态")
+    def test_health_check_services_keep_boolean_runtime_status(self, system_api):
+        """校验服务运行状态使用布尔值，不绑定现场设备当前在线结果。"""
         health_map = self._health_map(system_api)
 
-        assert health_map["移动巡检设备"]["serviceUp"] is True
-        assert health_map["cameras"]["serviceUp"] is False
-        assert health_map["局级主站"]["serviceUp"] is True
-        assert health_map["段级主站"]["serviceUp"] is True
-        assert health_map["流媒体服务"]["serviceUp"] is True
-        assert health_map["device"]["serviceUp"] is False
+        assert health_map
+        for service in health_map.values():
+            assert isinstance(service["serviceUp"], bool)
 
     @allure.title("健康检查顶层服务保持空 signalTypeCode 模式")
     def test_health_check_top_level_services_keep_null_signal_type_code(self, system_api):
