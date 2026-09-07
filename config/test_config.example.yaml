@@ -9,6 +9,12 @@ password: "123456"
 # 设备全量导入需要解析 Excel 并更新大量数据，单独使用较长超时。
 equipment_import_timeout: 30
 
+# UI 自动化默认复用本机 Chrome，避免 Playwright 升级后因内置浏览器缺失而全部启动失败。
+ui:
+  channel: chrome
+  headless: true
+  timeout_ms: 15000
+
 targets:
   line_id: ""
   line_name: ""
