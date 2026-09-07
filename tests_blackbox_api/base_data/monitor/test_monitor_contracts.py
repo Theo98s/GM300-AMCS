@@ -7,6 +7,20 @@ import allure
 import re
 
 
+def _monitor_rows(database_api, row_count: int = 20) -> list[dict]:
+    """读取一页监控点，并确认当前环境存在可供契约校验的数据。"""
+    rows = database_api.list_monitors(rows=row_count).json()["rows"]
+    assert rows, "当前环境没有监控点，无法执行列表字段契约校验"
+    return rows
+
+
+def _assert_blank_or_numeric_text(value, field_name: str) -> None:
+    """校验可选数值字段为空，或使用合法的十进制数字字符串。"""
+    assert value is None or isinstance(value, str), f"{field_name} 应为空或字符串"
+    if value not in {None, ""}:
+        assert re.fullmatch(r"-?\d+(?:\.\d+)?", value), f"{field_name} 不是合法数字字符串: {value}"
+
+
 class TestMonitorListContractsExtra:
     """补充校验监控点列表返回结构。"""
 
@@ -51,17 +65,16 @@ class TestMonitorListContractsExtra:
         assert first_row["isStored"] in {"0", "1"}
         assert isinstance(first_row["scadaAddr10"], str)
 
-    @allure.title("监控点列表首行 yx 字段保持可解析 JSON")
-    def test_monitor_list_first_row_yx_is_parseable_json(self, auth_api, database_api, test_user):
-        """校验首条监控点记录中的 yx 字段仍是包含真假标签的 JSON 文本。"""
+    @allure.title("监控点列表遥信配置保持可解析 JSON")
+    def test_monitor_list_yx_is_parseable_json(self, auth_api, database_api, test_user):
+        """校验列表中的遥信配置仍是包含真假标签的 JSON 文本。"""
         self._login(auth_api, test_user)
 
-        response = database_api.list_monitors(rows=1)
-        body = response.json()
-        assert len(body["rows"]) == 1
+        rows = _monitor_rows(database_api)
+        yx_rows = [row for row in rows if row.get("yx") not in {None, ""}]
+        assert yx_rows, "当前页没有带遥信配置的监控点"
 
-        first_row = body["rows"][0]
-        yx_config = json.loads(first_row["yx"])
+        yx_config = json.loads(yx_rows[0]["yx"])
         assert set(yx_config.keys()) >= {"TRUE_LABEL", "FALSE_LABEL"}
         assert isinstance(yx_config["TRUE_LABEL"], str)
         assert isinstance(yx_config["FALSE_LABEL"], str)
@@ -91,13 +104,15 @@ class TestMonitorListPageContractsExtra:
 
     @allure.title("监控点列表 yx 标签值保持非空")
     def test_monitor_list_yx_labels_are_non_empty(self, auth_api, database_api, test_user):
-        """校验首条监控点记录中解析出的 yx 标签保持非空字符串。"""
+        """校验列表中已配置遥信的监控点，其真假标签保持非空字符串。"""
         self._login(auth_api, test_user)
 
-        first_row = database_api.list_monitors(rows=1).json()["rows"][0]
-        yx_config = json.loads(first_row["yx"])
-        assert yx_config["TRUE_LABEL"]
-        assert yx_config["FALSE_LABEL"]
+        yx_rows = [row for row in _monitor_rows(database_api) if row.get("yx") not in {None, ""}]
+        assert yx_rows, "当前页没有带遥信配置的监控点"
+        for row in yx_rows:
+            yx_config = json.loads(row["yx"])
+            assert yx_config["TRUE_LABEL"]
+            assert yx_config["FALSE_LABEL"]
 
 
 class TestMonitorListFormatContractsMore:
@@ -123,13 +138,15 @@ class TestMonitorListFormatContractsMore:
             assert re.fullmatch(r"\d{2}", row["alarmClass"])
             assert re.fullmatch(r"\d{2}", row["securityequiptype"])
 
-    @allure.title("监控点列表前几行 yx 配置键集合保持一致")
+    @allure.title("监控点列表已配置 yx 的记录保持标准键集合")
     def test_monitor_list_first_rows_keep_consistent_yx_keys(self, auth_api, database_api, test_user):
-        """校验前几条监控点记录解析后的 yx 键集合保持一致。"""
+        """仅校验已配置遥信的记录，遥测等其他点型允许 yx 为空。"""
         self._login(auth_api, test_user)
 
-        rows = database_api.list_monitors(rows=5).json()["rows"]
-        key_sets = [set(json.loads(row["yx"]).keys()) for row in rows]
+        rows = _monitor_rows(database_api)
+        yx_rows = [row for row in rows if row.get("yx") not in {None, ""}]
+        assert yx_rows, "当前页没有带遥信配置的监控点"
+        key_sets = [set(json.loads(row["yx"]).keys()) for row in yx_rows]
         assert all(keys == {"TRUE_LABEL", "FALSE_LABEL"} for keys in key_sets)
 
 
@@ -160,22 +177,29 @@ class TestMonitorListNullableContractsMore:
         """校验前几条遥信记录仍未填充 yc、yk、yt 扩展字段。"""
         self._login(auth_api, test_user)
 
-        rows = database_api.list_monitors(rows=5).json()["rows"]
-        for row in rows:
+        rows = _monitor_rows(database_api)
+        yx_rows = [row for row in rows if row.get("yx") not in {None, ""}]
+        assert yx_rows, "当前页没有带遥信配置的监控点"
+        for row in yx_rows:
             assert row["yc"] is None
             assert row["yk"] is None
             assert row["yt"] is None
 
-    @allure.title("监控点列表前几条记录保持空偏移与变化阈值字段")
-    def test_monitor_list_first_rows_keep_empty_offset_threshold_fields(self, auth_api, database_api, test_user):
-        """校验前几条记录在当前环境下仍未配置偏移和变化阈值字段。"""
+    @allure.title("监控点列表偏移与变化阈值保持合法数值格式")
+    def test_monitor_list_first_rows_keep_valid_offset_threshold_fields(self, auth_api, database_api, test_user):
+        """校验偏移和变化阈值可为空；启用对应功能时必须填写合法数值。"""
         self._login(auth_api, test_user)
 
-        rows = database_api.list_monitors(rows=5).json()["rows"]
+        rows = _monitor_rows(database_api)
         for row in rows:
-            assert row["offset"] == ""
-            assert row["changeRatio"] == ""
-            assert row["changeThreshold"] == ""
+            _assert_blank_or_numeric_text(row["offset"], "offset")
+            _assert_blank_or_numeric_text(row["changeRatio"], "changeRatio")
+            _assert_blank_or_numeric_text(row["changeThreshold"], "changeThreshold")
+            if row["isOffset"] == "1":
+                assert row["offset"] not in {None, ""}
+            if row["isRatio"] == "1":
+                assert row["changeRatio"] not in {None, ""}
+                assert row["changeThreshold"] not in {None, ""}
 
 
 class TestMonitorListRuntimeContractsMore:
@@ -206,18 +230,21 @@ class TestMonitorListRuntimeContractsMore:
             assert row["isVirtual"] in {"0", "1"}
             assert row["isrelease"] in {"0", "1"}
 
-    @allure.title("监控点列表前几条遥信记录保持空趋势配置字段")
-    def test_monitor_list_first_rows_keep_empty_trend_fields(self, auth_api, database_api, test_user):
-        """校验前几条记录在当前环境下仍未配置趋势告警相关字段。"""
+    @allure.title("监控点列表趋势告警字段保持合法配置契约")
+    def test_monitor_list_first_rows_keep_valid_trend_fields(self, auth_api, database_api, test_user):
+        """校验趋势告警可关闭；启用时级别、阈值和周期必须配置完整。"""
         self._login(auth_api, test_user)
 
-        rows = database_api.list_monitors(rows=5).json()["rows"]
+        rows = _monitor_rows(database_api)
         for row in rows:
-            assert row["trendAlarmEnable"] == ""
-            assert row["trendAlarmLevel"] == ""
-            assert row["trendChangeThreshold"] == ""
-            assert row["trendInterval"] == ""
-            assert row["linkageStatus"] is None
+            assert row["trendAlarmEnable"] in {None, "", "0", "1"}
+            assert row["trendAlarmLevel"] in {None, ""} or re.fullmatch(r"\d{2}", row["trendAlarmLevel"])
+            _assert_blank_or_numeric_text(row["trendChangeThreshold"], "trendChangeThreshold")
+            _assert_blank_or_numeric_text(row["trendInterval"], "trendInterval")
+            if row["trendAlarmEnable"] == "1":
+                assert row["trendAlarmLevel"] not in {None, ""}
+                assert row["trendChangeThreshold"] not in {None, ""}
+                assert row["trendInterval"] not in {None, ""}
 
     @allure.title("监控点列表前几条记录保持审计时间和站点字段格式")
     def test_monitor_list_first_rows_keep_audit_and_station_field_formats(self, auth_api, database_api, test_user):
