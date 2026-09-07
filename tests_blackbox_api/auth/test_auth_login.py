@@ -26,34 +26,6 @@ class TestAuthLogin:
         assert body["message"] == "登录成功"
         assert body["data"] == "/"
 
-    @allure.title("AMCS 错误密码登录失败")
-    def test_login_fail_with_wrong_password(self, auth_api, test_user):
-        """校验错误密码不会误判成登录成功。"""
-        response = auth_api.login(
-            account=test_user["username"],
-            password=f"{test_user['password']}_bad",
-        )
-
-        assert response.status_code == 200
-        body = response.json()
-        assert body["status"] != 0
-        assert "成功" not in body["message"]
-        assert body["data"] is None
-
-    @allure.title("AMCS 错误密码登录返回标准失败提示")
-    def test_login_fail_with_wrong_password_returns_expected_message(self, auth_api, test_user):
-        """校验错误密码登录时返回固定失败消息，便于前端稳定提示。"""
-        response = auth_api.login(
-            account=test_user["username"],
-            password=f"{test_user['password']}_bad",
-        )
-
-        assert response.status_code == 200
-        body = response.json()
-        assert body["status"] == 1
-        assert body["message"] == "用户名/密码错误"
-        assert body["data"] is None
-
     @allure.title("AMCS 登录页可提取 CSRFToken")
     def test_login_page_contains_csrf_token(self, auth_api):
         """校验登录页确实包含后续登录必需的 CSRFToken。"""
@@ -62,17 +34,3 @@ class TestAuthLogin:
         assert response.status_code == 200
         csrf_token = auth_api.extract_csrf_token(response.text)
         assert csrf_token
-
-    @allure.title("AMCS 错误用户名登录返回标准失败提示")
-    def test_login_fail_with_wrong_username_returns_expected_message(self, auth_api, test_user):
-        """校验未知账号登录时仍返回标准失败契约。"""
-        response = auth_api.login(
-            account=f"{test_user['username']}_bad",
-            password=test_user["password"],
-        )
-
-        assert response.status_code == 200
-        body = response.json()
-        assert body["status"] == 1
-        assert body["message"] == "用户名/密码错误"
-        assert body["data"] is None

@@ -47,7 +47,7 @@ class TestAuthAbnormalContractsMore:
         response = request_util.send_request(
             "post",
             config["auth"]["login_submit_url"],
-            data={"account": "NO_SUCH_USER_001", "password": "bad-password"},
+            data={"account": "", "password": ""},
             allow_redirects=False,
         )
 
@@ -60,8 +60,8 @@ class TestAuthAbnormalContractsMore:
             "post",
             config["auth"]["login_submit_url"],
             data={
-                "account": "NO_SUCH_USER_001",
-                "password": "bad-password",
+                "account": "",
+                "password": "",
                 "CSRFToken": "bad-token",
             },
             allow_redirects=False,

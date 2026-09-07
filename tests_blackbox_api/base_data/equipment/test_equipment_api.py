@@ -39,6 +39,12 @@ class TestEquipmentApi:
         assert body["rows"]
         assert all(item[field] == expected_value for item in body["rows"])
 
+    @staticmethod
+    def _assert_all_rows_contain(body: dict, field: str, expected_text: str):
+        """统一校验模糊筛选结果中的每一条记录都包含查询文本。"""
+        assert body["rows"]
+        assert all(expected_text in item[field] for item in body["rows"])
+
     @allure.title("设备管理首页包含列表和导入导出入口")
     def test_equipment_index_page(self, auth_api, equipment_api, test_user):
         """校验首页可加载设备列表、模板下载、导入和导出脚本。"""
@@ -92,15 +98,15 @@ class TestEquipmentApi:
         assert isinstance(row["id"], str) and row["id"]
         assert isinstance(row["equipName"], str) and row["equipName"]
 
-    @allure.title("设备名称精确筛选可回查原设备")
+    @allure.title("设备名称模糊筛选的所有结果均包含查询名称")
     def test_equipment_filter_by_existing_name(self, auth_api, equipment_api, test_user):
-        """校验列表中的设备名称可作为筛选条件命中自身。"""
+        """校验设备名称采用包含查询，并且原设备仍在返回结果中。"""
         self._login(auth_api, test_user)
         row = self._first_row(equipment_api)
 
         body = equipment_api.list_equipment({"equipName": row["equipName"]}, rows=50).json()
 
-        self._assert_all_rows_match(body, "equipName", row["equipName"])
+        self._assert_all_rows_contain(body, "equipName", row["equipName"])
         assert any(item["id"] == row["id"] for item in body["rows"])
 
     @allure.title("不存在的设备名称筛选返回空分页")
