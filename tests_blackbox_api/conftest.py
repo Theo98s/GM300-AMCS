@@ -129,7 +129,7 @@ def test_config():
 def config(test_config):
     """把稳定接口路径与外部环境运行参数合并成最终配置。"""
     merged_config = deepcopy(load_yaml(PROJECT_ROOT / "config" / "config.yaml"))
-    for key in ("env", "base_url", "timeout", "verify_ssl"):
+    for key in ("env", "base_url", "timeout", "verify_ssl", "equipment_import_timeout"):
         if key in test_config:
             merged_config[key] = test_config[key]
     return merged_config

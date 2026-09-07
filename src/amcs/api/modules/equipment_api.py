@@ -89,12 +89,13 @@ class EquipmentApi:
         )
 
     def import_equipment(self, file_path: str):
-        """上传设备 Excel 文件并执行导入。"""
+        """上传设备 Excel 文件，并使用独立超时等待服务端完成批量处理。"""
         path = Path(file_path)
         with path.open("rb") as file:
             return self.request_util.send_request(
                 "post",
                 self.import_url,
+                timeout=self.config.get("equipment_import_timeout", 30),
                 data={"templateName": self.template_name},
                 files={"uploadFile": (path.name, file, "application/vnd.ms-excel")},
             )

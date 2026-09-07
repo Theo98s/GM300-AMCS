@@ -6,6 +6,9 @@ env: test
 username: gmservice
 password: "123456"
 
+# 设备全量导入需要解析 Excel 并更新大量数据，单独使用较长超时。
+equipment_import_timeout: 30
+
 targets:
   line_id: ""
   line_name: ""
