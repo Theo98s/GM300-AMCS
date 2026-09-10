@@ -216,6 +216,15 @@ class TestPatrolRecordApi:
         return rows[0]
 
     @staticmethod
+    def _first_completed_record(patrol_record_api):
+        """获取一条已结束的巡检记录，供依赖结束时间的场景使用。"""
+        rows = patrol_record_api.list_records(rows=200).json()["rows"]
+        for row in rows:
+            if isinstance(row.get("endTime"), int):
+                return row
+        pytest.skip("当前环境没有已结束的巡检记录。")
+
+    @staticmethod
     def _assert_all_rows_match(body: dict, field: str, expected_value):
         """统一校验筛选结果中的每一条记录都满足目标条件。"""
         assert body["rows"]
@@ -282,7 +291,9 @@ class TestPatrolRecordApi:
         }
         assert isinstance(row["id"], str) and row["id"]
         assert isinstance(row["beginTime"], int)
-        assert isinstance(row["endTime"], int)
+        assert row["endTime"] is None or isinstance(row["endTime"], int)
+        if row["endTime"] is not None:
+            assert row["endTime"] >= row["beginTime"]
 
     @allure.title("巡检卡片名称筛选可回查原记录")
     def test_patrol_record_filter_by_card_name(self, auth_api, patrol_record_api, test_user):
@@ -313,7 +324,7 @@ class TestPatrolRecordApi:
     def test_patrol_record_filter_by_start_time_range(self, auth_api, patrol_record_api, test_user):
         """校验时间范围查询不会混入区间外的巡检记录。"""
         self._login(auth_api, test_user)
-        row = self._first_record(patrol_record_api)
+        row = self._first_completed_record(patrol_record_api)
 
         begin_time = self._format_record_time(row["beginTime"])
         end_time = self._format_record_time(row["endTime"])
