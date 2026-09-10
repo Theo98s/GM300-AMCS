@@ -74,7 +74,11 @@ class TestPatrolFunctionalFlowsMore:
                 instance_suffix = plan["multi"].removeprefix(f"{identity_prefix}_")
                 assert instance_suffix.isdigit(), "计划实例后缀应为下发时间戳"
             assert plan["subName"]
-            assert isinstance(plan["canBeStarted"], bool)
+            assert plan["executeType"] in {"0", "1"}
+            if plan["executeType"] == "0":
+                assert plan["canBeStarted"] is True
+            else:
+                assert plan["canBeStarted"] is None
 
     @allure.title("巡检计划详情可在同一会话内完成明细初始化")
     def test_patrol_plan_detail_can_bootstrap_in_same_session(
