@@ -237,15 +237,18 @@ class TestPatrolScheduleContractsMore:
             pytest.skip("当前环境没有巡检计划。")
         return plans
 
-    @allure.title("巡检计划保持段级中心和固定可启动标记")
+    @allure.title("巡检计划保持段级中心和执行类型启动标记契约")
     def test_patrol_plan_rows_keep_center_type_and_start_flag(self, auth_api, patrol_api, test_user):
-        """校验当前巡检计划仍使用段级中心类型，并保持可启动布尔标记。"""
+        """校验定时计划可启动，一次性执行记录不提供重复启动标记。"""
         self._login(auth_api, test_user)
 
         for plan in self._plans_or_skip(patrol_api)[:5]:
             assert plan["centerType"] == "DUAN"
-            assert plan["executeType"] == "0"
-            assert plan["canBeStarted"] is True
+            assert plan["executeType"] in {"0", "1"}
+            if plan["executeType"] == "0":
+                assert plan["canBeStarted"] is True
+            else:
+                assert plan["canBeStarted"] is None
             assert plan["movable"] is False
 
     @allure.title("巡检计划状态与调度字段保持当前空值分支")
