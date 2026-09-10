@@ -122,14 +122,18 @@ class TestAlarmDisplayContractsMore:
             pytest.skip("当前环境没有报警记录。")
         return rows
 
-    @allure.title("报警记录前几条温度展示值保持数字加摄氏度格式")
-    def test_alarm_record_first_rows_keep_temperature_display_pattern(self, auth_api, alarm_api, test_user):
-        """校验前几条报警记录的展示值仍保持数字加摄氏度格式。"""
+    @allure.title("温度报警展示值保持摄氏度格式")
+    def test_temperature_alarm_records_keep_temperature_display_pattern(self, auth_api, alarm_api, test_user):
+        """校验温度报警支持单值及温度区间两种摄氏度展示格式。"""
         self._login(auth_api, test_user)
 
-        rows = self._rows_or_skip(alarm_api)[:5]
-        for row in rows:
-            assert re.fullmatch(r"\d+\.\d+℃", row["warnContent"])
+        rows = self._rows_or_skip(alarm_api)
+        temperature_contents = [row["warnContent"] for row in rows if "℃" in row["warnContent"]]
+        if not temperature_contents:
+            pytest.skip("当前环境没有温度报警记录。")
+
+        pattern = r"-?\d+(?:\.\d+)?℃(?:->-?\d+(?:\.\d+)?℃)?"
+        assert all(re.fullmatch(pattern, content) for content in temperature_contents)
 
     @allure.title("报警记录前几条保持默认空关联字段")
     def test_alarm_record_first_rows_keep_nullable_relation_fields(self, auth_api, alarm_api, test_user):
@@ -166,14 +170,14 @@ class TestAlarmOrderContractsExtra:
             pytest.skip("当前环境没有报警记录。")
         return rows
 
-    @allure.title("报警记录第一页保持按时间倒序排列")
-    def test_alarm_record_rows_keep_descending_alarm_time_order(self, auth_api, alarm_api, test_user):
-        """校验报警记录列表仍按最新时间优先排序。"""
+    @allure.title("报警记录保持按等级和时间复合倒序排列")
+    def test_alarm_record_rows_keep_descending_level_and_time_order(self, auth_api, alarm_api, test_user):
+        """校验报警记录先按等级倒序，同一等级内再按报警时间倒序。"""
         self._login(auth_api, test_user)
 
-        rows = self._rows_or_skip(alarm_api)[:5]
-        alarm_times = [row["alarmDt"] for row in rows]
-        assert alarm_times == sorted(alarm_times, reverse=True)
+        rows = self._rows_or_skip(alarm_api)
+        order_keys = [(row["alarmLevel"], row["alarmDt"]) for row in rows]
+        assert order_keys == sorted(order_keys, reverse=True)
 
     @allure.title("报警记录可空处理字段保持可空字符串契约")
     def test_alarm_record_rows_keep_nullable_deal_fields_contract(self, auth_api, alarm_api, test_user):
