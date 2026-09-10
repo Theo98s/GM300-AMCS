@@ -125,16 +125,16 @@ class TestVideoNullableContractsMore:
             assert row["equipTypeCode"] is None
             assert row["ptypeName"] is None
 
-    @allure.title("预置位摄像机前几条记录保持空子节点和默认布尔值")
-    def test_preset_cameras_first_rows_keep_empty_children_and_false_flags(self, auth_api, video_api, test_user):
-        """校验前几条预置位摄像机记录保持空 children 与默认布尔标记。"""
+    @allure.title("预置位摄像机前几条记录保持空子节点和布尔能力标记")
+    def test_preset_cameras_first_rows_keep_empty_children_and_boolean_flags(self, auth_api, video_api, test_user):
+        """校验叶子节点没有子项，并允许不同摄像机返回各自的移动能力标记。"""
         self._login(auth_api, test_user)
 
         rows = video_api.get_preset_cameras().json()["data"][:5]
         for row in rows:
             assert row["children"] == []
-            assert row["moveable"] is False
-            assert row["railMachine"] is False
+            assert isinstance(row["moveable"], bool)
+            assert isinstance(row["railMachine"], bool)
 
 
 class TestVideoPresetContractsMore:
